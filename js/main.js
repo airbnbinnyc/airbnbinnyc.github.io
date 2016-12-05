@@ -52,6 +52,45 @@ function loadData() {
                 neighborhood_dict[neighborhoodInfo[i].neighborhood] = neighborhoodInfo[i]
             }
 
+            // create a list with all neighborhood names
+            var neighborhoodList = [];
+            neighborhoodMap.features.forEach(function(d) {
+                neighborhoodList.push(
+                    {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
+                    value: d.properties.neighbourhood});
+            });
+
+            // make autocompleting input for neighborhood selection
+            var input = document.getElementById("neighborhood-select");
+            var selector = new Awesomplete(input, {
+                list: neighborhoodList,
+                sort: function(a,b) {
+                    a.label < b.label;
+                }
+                //minChars: 0
+            });
+
+/*            Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
+                if (selector.ul.childNodes.length === 0) {
+                    selector.minChars = 0;
+                    selector.evaluate();
+                }
+                else if (selector.ul.hasAttribute('hidden')) {
+                    selector.open();
+                }
+                else {
+                    selector.close();
+                }
+            });*/
+
+            // Listen for the event and access the neighborhood value
+            input.addEventListener("awesomplete-selectcomplete", function (e) {
+                console.log(e.text.value);
+            }, false);
+
+
+
+
             // INSTANTIATE VISUALIZATIONS
             airbnbNodeMap = new AirBnBNodeMap("airbnb-map", boroughMap, neighborhoodMap, airbnbData);
             taxRevenue = new TaxRevenue("tax-revenue", taxData);
@@ -114,3 +153,8 @@ function dataManipulation() {
 function zoom() {
     airbnbNodeMap.zoom();
 }
+
+/*
+function changeNeighborhood(val) {
+    console.log(val);
+}*/
