@@ -115,6 +115,7 @@ function createVis() {
     $("#select_all").change(function(){  //"select all" change
         $("#borough-checkboxes .checkbox-inline").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
         neighborhoodrent.wrangleData();
+        console.log("hi");
     });
 
     //".checkbox" change
