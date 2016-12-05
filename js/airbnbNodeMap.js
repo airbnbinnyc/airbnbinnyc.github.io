@@ -20,31 +20,10 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     vis.dates = [new Date(2014, 4, 10), new Date(2014, 7, 31), new Date(2014, 9, 17), new Date(2014, 11, 2),
         new Date(2015, 0, 1), new Date(2015, 1, 27), new Date(2015, 2, 1), new Date(2015, 2, 14), new Date(2015, 3, 1), new Date(2015, 4, 1),
         new Date(2015, 5, 1), new Date(2015, 7, 1), new Date(2015, 7, 10), new Date(2015, 8, 1), new Date(2015, 8, 9),
-        new Date(2015, 9, 1), new Date(2015, 9, 11), new Date(2015, 10, 1), new Date(2015, 10, 20), new Date(2015, 11, 1),
+        new Date(2015, 9, 1), new Date(2015, 9, 11), new Date(2015, 10, 1), new Date(2015, 10, 20),
         new Date(2015, 11, 2), new Date(2015, 11, 21),
         new Date(2016, 0, 1), new Date(2016, 0, 20), new Date(2016, 1, 2), new Date(2016, 3, 3), new Date(2016, 4, 2),
         new Date(2016, 5, 2), new Date(2016, 6, 2), new Date(2016, 9, 1)];
-
-    this.initVis();
-};
-
-
-// Convert a date object to a string of the format YYYY-MM-DD
-AirBnBNodeMap.prototype.yyyymmdd = function(date) {
-    var mm = date.getMonth() + 1; // getMonth() is zero-based
-    var dd = date.getDate();
-
-    return (date.getFullYear() + "-" + (mm>9 ? '' : '0') + mm + "-" + (dd>9 ? '' : '0') + dd);
-};
-
-
-/*
- *  Initialize station map
- */
-
-AirBnBNodeMap.prototype.initVis = function() {
-    var vis = this;
-
 
     // SLIDER //
     // Add a slider to the page using the minimum and maximum years appearing in the data
@@ -66,11 +45,31 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
         // print selected date
-        document.getElementById('sel-date').innerHTML = (vis.dates[+value]).toString();
+        document.getElementById('sel-date').innerHTML = (vis.yyyymmdd(vis.dates[+value])).toString();
 
         // update what the selected date is
         vis.selDate = vis.yyyymmdd(vis.dates[+value]);
     });
+
+    this.initVis();
+};
+
+
+// Convert a date object to a string of the format YYYY-MM-DD
+AirBnBNodeMap.prototype.yyyymmdd = function(date) {
+    var mm = date.getMonth() + 1; // getMonth() is zero-based
+    var dd = date.getDate();
+
+    return (date.getFullYear() + "-" + (mm>9 ? '' : '0') + mm + "-" + (dd>9 ? '' : '0') + dd);
+};
+
+
+/*
+ *  Initialize station map
+ */
+
+AirBnBNodeMap.prototype.initVis = function() {
+    var vis = this;
 
 
 
@@ -173,13 +172,56 @@ AirBnBNodeMap.prototype.initVis = function() {
             vis.tip.hide(d);
         });
 
-    vis.circles.exit().remove();
+    // vis.circles.exit().remove();
+
+    // DRAW LEGEND
+
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
+
+    vis.legend
+        .append('circle')
+        .attr("cx", 10)
+        .attr("cy", function(d, i) {
+            return i * 20 + 205;
+        })
+        .attr("r", 5)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text(function(d,i) {
+            if (vis.val == "None") {
+                return "Listing";
+            }
+            else if (vis.val == "illegal") {
+                return "Illegal"; // make this some sort of function
+            }
+            else {
+                var extent = vis.colorScale.invertExtent(d);
+                //extent will be a two-element array, format it however you want:
+                var format = d3.format("0.2f");
+                return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+            }
+        });
 
 
     // Edit tip **TO DO**
     vis.tip.html(function(d) {
         return "<strong>Room type: </strong>" + d.room_type;
     });
+
+
 
     // Add a listener to the slider submit button -- when selected, data from that date will be uploaded to the map
     document.getElementById('slider-submit-button').addEventListener('click', function(){
@@ -189,7 +231,7 @@ AirBnBNodeMap.prototype.initVis = function() {
             // change data for visualization
             vis.airbnbData = json;
             $.holdReady(false);
-            vis.colorNodes();
+            vis.updateVis();
         });
     });
 
@@ -261,7 +303,7 @@ AirBnBNodeMap.prototype.colorNodes = function () {
     // vis.node = vis.svg.append("g")
     //     .attr("class", "node");
 
-    // recolor
+    // recolor nodes
     vis.circles.transition()
         .duration(500)
         .attr("fill", function(d) {
@@ -270,6 +312,48 @@ AirBnBNodeMap.prototype.colorNodes = function () {
             }
             else {
                 return vis.colorScale(d[vis.val]);
+            }
+        });
+
+    // redraw legend
+    vis.svg.selectAll(".legendEntry").remove();
+
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
+
+    vis.legend
+        .append('circle')
+        .attr("cx", 10)
+        .attr("cy", function(d, i) {
+            return i * 20 + 205;
+        })
+        .attr("r", 5)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text(function(d,i) {
+            if (vis.val == "None") {
+                return "Listing";
+            }
+            else if (vis.val == "illegal") {
+                return "Illegal"; // make this some sort of function
+            }
+            else {
+                var extent = vis.colorScale.invertExtent(d);
+                //extent will be a two-element array, format it however you want:
+                var format = d3.format("0.2f");
+                return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
             }
         });
 
@@ -331,48 +415,48 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
     //         vis.tip.hide(d);
     //     });
 
-    // DRAW LEGEND
-
-    vis.svg.selectAll(".legendEntry").remove();
-
-    // append legend
-    vis.legend = vis.svg.selectAll('g.legendEntry')
-        .data(vis.colorScale.range())
-        .enter().append('g')
-        .attr('class', 'legendEntry');
-
-    vis.legend
-        .append('circle')
-        .attr("cx", 10)
-        .attr("cy", function(d, i) {
-            return i * 20 + 205;
-        })
-        .attr("r", 5)
-        .style("stroke", "black")
-        .style("stroke-width", 1)
-        .style("fill", function(d){return d;});
-
-    //the data objects are the fill colors
-    vis.legend
-        .append('text')
-        .attr("x", 20)
-        .attr("y", function(d, i) {
-            return i * 20 + 210;
-        })
-        .text(function(d,i) {
-            if (vis.val == "None") {
-                return "Listing";
-            }
-            else if (vis.val == "illegal") {
-                return "Illegal"; // make this some sort of function
-            }
-            else {
-                var extent = vis.colorScale.invertExtent(d);
-                //extent will be a two-element array, format it however you want:
-                var format = d3.format("0.2f");
-                return "$" + format(+extent[0]) + " - $" + format(+extent[1]);
-            }
-        });
+    // // DRAW LEGEND
+    //
+    // vis.svg.selectAll(".legendEntry").remove();
+    //
+    // // append legend
+    // vis.legend = vis.svg.selectAll('g.legendEntry')
+    //     .data(vis.colorScale.range())
+    //     .enter().append('g')
+    //     .attr('class', 'legendEntry');
+    //
+    // vis.legend
+    //     .append('circle')
+    //     .attr("cx", 10)
+    //     .attr("cy", function(d, i) {
+    //         return i * 20 + 205;
+    //     })
+    //     .attr("r", 5)
+    //     .style("stroke", "black")
+    //     .style("stroke-width", 1)
+    //     .style("fill", function(d){return d;});
+    //
+    // //the data objects are the fill colors
+    // vis.legend
+    //     .append('text')
+    //     .attr("x", 20)
+    //     .attr("y", function(d, i) {
+    //         return i * 20 + 210;
+    //     })
+    //     .text(function(d,i) {
+    //         if (vis.val == "None") {
+    //             return "Listing";
+    //         }
+    //         else if (vis.val == "illegal") {
+    //             return "Illegal"; // make this some sort of function
+    //         }
+    //         else {
+    //             var extent = vis.colorScale.invertExtent(d);
+    //             //extent will be a two-element array, format it however you want:
+    //             var format = d3.format("0.2f");
+    //             return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+    //         }
+    //     });
 
 };
 
@@ -440,6 +524,6 @@ AirBnBNodeMap.prototype.zoom = function() {
             return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
         });
 
-    // REDRAW TIPS ****
+    // REDRAW TIPS **TO DO**
 
 };
