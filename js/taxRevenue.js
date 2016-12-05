@@ -159,14 +159,17 @@ TaxRevenue.prototype.updateVis = function() {
      * Stacked bar chart using d3.stack layout - haven't been able to get it to work yet, but it's the best option if I can fix it.
      */
 
-    vis.groups = vis.svg.selectAll("g")
+    vis.groups = vis.svg.selectAll(".group")
         .data(vis.displayData)
         .enter()
-        .append("g");
+        .append("g")
+        .attr("class", "group");
         //.attr("class", "bar");
 
     vis.bars = vis.groups.selectAll("rect")
-        .data(function(d) {return d;})
+        .data(function(d) {return d;});
+
+    vis.bars
         .enter()
         .append("rect");
 
@@ -181,10 +184,10 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("width", function(d) { return vis.x(d.y); })
         .attr("fill", function(d) {
             if (d.x == "Hotel Tax Revenue") {
-                return "#F16664";
+                return colors.red;
             }
             else {
-                return "#FFF6E6";
+                return colors.green.light;
             }
         })
     ;
