@@ -1,10 +1,10 @@
 /*
- *  customSankey - Object constructor function
+ *  Sankey - Object constructor function
  *  @param _parentElement   -- HTML element in which to draw the visualization
  *  @param _dataset         -- Dataset to analyze for illegal listings
  */
 
-customSankey = function(_parentElement, _dataset) {
+Sankey = function(_parentElement, _dataset) {
 
     this.parentElement = _parentElement;
     this.dataset = _dataset;
@@ -17,7 +17,7 @@ customSankey = function(_parentElement, _dataset) {
  *  Initialize svg layout
  */
 
-customSankey.prototype.initVis = function() {
+Sankey.prototype.initVis = function() {
     var vis = this;
 
     // number formatter
@@ -62,7 +62,7 @@ customSankey.prototype.initVis = function() {
  *  Analyze listing data for legality in stages
  */
 
-customSankey.prototype.analyzeData = function () {
+Sankey.prototype.analyzeData = function () {
     var vis = this;
 
     /*******
@@ -70,10 +70,10 @@ customSankey.prototype.analyzeData = function () {
      * using tests for legality
      */
 
-        // first test: is it an apartment?
+    // first test: is it an apartment?
     vis.apartments = vis.dataset.filter(function(d) {
-            return d.property_type == "Apartment";
-        });
+        return d.property_type == "Apartment";
+    });
 
     // second test: is it a short term stay?
     vis.shortTerm = vis.apartments.filter(function(d) {
@@ -128,7 +128,7 @@ customSankey.prototype.analyzeData = function () {
  *  Create initial nodes and links
  */
 
-customSankey.prototype.structureData = function () {
+Sankey.prototype.structureData = function () {
     var vis = this;
 
     /*******
@@ -170,7 +170,7 @@ customSankey.prototype.structureData = function () {
  *  Tweak nodes and links to be properly laid out
  */
 
-customSankey.prototype.formatData = function() {
+Sankey.prototype.formatData = function() {
     var vis = this;
 
     // now we can set the domains for the scales
@@ -251,7 +251,7 @@ customSankey.prototype.formatData = function() {
  *  The drawing function
  */
 
-customSankey.prototype.updateVis = function() {
+Sankey.prototype.updateVis = function() {
     var vis = this;
 
     vis.node = vis.main.selectAll(".node")
@@ -265,8 +265,8 @@ customSankey.prototype.updateVis = function() {
         .attr("class", function(d) { return "node " + d.id; })
         .attr("width", vis.barWidth)
         .attr("height", function(d) { return d.height; })
-        .attr("fill", "#F16664")
-        .attr("stroke", d3.rgb("#F16664").darker(2))
+        .attr("fill", colors.red)
+        .attr("stroke", d3.rgb(colors.red).darker(2))
         .attr("opacity", 0);
 
     // add in the title for the nodes
@@ -349,7 +349,7 @@ customSankey.prototype.updateVis = function() {
  *  adapted from https://github.com/nbremer/Chord-Diagram-Storytelling/
  */
 
-customSankey.prototype.initAnim = function() {
+Sankey.prototype.initAnim = function() {
     var vis = this;
 
     // wrapper for center text
@@ -499,329 +499,332 @@ customSankey.prototype.initAnim = function() {
  *  BELOW ARE ALL THE DRAWING FUNCTIONS
  */
 
-customSankey.prototype.Draw1 = function() {
+Sankey.prototype.Draw1 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.nextText
-        .transition().duration(1400).text("Next");
+        .transition().duration(800).text("Next");
 
     vis.node.selectAll(".all")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.main.selectAll(".link-all-apts")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.main.selectAll(".link-all-legal")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.node.selectAll(".apts")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.node.selectAll(".legal")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Renting a house or condo is always legal.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("However, the " + vis.formatNum(vis.apartments.length) + " apartments listed might be illegal.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 }
 
-customSankey.prototype.Draw2 = function() {
+Sankey.prototype.Draw2 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.node.selectAll(".short")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.main.selectAll(".link-apts-short")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.main.selectAll(".link-apts-legal")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("It's usually illegal to rent an apartment for fewer than 30 days.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Only " + vis.formatNum(vis.apartments.length - vis.shortTerm.length) + " listed apartments were above this limit.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 }
 
-customSankey.prototype.Draw3 = function() {
+Sankey.prototype.Draw3 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("A short-term apartment rental is still legal if the host is on the premises.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("We had three methods of estimating when they're not.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.Draw4 = function() {
+Sankey.prototype.Draw4 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.node.selectAll(".full-apt")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.legend.selectAll(".full-apt")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.main.selectAll(".link-short-full-apt")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Renting a full home/apartment means the host probably isn't there.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("This accounts for " + vis.formatNum(vis.fullApt.length) + " listings.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.Draw5 = function() {
+Sankey.prototype.Draw5 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.node.selectAll(".host-mult")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.legend.selectAll(".host-mult")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.main.selectAll(".link-short-host-mult")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Hosts with multiple listings definitely aren't living in all of them.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("That's another " + vis.formatNum(vis.hostMult.length) + " listings.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.Draw6 = function() {
+Sankey.prototype.Draw6 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.node.selectAll(".host-away")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.legend.selectAll(".host-away")
-        .transition().delay(1400).duration(1400).attr("opacity", 1);
+        .transition().delay(800).duration(800).attr("opacity", 1);
 
     vis.main.selectAll(".link-short-host-away")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("If the host isn't located in NYC, they aren't living at the listed property.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text(vis.formatNum(vis.hostAway.length) + " listings met this criterion.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.Draw7 = function() {
+Sankey.prototype.Draw7 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.main.selectAll(".link-short-legal")
-        .transition().delay(1400).duration(1400).attr("stroke-opacity", 0.1);
+        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text(vis.formatNum(vis.shortTerm.length - vis.illegals.length) + " short-term apartments didn't meet any of these three tests.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Those listings are most likely legal.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.Draw8 = function() {
+Sankey.prototype.Draw8 = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400).attr("opacity", 0);
+        .transition().duration(800).attr("opacity", 0);
 
     vis.nextText
-        .transition().duration(1400).text("End");
+        .transition().duration(800).text("End");
 
     vis.main.selectAll(".node")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.main.selectAll(".node-label")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.legendLabels
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.main.selectAll(".link")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("stroke-opacity", 0.1);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("Combining the results of those three tests gives us " + vis.formatNum(vis.illegals.length) + " illegal listings.")
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text("They represent " + (vis.illegals.length/vis.dataset.length * 100).toFixed(1) + "% of the original " + vis.formatNum(vis.dataset.length) + " listings.")
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(2100).duration(1400).attr("opacity", 1);
+        .transition().delay(1200).duration(800).attr("opacity", 1);
 
 }
 
-customSankey.prototype.DrawLast = function() {
+Sankey.prototype.DrawLast = function() {
     var vis = this;
 
     vis.textCenter
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 0);
 
     vis.main.selectAll(".node")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.main.selectAll(".node-label")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.legendLabels
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 1);
 
     vis.main.selectAll(".link")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("stroke-opacity", 0.1);
 
     vis.nextBtn
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("class", "button-off")
         .attr("opacity", 0);
 
     vis.skipBtn
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("class", "button-off")
         .attr("opacity", 0);
 
 }
 
-customSankey.prototype.DrawReset = function() {
+Sankey.prototype.DrawReset = function() {
     var vis = this;
 
     vis.counter = 1;
 
+    vis.nextText
+        .transition().duration(800).text("Start");
+
     vis.textCenter
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 0);
 
     vis.main.selectAll(".node")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 0);
 
     vis.main.selectAll(".node-label")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 0);
 
     vis.legendLabels
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("opacity", 0);
 
     vis.main.selectAll(".link")
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("stroke-opacity", 0);
 
     vis.textTop
-        .transition().delay(1400)
+        .transition().delay(800)
         .text(vis.startTopText)
         .call(wrap, vis.width*0.4);
 
     vis.textBottom
-        .transition().delay(1400)
+        .transition().delay(800)
         .text(vis.startBottomText)
         .call(wrap, vis.width*0.4);
 
     vis.textCenter
-        .transition().delay(1400).duration(1400)
+        .transition().delay(800).duration(800)
         .attr("opacity", 1);
 
     vis.nextBtn
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("class", "button")
         .attr("opacity", 1);
 
     vis.skipBtn
-        .transition().duration(1400)
+        .transition().duration(800)
         .attr("class", "button")
         .attr("opacity", 1);
 
@@ -911,4 +914,3 @@ function wrap(text, width) {
         };
     };
 };
-
