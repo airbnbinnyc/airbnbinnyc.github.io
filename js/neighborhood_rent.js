@@ -187,7 +187,6 @@ NeighborhoodLine.prototype.wrangleData = function(){
     vis.selected_dtype = $('input[name="options"]:checked', '#neighborhood-line-data-type').val()
 
 
-    console.log(vis.selected_boroughs[vis.neighborhood_dict["West Village"].borough])
 
     if (vis.all_boroughs_selected) {vis.displayData = vis.neighborhoods[vis.selected_dtype]}
     else {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough)}
