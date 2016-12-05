@@ -4,7 +4,9 @@ var neighborhood_dict = {};
 // Variable for the visualization instance
 var taxRevenue,
     airbnbNodeMap,
-    neighborhoodrent;
+    neighborhoodrent,
+    mapLineGraph,
+    mapAreaChart;
 
 // Start application by loading the data
 loadData();
@@ -58,6 +60,8 @@ function loadData() {
             neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
+            mapLineGraph = new MapLineGraph("linechart");
+            mapAreaChart = new MapAreaChart("areachart");
 
             createVis();
         });
