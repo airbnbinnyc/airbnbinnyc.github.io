@@ -158,19 +158,9 @@
 
             <div id="vis2">
                 <div class="row">
-                    <div class="col-md-7"></div>
+                    <div class="col-md-9"></div>
                     <div class="col-md-3">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="budgetUnit">City or State</label>
-                                <select class="form-control" id="budgetUnit" onChange=taxRevenue.changeData()>
-                                    <option value="city">New York City</option>
-                                    <option value="state">New York State</option>
-                                </select>
-                            </div>
-                        </form>
                         <form id="budgetUnit2" onChange=taxRevenue.changeData()>
-                            <label>LABEL FOR THIS TOGGLE BUTTON</label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-primary active">
                                     <input type="radio" name="options" value="city" autocomplete="off" checked> New York City
@@ -181,18 +171,6 @@
                             </div>
                         </form>
 
-                    </div>
-                    <div class="col-md-2">
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label for="budgetYear">Fiscal Year</label>
-                                <select class="form-control" id="budgetYear" onChange="taxRevenue.changeData()">
-                                    <option value="2014">2014</option>
-                                    <option value="2015">2015</option>
-                                    <option value="2016">2016</option>
-                                </select>
-                            </div>
-                        </form>
                     </div>
                 </div>
                 <div id="tax-revenue"></div>
