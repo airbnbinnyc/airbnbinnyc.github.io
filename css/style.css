@@ -1,0 +1,281 @@
+/** BODY **/
+
+body {
+    font-family: 'Roboto', sans-serif;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#section0 {
+    background-image: url("header-image-6.png");
+    background-size:cover;
+}
+
+
+h1 {
+    font-size: 60px;
+    font-weight: 100;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 40px;
+    font-weight: 200;
+    text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+h3 {
+    font-size: 30px;
+    font-weight: 200;
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.section {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+/*#timeline {*/
+    /*margin-top: 50px;*/
+    /*margin-bottom: 20px;*/
+/*}*/
+
+.center {
+    margin: auto;
+}
+
+/** CAROUSEL **/
+
+.carousel-inner.onebyone-carosel { margin: auto; width: 90%; }
+.onebyone-carosel .active.left { left: -33.33%; }
+.onebyone-carosel .active.right { left: 33.33%; }
+.onebyone-carosel .next { left: 33.33%; }
+.onebyone-carosel .prev { left: -33.33%; }
+.carousel-control.left,.carousel-control.right {background-image:none;}
+
+/** NAV **/
+
+/*nav.horizontal-page-navigation ul {*/
+    /*list-style-type: none;*/
+    /*margin: 0;*/
+    /*padding: 8px 16px;*/
+    /*background-color: #f1f1f1;*/
+/*}*/
+
+
+/*nav.horizontal-page-navigation {*/
+    /*width: 100%;*/
+    /*background-color: #ebebeb;*/
+    /*position: fixed;*/
+    /*top:0;*/
+    /*left:0;*/
+    /*text-align: center;*/
+/*}*/
+
+/*nav.horizontal-page-navigation li {*/
+    /*display: inline;*/
+    /*padding: 8px 16px;*/
+/*}*/
+
+/*nav.horizontal-page-navigation a {*/
+    /*color: #000;*/
+    /*padding: 8px 16px;*/
+    /*text-decoration: none;*/
+/*}*/
+
+/*nav.horizontal-page-navigation .current a {*/
+    /*background-color: #d2d2d2;*/
+    /*color: #fff;*/
+/*}*/
+
+
+/** AIRBNB MAP **/
+
+/* STYLES FOR SANKEY */
+.node rect {
+    fill-opacity: .9;
+    shape-rendering: crispEdges;
+}
+
+.link {
+    fill: none;
+    stroke: #290003;
+}
+
+#sankey {
+    font-size: 12px;
+}
+
+.explanation {
+    font-size: 20px;
+    font-weight: 300;
+    text-align: center;
+}
+
+#sankey .button {
+    font-size: 18px;
+    font-weight: 300;
+    cursor: pointer;
+}
+
+#sankey .button-off {
+    font-size: 18px;
+    font-weight: 300;
+    cursor: default;
+}
+
+/** LINE GRAPH **/
+
+.line {
+    fill: none;
+    stroke-width: 3px;
+}
+
+
+.n-line {
+    fill: none;
+    stroke-width: 3px;
+    opacity: 1;
+}
+
+.n-line-hovered {
+    fill: none;
+    stroke-width: 6px;
+    opacity: 1;
+}
+
+.n-line-unhovered {
+    fill: none;
+    stroke-width: 3px;
+    opacity: .3;
+}
+
+.lines-tooltip{
+    position: absolute;
+    text-align: center;
+    padding: 2px;
+    color: white;
+    border: 1px;
+    border-radius: 8px;
+    border-color: black;
+    pointer-events: none;
+}
+
+
+/** TIMELINE **/
+
+.timelineBackground {
+    fill: #FFF6E6;
+}
+
+.eventLine {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.eventCircle {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+}
+
+.eventText {
+    font-weight: bold;
+}
+
+.eventAxis path,
+.eventAxis line {
+    fill: none;
+    stroke: black;
+    stroke-width: 2px;
+    shape-rendering: crispEdges;
+}
+
+.eventAxis text {
+    font-weight: bold;
+}
+
+/** AXES **/
+
+.axis path,
+.axis line,
+.domain {
+    fill: none;
+    stroke: #41232f;
+    shape-rendering: crispEdges;
+}
+
+.axis text{
+    font-size: 11px;
+    fill: #41232f
+}
+
+.text{
+    font-size: 11px;
+}
+
+.vis-title {
+    font-size: 20px;
+    fill: #41232f;
+    font-weight: 200;
+}
+
+/*********************/
+/*  TOOLTIP OVERLAY  */
+/*********************/
+
+.tooltip-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+.timelineTip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    width: 300px;
+    border-radius: 2px;
+}
