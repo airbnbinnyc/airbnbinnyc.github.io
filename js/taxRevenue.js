@@ -373,5 +373,7 @@ TaxRevenue.prototype.changeData = function() {
 
     vis.unitValue = d3.select("#budgetUnit").property("value");
 
+    //vis.selected_dtype = $('input[name="options"]:checked', '#budgetUnit2').val()
+
     vis.wrangleData();
 }

@@ -90,33 +90,20 @@ function createVis() {
 
     neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
 
-
-    $(function () {
-        $("#neighborhood-line-data-type") // select the radio by its id
-            .change(function(){ // bind a function to the change event
-                neighborhoodrent.wrangleData();
-            });
-    });
-    $(function () {
-        $("#neighborhood-line-color-type") // select the radio by its id
-            .change(function(){ // bind a function to the change event
-                neighborhoodrent.updateVis();
-            });
-    });
-    //select all checkboxes
+    // Checkbox stuff
     $("#select_all").change(function(){  //"select all" change
-        $(".checkbox-inline").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
+        $("#borough-checkboxes .checkbox-inline").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
         neighborhoodrent.wrangleData();
     });
 
     //".checkbox" change
-    $('.checkbox-inline').change(function(){
+    $('#borough-checkboxes .checkbox-inline').change(function(){
         //uncheck "select all", if one of the listed checkbox item is unchecked
         if(false == $(this).prop("checked")){ //if this item is unchecked
             $("#select_all").prop('checked', false); //change "select all" checked status to false
         }
         //check "select all" if all checkbox items are checked
-        if ($('.checkbox-inline:checked').length == $('.checkbox-inline').length ){
+        if ($('#borough-checkboxes .checkbox-inline:checked').length == $('#borough-checkboxes .checkbox-inline').length ){
             $("#select_all").prop('checked', true);
         }
         neighborhoodrent.wrangleData();

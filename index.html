@@ -163,12 +163,24 @@
                         <form class="form-inline">
                             <div class="form-group">
                                 <label for="budgetUnit">City or State</label>
-                                <select class="form-control" id="budgetUnit" onChange="taxRevenue.changeData()">
+                                <select class="form-control" id="budgetUnit" onChange=taxRevenue.changeData()>
                                     <option value="city">New York City</option>
                                     <option value="state">New York State</option>
                                 </select>
                             </div>
                         </form>
+                        <form id="budgetUnit2" onChange=taxRevenue.changeData()>
+                            <label>LABEL FOR THIS TOGGLE BUTTON</label>
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-primary active">
+                                    <input type="radio" name="options" value="city" autocomplete="off" checked> New York City
+                                </label>
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" value="state" autocomplete="off"> New York State
+                                </label>
+                            </div>
+                        </form>
+
                     </div>
                     <div class="col-md-2">
                         <form class="form-inline">
@@ -209,7 +221,7 @@
                 <div id="neighborhood-line-chart-area" class="col-sm-10"></div>
                 <div class="col-sm-2">
                     <div class="row">
-                        <form id="neighborhood-line-data-type">
+                        <form id="neighborhood-line-data-type" onchange=neighborhoodrent.wrangleData()>
                             <label>Data to display (y-axis):</label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-primary active">
@@ -220,7 +232,7 @@
                                 </label>
                             </div>
                         </form>
-                        <form id="neighborhood-line-color-type">
+                        <form id="neighborhood-line-color-type" onchange=neighborhoodrent.updateVis()>
                             <label>Data to display (y-axis):</label>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-primary active">
