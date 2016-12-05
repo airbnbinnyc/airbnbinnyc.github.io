@@ -87,21 +87,15 @@ TaxRevenue.prototype.wrangleData = function() {
                         {name: "Projected Airbnb Revenue", color: "#79CCCD"},
                         {name: "Actual Expenditures", color: "#FFF6E6"}];
 
-    console.log(vis.filteredData);
-
     vis.dataIntermediate1 = vis.filteredData.map(function (d) {
         return {dept: d["dept"], a: d["actual"], b: d["projection"]}
     });
 
-    console.log(vis.dataIntermediate1);
-
-    vis.dataIntermediate2 = ["a", "b"].map(function(key, i) {
-       return vis.dataIntermediate1.map(function(d,j) {
+    vis.dataIntermediate2 = ["a", "b"].map(function(key) {
+       return vis.dataIntermediate1.map(function(d) {
            return {x: d["dept"], y: d[key]};
        })
     });
-
-    console.log(vis.dataIntermediate2);
 
     vis.stackedData = d3.layout.stack()(vis.dataIntermediate2);
 
@@ -165,12 +159,19 @@ TaxRevenue.prototype.updateVis = function() {
      * Stacked bar chart using d3.stack layout - haven't been able to get it to work yet, but it's the best option if I can fix it.
      */
 
-    vis.bars = vis.svg.selectAll(".bar")
-        .data(function() { return vis.displayData} );
+    vis.groups = vis.svg.selectAll(".group")
+        .data(vis.displayData)
+        .enter()
+        .append("g")
+        .attr("class", "group");
+        //.attr("class", "bar");
+
+    vis.bars = vis.groups.selectAll("rect")
+        .data(function(d) {return d;});
 
     vis.bars
-        .enter().append("rect")
-        .attr("class", "bar");
+        .enter()
+        .append("rect");
 
     vis.bars
         .transition()
@@ -182,11 +183,11 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("height", vis.barHeight - 3)
         .attr("width", function(d) { return vis.x(d.y); })
         .attr("fill", function(d) {
-            if (d.dept == "Hotel Tax Revenue") {
-                return "#F16664";
+            if (d.x == "Hotel Tax Revenue") {
+                return colors.red;
             }
             else {
-                return "#FFF6E6";
+                return colors.green.light;
             }
         })
     ;
@@ -204,7 +205,7 @@ TaxRevenue.prototype.updateVis = function() {
         })
     ;
 
-    vis.bars.exit().remove();
+   vis.bars.exit().remove();
 
 
     /*
@@ -322,7 +323,7 @@ TaxRevenue.prototype.updateVis = function() {
         })
         .style("text-anchor", "end")
         .text(function (d) {
-            return d.dept;
+            return d.x;
         });
 
     vis.labels.exit().remove();
@@ -337,7 +338,8 @@ TaxRevenue.prototype.updateVis = function() {
     vis.legend = vis.svg.selectAll('g.legendEntry')
         .data(vis.legendData)
         .enter().append('g')
-        .attr('class', 'legendEntry');
+        .attr('class', 'legendEntry')
+    ;
 
     vis.legend
         .append('rect')
@@ -349,7 +351,8 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("height", 10)
         .style("stroke", "none")
         .style("stroke-width", 1)
-        .style("fill", function (d) { return d.color; });
+        .style("fill", function (d) { return d.color; })
+    ;
 
     vis.legend
         .append('text')
@@ -357,8 +360,9 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("y", function (d, i) {
             return i * 20 + 60;
         })
-        .text(function (d) { return d.name;});
-}
+        .text(function (d) { return d.name;})
+    ;
+};
 
 function kFormatter(num) {
     return '$' + (num/1000000) + 'M';
@@ -373,5 +377,7 @@ TaxRevenue.prototype.changeData = function() {
 
     vis.unitValue = d3.select("#budgetUnit").property("value");
 
+    //vis.selected_dtype = $('input[name="options"]:checked', '#budgetUnit2').val()
+
     vis.wrangleData();
-}
+};
