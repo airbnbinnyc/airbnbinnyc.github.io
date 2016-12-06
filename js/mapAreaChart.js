@@ -43,6 +43,7 @@ MapAreaChart.prototype.initVis = function() {
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
 
+    console.log(vis.data);
 };
 
 MapAreaChart.prototype.updateVis = function() {

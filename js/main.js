@@ -36,7 +36,8 @@ function loadData() {
         .defer(d3.json, "data/AirBNB-neighbourhoods.geojson")
         .defer(d3.csv, "data/timeline.csv")
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
-        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo) {
+        .defer(d3.json, "data/category_counts.json")
+        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, categoryCounts) {
 
             if (error) throw error;
 
@@ -99,7 +100,7 @@ function loadData() {
             neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
-            mapAreaChart = new MapAreaChart("areachart");
+            mapAreaChart = new MapAreaChart("areachart", categoryCounts);
             mapLineGraph = new MapLineGraph("linechart");
 
             createVis();
