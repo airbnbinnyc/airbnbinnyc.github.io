@@ -99,8 +99,6 @@ TaxRevenue.prototype.wrangleData = function() {
 
     vis.stackedData = d3.layout.stack()(vis.dataIntermediate2);
 
-    console.log(vis.stackedData);
-
     vis.displayData = vis.stackedData;
 
     // Update the visualization
@@ -145,7 +143,7 @@ TaxRevenue.prototype.updateVis = function() {
     vis.svg.append("text")
         .transition()
         .duration(800)
-        .attr("x", -10)
+        .attr("x", 120)
         .attr("y", 20 - vis.margin.top)
         .style("text-anchor", "end")
         .text("Budget Line Items - Fiscal Year 2016")
