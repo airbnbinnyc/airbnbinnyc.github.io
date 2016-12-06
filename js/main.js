@@ -50,8 +50,8 @@ function loadData() {
                 neighborhoodInfo[i].number_of_posts = +neighborhoodInfo[i].number_of_posts;
                 neighborhoodInfo[i].number_of_illegal_posts = +neighborhoodInfo[i].number_of_illegal_posts;
                 neighborhoodInfo[i].percent_illegal = +neighborhoodInfo[i].percent_illegal;
-                neighborhoodInfo[i].proportion_of_posts = +neighborhoodInfo[i].proportion_of_posts
-                neighborhoodInfo[i].proportion_of_illegal_posts = +neighborhoodInfo[i].proportion_of_illegal_posts
+                neighborhoodInfo[i].proportion_of_posts = +neighborhoodInfo[i].proportion_of_posts * 10000;
+                neighborhoodInfo[i].proportion_of_illegal_posts = +neighborhoodInfo[i].proportion_of_illegal_posts * 10000;
                 neighborhood_dict[neighborhoodInfo[i].neighborhood] = neighborhoodInfo[i]
             }
 
@@ -151,3 +151,4 @@ function zoom() {
 function changeNeighborhood(val) {
     console.log(val);
 }*/
+
