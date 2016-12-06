@@ -99,8 +99,8 @@ function loadData() {
             neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
-            mapLineGraph = new MapLineGraph("linechart");
             mapAreaChart = new MapAreaChart("areachart");
+            mapLineGraph = new MapLineGraph("linechart");
 
             createVis();
         });
