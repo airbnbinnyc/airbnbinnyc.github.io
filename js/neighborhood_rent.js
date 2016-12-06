@@ -45,7 +45,7 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
     vis.color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
-
+    vis.color_scale_ord = d3.scale.quantile().range(colorbrewer.PuRd[6].slice(1));
 
     vis.line = d3.svg.line()
         .x(function(d) { return x(d.Date); })
@@ -103,9 +103,16 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("width", vis.width + vis.legend_margin.left + vis.legend_margin.right)
         .attr("height", vis.height + vis.legend_margin.top + vis.legend_margin.bottom)
         .append("g")
+        .attr("class", "legendQuant") // only needed for ordinal legend
         .attr("transform", "translate(" + vis.legend_margin.left + "," + vis.legend_margin.top + ")");
 
-    vis.legend = vis.key.append("defs")
+    // ordinal color legend
+    vis.legend = d3.legend.color()
+        .labelFormat(d3.format(".2f"))
+        .ascending(true);
+
+    // this makes the original continuous legend
+/*    vis.legend = vis.key.append("defs")
         .append("svg:linearGradient")
         .attr("id", "gradient")
         .attr("x1", "100%")
@@ -122,7 +129,7 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.lowcolor = vis.legend.append("stop")
         .attr("offset", "100%")
         .attr("stop-color", "black")
-        .attr("stop-opacity", .8);
+        .attr("stop-opacity", .8);*/
 
 
 
@@ -174,7 +181,7 @@ NeighborhoodLine.prototype.wrangleData = function(){
         vis.selected_boroughs[($(this).attr("value"))] = $(this).is(":checked")
     });
 
-    console.log(vis.selected_boroughs)
+    console.log(vis.selected_boroughs);
 
     var in_borough = function(datum) {
             return vis.selected_boroughs[vis.neighborhood_dict[datum.id].borough];
@@ -216,9 +223,22 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     var selected_color_type = $('input[name="options"]:checked', '#neighborhood-line-color-type').val();
 
+    console.log(vis.displayData);
+    console.log(vis.neighborhood_dict);
+    // need to get a list of all the values so that we can pass it to the quantile scale
+    var vals = [];
+    vis.displayData.forEach(function(d) {
+        vals.push(vis.neighborhood_dict[d.id][selected_color_type]);
+    });
+
+    vals.sort(function(a, b) {
+        return a - b;
+    });
+
+    // set domain of quantile scale
+    vis.color_scale_ord.domain(vals);
 
     vis.color_scale.domain(d3.extent(vis.displayData, function(d) {return vis.neighborhood_dict[d.id][selected_color_type]}));
-
 
     vis.svg.append("g")
         .attr("class", "axis axis--x")
@@ -252,7 +272,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     vis.neighborhood
         .attr("d", function(d) { return vis.dataline(d.values); })
-        .style("stroke", function(d) { return vis.color_scale(vis.neighborhood_dict[d.id][selected_color_type]); })
+        .style("stroke", function(d) { return vis.color_scale_ord(vis.neighborhood_dict[d.id][selected_color_type]); })
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
 
@@ -263,8 +283,9 @@ NeighborhoodLine.prototype.updateVis = function(){
         vis.tip.transition()
             .duration(200)
             .style("opacity", .9)
-            .style("background-color", vis.color_scale(vis.neighborhood_dict[d.id][selected_color_type]));
-        vis.tip.html(d.id + "<br/>" + vis.neighborhood_dict[d.id][selected_color_type])
+            .style("background-color", vis.color_scale_ord(vis.neighborhood_dict[d.id][selected_color_type]));
+
+        vis.tip.html(d.id + ", " + vis.neighborhood_dict[d.id].borough + "<br/>" + vis.neighborhood_dict[d.id][selected_color_type])
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
 
@@ -278,12 +299,16 @@ NeighborhoodLine.prototype.updateVis = function(){
             .style("opacity", 0);
     }
 
+    // ordinal color legend
+    vis.legend
+        .title("a title")
+        .scale(vis.color_scale_ord);
 
+    vis.key
+        .call(vis.legend);
 
-
-
-
-    // UPDATE LEGEND!
+// for original continuous legend
+/*    // UPDATE LEGEND!
     vis.highcolor.attr("stop-color", vis.color_scale.range()[1]);
 
     vis.lowcolor.attr("stop-color", vis.color_scale.range()[0]);
@@ -316,7 +341,7 @@ NeighborhoodLine.prototype.updateVis = function(){
         .attr("class", "y axis")
         .attr("transform", "translate(" + (vis.legend_margin.left + vis.legend_width) + "," + vis.legend_margin.top + ")")
         .transition()
-        .call(vis.legendyAxis);
+        .call(vis.legendyAxis);*/
 
 
     // add a legend title based on selected values
