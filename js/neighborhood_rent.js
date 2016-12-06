@@ -45,7 +45,12 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
     vis.color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
-    vis.color_scale_ord = d3.scale.quantile().range(colorbrewer.PuRd[6].slice(1));
+    vis.color_scale_ord = d3.scale.quantile()
+        // shades of Airbnb red
+        .range(["#FFCFCC", "#FF9A99", "#F16664", "#EE3C3B", "#8C090F"]);
+
+        // originally i used a set of colorbrewer colors
+        //.range(colorbrewer.PuRd[6].slice(1));
 
     vis.line = d3.svg.line()
         .x(function(d) { return x(d.Date); })
@@ -92,7 +97,7 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     // Initialize legend
-    vis.legend_margin = {top: 20, right: 20, bottom: 20, left: 20};
+    vis.legend_margin = {top: 80, right: 0, bottom: 0, left: 0};
 
     vis.legend_width = $("#neighborhood-line-legend").width()/10 ,
         vis.legend_height = 300 - vis.legend_margin.top - vis.legend_margin.bottom;
@@ -108,8 +113,24 @@ NeighborhoodLine.prototype.initVis = function(){
 
     // ordinal color legend
     vis.legend = d3.legend.color()
-        .labelFormat(d3.format(".2f"))
         .ascending(true);
+
+    // add legend title manually in 2 lines
+    vis.legendlabel1 =  vis.key
+        .append("text")
+        .attr("class", "legend-title")
+        .attr("x", 0)
+        .attr("y", -vis.legend_margin.top/4)
+        .attr("dy", "-.71em")
+        .style("text-anchor", "start");
+
+    vis.legendlabel2 =  vis.key
+        .append("text")
+        .attr("class", "legend-title")
+        .attr("x", 0)
+        .attr("y", -vis.legend_margin.top/4)
+        .attr("dy", ".71em")
+        .style("text-anchor", "start");
 
     // this makes the original continuous legend
 /*    vis.legend = vis.key.append("defs")
@@ -299,13 +320,42 @@ NeighborhoodLine.prototype.updateVis = function(){
             .style("opacity", 0);
     }
 
+    console.log(selected_color_type);
+
     // ordinal color legend
     vis.legend
-        .title("a title")
+        .labelFormat(function(x) {
+            if (selected_color_type == "percent_illegal") {
+                return d3.format(".0%")(x);
+            } else {
+                return d3.format(".0f")(x);
+            }
+        })
         .scale(vis.color_scale_ord);
 
     vis.key
         .call(vis.legend);
+
+    // set text of legend title based on selected values
+    vis.legendlabel1
+        .html(function() {
+                if (selected_color_type == "percent_illegal") {
+                    return "Percent of Listings";
+                } else if (selected_color_type == "proportion_of_posts") {
+                    return "Number of Listings";
+                } else {
+                    return "Number of Illegal Listings";
+                }
+            });
+
+    vis.legendlabel2
+        .html(function() {
+                if (selected_color_type == "percent_illegal") {
+                    return "That Were Illegal";
+                } else {
+                    return "per 10,000 Housing Units";
+                }
+            });
 
 // for original continuous legend
 /*    // UPDATE LEGEND!
@@ -341,7 +391,7 @@ NeighborhoodLine.prototype.updateVis = function(){
         .attr("class", "y axis")
         .attr("transform", "translate(" + (vis.legend_margin.left + vis.legend_width) + "," + vis.legend_margin.top + ")")
         .transition()
-        .call(vis.legendyAxis);*/
+        .call(vis.legendyAxis);
 
 
     // add a legend title based on selected values
@@ -355,6 +405,8 @@ NeighborhoodLine.prototype.updateVis = function(){
         .style("text-anchor", "start")
         .attr("transform", "rotate(-90)")
         .text("Percent of Airbnb listings that were illegal");
+
+    */
 }
 
 
