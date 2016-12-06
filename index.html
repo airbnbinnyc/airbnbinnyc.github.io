@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/colorbrewer.css">
     <link rel="stylesheet" href="css/nouislider.css">
+    <link rel="stylesheet" href="css/awesomplete.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.fullpage.min.css">
 
@@ -32,9 +33,7 @@
             <!--<li data-menuanchor="s7"><a href="#section7">Conclusion</a></li>-->
         <!--</ul>-->
 
-        <div id="section0" data-anchor="s0" class="section">
-            <!--<img src="img/header-image-6.png" width="100%">-->
-        </div>
+        <div id="section0" data-anchor="s0" class="section"></div>
 
         <div id="section1" data-anchor="s1" class="section">
             <h1>Airbnb in NYC: The Controversy</h1>
@@ -49,7 +48,7 @@
             <p>Use this visualization to explore changes in Airbnb listings in New York over time.</p>
 
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-7">
                     <div class="user-control" onchange="zoom()">
                         <p>Zoom Into Borough: </p>
                         <select id="borough_sel" class="form-control">
@@ -60,6 +59,9 @@
                             <option value="Brooklyn">Brooklyn</option>
                             <option value="Staten Island">Staten Island</option>
                         </select>
+                        <p>Zoom Into Neighborhood: </p>
+                        <input id="neighborhood-select" class="dropdown-input"/>
+                        <!--<button class="dropdown-btn" type="button"><span class="caret"></span></button>-->
                     </div>
                     <div id="vis1">
                         <div id="airbnb-map"></div>
@@ -72,7 +74,7 @@
                         <div class="col-sm-2"> <button id="slider-submit-button" type="button">Update Map</button>  </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                     <div class="user-control" onchange="dataManipulation()">
                         <p>Color Listings by: </p>
                         <select id="type" class="form-control">
@@ -90,49 +92,35 @@
         <div id="section3" data-anchor="s3" class="section">
             <h2>Airbnb is facing controversy across the country over hotel taxes.</h2>
             <p>Airbnb could owe up to $200 million dollars in hotel taxes across the country. Airbnb hosts are supposed to be paying these taxes on their own, but many don’t. As of 2016, in a move to increase its legitimacy and strengthen its position for other legal battles, Airbnb has agreed to collect taxes on behalf of hosts for over 200 cities around the world. The most visible tax battle to date has been between Airbnb and San Francisco, where Airbnb had been operating without paying the 14% tax the city levies on hotels. In February 2015, Airbnb agreed to pay millions of dollars in back taxes. In October, as San Francisco was preparing to vote on a proposition to restrict Airbnb, the company ran a series of advertisements that fell flat with SF residents, who viewed them as the company bragging about doing its civic duty.</p>
-
+            <br>
             <div class="row">
-                <div class="span12">
+                <div class="col-md-12">
                     <div class="well">
                         <div id="myCarousel" class="carousel fdi-Carousel slide">
                             <!-- Carousel items -->
                             <div class="carousel fdi-Carousel slide" id="eventCarousel" data-interval="0">
                                 <div class="carousel-inner onebyone-carosel">
                                     <div class="item active">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/art-schools.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">1</div>
+                                        <div class="row">
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/art-schools.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/bike-lane.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/escalator.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
                                         </div>
+                                        <!--/row-->
                                     </div>
                                     <div class="item">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/bike-lane.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">2</div>
+                                        <div class="row">
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/parking-meters.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/charging-station.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
+                                            <div class="col-md-4"><a href="#" class="thumbnail"><img src="img/library.jpg" alt="Image" class="img-responsive"></a>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/library.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">3</div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/escalator.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">4</div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/parking-meters.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">5</div>
-                                        </div>
-                                    </div>
-                                    <div class="item">
-                                        <div class="col-md-4">
-                                            <a href="#"><img src="img/charging-station.jpg" class="img-responsive center-block"></a>
-                                            <div class="text-center">6</div>
-                                        </div>
+                                        <!--/row-->
                                     </div>
                                 </div>
                                 <a class="left carousel-control" href="#eventCarousel" role="button" data-slide="prev">
@@ -189,7 +177,7 @@
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
             <div id="vis4">
                 <div id="borough-checkboxes">
-                    <input type="checkbox" id="select_all" value="all" checked="checked"/> Selecct All
+                    <input type="checkbox" id="select_all" value="all" checked="checked"/> Select All
                     <input class="checkbox-inline" type="checkbox" value="Bronx" checked="checked"/>Bronx
                     <input class="checkbox-inline" type="checkbox" value="Brooklyn" checked="checked"/>Brooklyn
                     <input class="checkbox-inline" type="checkbox" value="Manhattan" checked="checked"/>Manhattan
@@ -264,6 +252,7 @@
     <script src="js/d3.tip.js"></script>
     <script src="js/colorbrewer.min.js"></script>
     <script src="js/jquery.easings.min.js"></script>
+    <script src="js/awesomplete.min.js"></script>
     <script type="text/javascript" src="js/jquery.fullpage.min.js"></script>
 
     <!--<script type="text/javascript">-->
@@ -280,20 +269,23 @@
             $('#myCarousel').carousel({
                 interval: 10000
             })
-            $('.fdi-Carousel .item').each(function () {
-                var next = $(this).next();
-                if (!next.length) {
-                    next = $(this).siblings(':first');
-            }
-            next.children(':first-child').clone().appendTo($(this));
-
-                if (next.next().length > 0) {
-                    next.next().children(':first-child').clone().appendTo($(this));
-                }
-                else {
-                    $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-                }
+            $('#myCarousel').on('slid.bs.carousel', function() {
+                //alert("slid");
             });
+//            $('.fdi-Carousel .item').each(function () {
+//                var next = $(this).next();
+//                if (!next.length) {
+//                    next = $(this).siblings(':first');
+//            }
+//            next.children(':first-child').clone().appendTo($(this));
+//
+//                if (next.next().length > 0) {
+//                    next.next().children(':first-child').clone().appendTo($(this));
+//                }
+//                else {
+//                    $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
+//                }
+//            });
         });
     </script>
 
@@ -373,6 +365,8 @@
     <script src="js/nouislider.js"></script>
     <script src="js/timeline.js"></script>
     <script src="js/neighborhood_rent.js"></script>
+    <script src="js/mapLineGraph.js"></script>
+    <script src="js/mapAreaChart.js"></script>
 
     <!-- Load data, create visualizations -->
     <script src="js/main.js"></script>
