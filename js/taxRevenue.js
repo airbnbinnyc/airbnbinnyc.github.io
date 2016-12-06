@@ -148,7 +148,7 @@ TaxRevenue.prototype.updateVis = function() {
         .attr("x", -10)
         .attr("y", 20 - vis.margin.top)
         .style("text-anchor", "end")
-        .text("Budget Line Items")
+        .text("Budget Line Items - Fiscal Year 2016")
         .attr("class", "vis-title");
 
     vis.tip.html(function (d) {
