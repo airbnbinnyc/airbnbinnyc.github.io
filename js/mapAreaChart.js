@@ -24,6 +24,7 @@ MapAreaChart.prototype.initVis = function() {
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
     vis.dataCategories = ["total"];
+    vis.val = "None";
 
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
@@ -47,10 +48,14 @@ MapAreaChart.prototype.initVis = function() {
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
     vis.area = d3.svg.area()
-        .interpolate("cardinal")
+        .interpolate("linear")
         .x(function(d) { return vis.x(d.date); })
         .y0(function(d) { return vis.y(d.y0); })
         .y1(function(d) { return vis.y(d.y0 + d.y); });
+
+    // vis.colorScale = d3.scale.quantize()
+    //     .domain(vis.getExtent())
+    //     .range(vis.getColorScheme());
 
     vis.wrangleData();
 };
@@ -60,11 +65,20 @@ MapAreaChart.prototype.wrangleData = function() {
 
     Object.keys(vis.data).forEach(function (key) {
         vis.data[key].date = key;
+        vis.data[key].illegal0 = vis.data[key]["illegal"]["0"];
+        vis.data[key].illegal1 = vis.data[key]["illegal"]["1"];
+        vis.data[key].price0 = vis.data[key]["price"]["0"];
+        vis.data[key].price1 = vis.data[key]["price"]["1"];
+        vis.data[key].price2 = vis.data[key]["price"]["2"];
+        vis.data[key].price3 = vis.data[key]["price"]["3"];
+        vis.data[key].price4 = vis.data[key]["price"]["4"];
+        vis.data[key].price5 = vis.data[key]["price"]["5"];
     });
 
-    vis.dataIntermediate1 = Object.keys(vis.data).map(function (key) {
+    vis.dataIntermediate = Object.keys(vis.data).map(function (key) {
         return vis.data[key];
     });
+
 
 //     vis.wrangleData2();
 // };
@@ -75,30 +89,32 @@ MapAreaChart.prototype.wrangleData = function() {
 
     console.log(vis.dataCategories);
 
-    console.log(vis.dataIntermediate1);
+    console.log(vis.dataIntermediate);
 
-    vis.transposedData = vis.dataCategories.map(function(name) {
+    vis.transposedData = vis.dataCategories.map(function(category) {
         return {
-            name: name,
-            values: vis.dataIntermediate1.map(function(d) {
-                return {date: vis.parseTime.parse(d.date), y: d.total};
+            name: category,
+            values: vis.dataIntermediate.map(function(d) {
+                return {date: vis.parseTime.parse(d.date), y: d[category]};
             })
         };
     });
 
-    console.log(vis.transposedData);
-
     // iterate
-    vis.transposedData[0].values.sort(function (a,b) {
-        return a.date - b.date;
-    });
+    for (var i = 0; i < vis.transposedData.length; i++) {
+        vis.transposedData[i].values.sort(function (a,b) {
+            return a.date - b.date;
+        });
+    }
+
+    console.log(vis.transposedData);
 
     var stack = d3.layout.stack()
         .values(function(d) { return d.values; });
 
     vis.stackedData = stack(vis.transposedData);
 
-    console.log(vis.stackedData);
+    // console.log(vis.stackedData);
 
     vis.displayData = vis.stackedData;
 
@@ -108,6 +124,8 @@ MapAreaChart.prototype.wrangleData = function() {
 
 MapAreaChart.prototype.updateVis = function() {
     var vis = this;
+
+    console.log(vis.val);
 
     vis.x.domain([vis.startDate, vis.endDate]);
     vis.y.domain([0, d3.max(vis.displayData, function(d) {
@@ -147,17 +165,34 @@ MapAreaChart.prototype.updateVis = function() {
 
     categories
         .style("fill", function(d) {
-            return "#007D8C"; // connect to colors in AirbnbNodeMap
+            var color;
+
+            switch(d.name) {
+                case "total": color = '#007D8C'; break;
+                case "illegal0": color = "white"; break;
+                case "illegal1": color = "black"; break;
+                case "price0": color = "#fee5d9"; break;
+                case "price1": color = "#fcbba1"; break;
+                case "price2": color = "#fc9272"; break;
+                case "price3": color = "#fb6a4a"; break;
+                case "price4": color = "#de2d26"; break;
+                case "price5": color = "#a50f15"; break;
+                default: color = '#007D8C';
+            }
+
+            return color;
         })
         .attr("d", function(d) {
             return vis.area(d.values);
         });
 
+    console.log(colorbrewer.Reds[6]);
+
     categories.exit().remove();
 
 };
 
-TaxRevenue.prototype.changeData = function() {
+MapAreaChart.prototype.changeData = function() {
     var vis = this;
 
     // vis.type = d3.select("#type").property("value");
@@ -167,11 +202,7 @@ TaxRevenue.prototype.changeData = function() {
 
     vis.val = box.options[box.selectedIndex].value;
 
-    console.log(vis.val);
-
     vis.dataCategories = switchCategories(vis.val);
-
-    console.log(vis.dataCategories);
 
     vis.wrangleData();
 };
@@ -181,9 +212,9 @@ function switchCategories(val) {
         return ["total"];
     }
     else if (val == "illegal") {
-        return ["illegal.0", "illegal.1"];
+        return ["illegal0", "illegal1"];
     }
     else if (val == "price") {
-        return ["price.0", "price.1", "price.2", "price.3", "price.4", "price.5"];
+        return ["price0", "price1", "price2", "price3", "price4", "price5"];
     }
-}
+};
