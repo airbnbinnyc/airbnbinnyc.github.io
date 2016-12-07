@@ -77,7 +77,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
     // NODE MAP //
-    vis.width = 1000;
+    vis.width = $("#" + vis.parentElement).width();
     vis.height = 500;
 
     vis.svg = d3.select("#airbnb-map").append("svg")

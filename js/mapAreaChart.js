@@ -23,6 +23,8 @@ MapAreaChart.prototype.initVis = function() {
 
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
+    vis.dataCategories = ["total"];
+
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
 
@@ -56,19 +58,24 @@ MapAreaChart.prototype.initVis = function() {
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
 
-    console.log(vis.data);
-
     Object.keys(vis.data).forEach(function (key) {
         vis.data[key].date = key;
     });
 
-    vis.dataIntermediate1 = Object.keys(vis.data).map(function(key) {
+    vis.dataIntermediate1 = Object.keys(vis.data).map(function (key) {
         return vis.data[key];
     });
 
-    vis.dataCategories = ["total"]; // figure out how to pass in the categories of whatever is toggled
+//     vis.wrangleData2();
+// };
+//
+//
+// MapAreaChart.prototype.wrangleData2 = function() {
+//     var vis = this;
 
     console.log(vis.dataCategories);
+
+    console.log(vis.dataIntermediate1);
 
     vis.transposedData = vis.dataCategories.map(function(name) {
         return {
@@ -81,6 +88,7 @@ MapAreaChart.prototype.wrangleData = function() {
 
     console.log(vis.transposedData);
 
+    // iterate
     vis.transposedData[0].values.sort(function (a,b) {
         return a.date - b.date;
     });
@@ -152,11 +160,30 @@ MapAreaChart.prototype.updateVis = function() {
 TaxRevenue.prototype.changeData = function() {
     var vis = this;
 
-    vis.type = d3.select("#type").property("value");
-
-    if (vis.type = "none")
-
+    // vis.type = d3.select("#type").property("value");
     // vis.type = $('input[name="options"]:checked', '#type').val();
+
+    var box = document.getElementById("type");
+
+    vis.val = box.options[box.selectedIndex].value;
+
+    console.log(vis.val);
+
+    vis.dataCategories = switchCategories(vis.val);
+
+    console.log(vis.dataCategories);
 
     vis.wrangleData();
 };
+
+function switchCategories(val) {
+    if (val == "None") {
+        return ["total"];
+    }
+    else if (val == "illegal") {
+        return ["illegal.0", "illegal.1"];
+    }
+    else if (val == "price") {
+        return ["price.0", "price.1", "price.2", "price.3", "price.4", "price.5"];
+    }
+}

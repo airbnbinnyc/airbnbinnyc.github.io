@@ -140,6 +140,7 @@ function createVis() {
 // update visualization to select filter for node coloring
 function dataManipulation() {
     airbnbNodeMap.dataManipulation();
+    taxRevenue.changeData();
 }
 
 // update airbnb node map to zoom into borough
