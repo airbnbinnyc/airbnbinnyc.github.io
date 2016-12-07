@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS171 - Final Project</title>
+    <title>Airbnb in NYC </title>
 
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
@@ -208,23 +208,22 @@
             </div>
         </div>
 
-
         <div id="section7" data-anchor="s7" class="section">
             <h2>Some concluding thoughts</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
         </div>
 
-        <nav class="site-navigation horizontal-page-navigation">
-            <div class="container-fluid">
-                <ul class="menu">
-                    <li><a href="index.html">Visualization</a></li>
-                    <li><a href="processbook.html">Process Book</a></li>
-                    <li><a href="methodology.html">Methodology</a></li>
-                    <li>Created for CS171</li>
-                    <li>December 2016</li>
-                </ul>
+        <div id="footer" data-anchor="f" class="section fp-auto-height">
+            <div id="left">
+                <span><a href="index.html">Visualization</a></span>
+                <span><a href="processbook.html">Process Book</a></span>
+                <span><a href="methodology.html">Methodology</a></span>
             </div>
-        </nav>
+            <div id="right">
+                Created for CS171<br/>
+                December 2016
+            </div>
+        </div>
 
     </div>
     <!--</div>-->
@@ -236,13 +235,14 @@
     <script src="js/d3-legend.min.js"></script>
     <script src="js/topojson.v1.min.js"></script>
     <script src="js/queue.v1.min.js"></script>
+    <script src="js/scrolloverflow.min.js"></script>
     <script src="js/jquery.combinedScroll.js"></script>
     <script src="js/queue.min.js"></script>
     <script src="js/d3.tip.js"></script>
     <script src="js/colorbrewer.min.js"></script>
     <script src="js/jquery.easings.min.js"></script>
     <script src="js/awesomplete.min.js"></script>
-    <script type="text/javascript" src="js/jquery.fullpage.min.js"></script>
+    <script src="js/jquery.fullpage.min.js"></script>
 
     <!--<script type="text/javascript">-->
         <!--jQuery(document).ready(function() {-->
@@ -310,8 +310,8 @@
                 resetSliders: false,
                 fadingEffect: false,
                 normalScrollElements: '#element1, .element2',
-                scrollOverflow: false,
-                scrollOverflowOptions: null,
+                scrollOverflow: true, //!
+                //scrollOverflowOptions: null,
                 touchSensitivity: 15,
                 normalScrollElementTouchThreshold: 5,
                 bigSectionsDestination: null,

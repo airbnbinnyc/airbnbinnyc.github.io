@@ -6,6 +6,31 @@
     border-color: #41898B;
 }
 
+#footer {
+    background-color: #e7e7e7;
+    font-weight: 400;
+}
+
+#footer div {
+    position: absolute;
+}
+
+#footer span {
+    margin-right: 50px;
+    font-size: 15px;
+}
+
+#footer #left {
+    left: 0;
+    top: -25px;
+}
+
+#footer #right {
+    text-align: right;
+    right: 110px;
+    top: -35px;
+}
+
 .btn-primary.active {
     background-color: #007D8C;
     border-color: #005C66;
