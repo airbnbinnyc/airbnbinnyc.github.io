@@ -240,9 +240,10 @@ AirBnBNodeMap.prototype.initVis = function() {
 // function to determine what category the user selected
 AirBnBNodeMap.prototype.dataManipulation = function() {
     var vis = this;
-    var box = document.getElementById("type");
+    // var box = document.getElementById("type");
+    // vis.val = box.options[box.selectedIndex].value;
 
-    vis.val = box.options[box.selectedIndex].value;
+    vis.val = $('input[name="options"]:checked', '#type').val();
 
     vis.colorNodes();
 };

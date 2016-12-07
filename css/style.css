@@ -60,7 +60,7 @@ h2 {
     font-size: 40px;
     font-weight: 200;
     text-align: left;
-    margin-top: 20px;
+    margin-top: 0;
     margin-bottom: 20px;
 }
 
@@ -81,6 +81,11 @@ p {
 .section {
     padding-left: 50px;
     padding-right: 50px;
+}
+
+.form-control {
+    width:auto;
+    display:inline-block;
 }
 
 /*#timeline {*/

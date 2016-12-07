@@ -29,7 +29,7 @@ MapAreaChart.prototype.initVis = function() {
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
 
-    vis.margin = {top: 10, right: 10, bottom: 30, left: 60};
+    vis.margin = {top: 20, right: 10, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
         vis.height = 250 - vis.margin.top - vis.margin.bottom;
@@ -195,12 +195,11 @@ MapAreaChart.prototype.updateVis = function() {
 MapAreaChart.prototype.changeData = function() {
     var vis = this;
 
-    // vis.type = d3.select("#type").property("value");
-    // vis.type = $('input[name="options"]:checked', '#type').val();
+    // var box = document.getElementById("type");
+    //
+    // vis.val = box.options[box.selectedIndex].value;
 
-    var box = document.getElementById("type");
-
-    vis.val = box.options[box.selectedIndex].value;
+    vis.val = $('input[name="options"]:checked', '#type').val();
 
     vis.dataCategories = switchCategories(vis.val);
 
