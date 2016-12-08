@@ -20,7 +20,7 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
  *  Initialize area chart
  */
 
-MapAreaChart.prototype.initVis = function() {
+MapLineGraph.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 20, right: 10, bottom: 40, left: 60};
@@ -48,7 +48,7 @@ MapAreaChart.prototype.initVis = function() {
 
 };
 
-MapAreaChart.prototype.initialWrangle = function() {
+MapLineGraph.prototype.initialWrangle = function() {
     var vis = this;
 
     console.log(vis.rent_data)
@@ -96,19 +96,19 @@ MapAreaChart.prototype.initialWrangle = function() {
 
 
 
-MapAreaChart.prototype.wrangleData = function() {
+MapLineGraph.prototype.wrangleData = function() {
     var vis = this;
 
 
     vis.selected_neighborhood = $("#neighborhood-select").val();
     var  box = document.getElementById("borough_sel");
-    vis.selected_borough = box.options[box.selectedIndex].value);
+    vis.selected_borough = box.options[box.selectedIndex].value;
 
-vis.zoom_level = "borough"
-vis.zoom_level = "neighborhood"
+vis.zoom_level = "borough";
+vis.zoom_level = "neighborhood";
 
 if (vis.zoom_level = "neighborhood") {
-    vis.displayData = vis.neighborhoods.filter(function(d), return d.id == vis.selected_neighborhood)
+    vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood})
 
     // !!! CHECK TO SEE IF THE NEIGHBORHOOD IS IN THE DICT --- IF ITS NOT, SAY NO DATA AVAILABLE???
     //     !!! PUSH THE PROPER BOROUGH
@@ -122,7 +122,7 @@ else {
 
 };
 
-MapAreaChart.prototype.updateVis = function() {
+MapLineGraph.prototype.updateVis = function() {
     var vis = this;
 
 }
