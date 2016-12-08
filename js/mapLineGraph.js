@@ -23,7 +23,7 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
 MapAreaChart.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 10, right: 10, bottom: 10, left: 10};
+    vis.margin = {top: 20, right: 10, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
         vis.height = 250 - vis.margin.top - vis.margin.bottom;

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CS171 - Final Project</title>
+    <title>Airbnb in NYC </title>
 
     <!-- Load Google Font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto:100,400,300,400italic,700' rel='stylesheet' type='text/css'>
@@ -22,17 +22,6 @@
     <!--<div class="container-fluid">-->
     <div id="fullpage">
 
-        <!--<ul id="menu">-->
-            <!--<li data-menuanchor="s0"><a href="#section0">Top</a></li>-->
-            <!--<li data-menuanchor="s1"><a href="#section1">Introduction</a></li>-->
-            <!--<li data-menuanchor="s2"><a href="#section2">Airbnb in NYC</a></li>-->
-            <!--<li data-menuanchor="s3"><a href="#section3">Taxes 1</a></li>-->
-            <!--<li data-menuanchor="s4"><a href="#section4">Taxes 2</a></li>-->
-            <!--<li data-menuanchor="s5"><a href="#section5">Illegal Listings</a></li>-->
-            <!--<li data-menuanchor="s6"><a href="#section6">Housing Prices</a></li>-->
-            <!--<li data-menuanchor="s7"><a href="#section7">Conclusion</a></li>-->
-        <!--</ul>-->
-
         <div id="section0" data-anchor="s0" class="section"></div>
 
         <div id="section1" data-anchor="s1" class="section">
@@ -45,47 +34,63 @@
 
         <div id="section2" data-anchor="s2" class="section">
             <h2>So what's actually going on with Airbnb in New York?</h2>
-            <p>Use this visualization to explore changes in Airbnb listings in New York over time.</p>
+            <p>Explore changes in Airbnb listings in New York over time.</p>
 
             <div class="row">
                 <div class="col-md-7">
-                    <div class="user-control" onchange="zoom()">
-                        <p>Zoom Into Borough: </p>
-                        <select id="borough_sel" class="form-control">
-                            <option value="all">All</option>
-                            <option value="Bronx">Bronx</option>
-                            <option value="Manhattan">Manhattan</option>
-                            <option value="Queens">Queens</option>
-                            <option value="Brooklyn">Brooklyn</option>
-                            <option value="Staten Island">Staten Island</option>
-                        </select>
-                        <p>Zoom Into Neighborhood: </p>
-                        <input id="neighborhood-select" class="dropdown-input"/>
-                        <!--<button class="dropdown-btn" type="button"><span class="caret"></span></button>-->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group" onchange="zoom()">
+                                <label>Zoom Into Borough:
+                                    <select id="borough_sel" class="form-control">
+                                        <option value="all">All</option>
+                                        <option value="Bronx">Bronx</option>
+                                        <option value="Manhattan">Manhattan</option>
+                                        <option value="Queens">Queens</option>
+                                        <option value="Brooklyn">Brooklyn</option>
+                                        <option value="Staten Island">Staten Island</option>
+                                    </select>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Zoom Into Neighborhood:
+                            <input id="neighborhood-select" class="dropdown-input"/>
+                            </label>
+                            <!--<button class="dropdown-btn" type="button"><span class="caret"></span></button>-->
+                        </div>
                     </div>
+
                     <div id="vis1">
                         <div id="airbnb-map"></div>
                     </div>
-                    <div><h3>Number of Listings: <span id="listing-count"></span> </h3></div>
+                    <h4>Number of Listings: <span id="listing-count"></span></h4>
                     <div class="row">
-                        <div id="field" class="col-sm-1 slider-field"> </div>
-                        <div id="slider" class="col-sm-4"> </div>
-                        <div id="sel-date" class="col-sm-4"></div>
+                        <!--<div id="field" class="col-sm-1 slider-field"> </div>-->
+                        <div id="slider" class="col-sm-7"></div>
+                        <div id="sel-date" class="col-sm-2"></div>
                         <div class="col-sm-2"> <button id="slider-submit-button" type="button">Update Map</button>  </div>
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="user-control" onchange="dataManipulation()">
-                        <p>Color Listings by: </p>
-                        <select id="type" class="form-control">
-                            <option value="None">None</option>
-                            <option value="illegal">Legality</option>
-                            <option value="price">Price</option>
-                        </select>
-                    </div>
+                    <form id="type" onchange="dataManipulation()">
+                        <label>Color Listings by: </label>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="options" value="None" autocomplete="off" checked> None
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" value="illegal" autocomplete="off"> Legality
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="options" value="price" id="option2" autocomplete="off"> Price
+                            </label>
+                        </div>
+                    </form>
                     <div id="areachart"></div>
                     <div id="linechart"></div>
                 </div>
+
             </div>
         </div>
 
@@ -141,7 +146,7 @@
         </div>
 
         <div id="section4" data-anchor="s4" class="section">
-            <h2>New York City and State lose $X in unpaid taxes.</h2>
+            <h2>New York City and State lose $93 million a year in unpaid taxes.</h2>
             <p>Under current laws, Airbnb is not permitted to collect and remit taxes to New York City. New York city and state lawmakers, and well as the New York hotel association, oppose Airbnb’s attempt to be allowed to do so. They fear legitimizing Airbnb’s operations when a large proportion of their listings are illegal, and argue that such an action would put hosts at risk by providing evidence of their illegal activity, and doesn’t address the issue of housing shortages. If Airbnb illegal listings are reducing demand for legal hotels in New York City, then the city is also losing tax revenues that would be paid on legal hotel rooms.</p>
 
             <div id="vis2">
@@ -219,24 +224,22 @@
             </div>
         </div>
 
-
         <div id="section7" data-anchor="s7" class="section">
             <h2>Some concluding thoughts</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
         </div>
 
-        <!--<nav class="site-navigation horizontal-page-navigation">-->
-            <!--<ul class="menu">-->
-                <!--<li><a href="#top">Top</a></li>-->
-                <!--<li><a href="#section1">Introduction</a></li>-->
-                <!--<li><a href="#section2">Airbnb in NYC</a></li>-->
-                <!--<li><a href="#section3">Taxes 1</a></li>-->
-                <!--<li><a href="#section4">Taxes 2</a></li>-->
-                <!--<li><a href="#section5">Illegal Listings</a></li>-->
-                <!--<li><a href="#section6">Housing Prices</a></li>-->
-                <!--<li><a href="#section7">Conclusion</a></li>-->
-            <!--</ul>-->
-        <!--</nav>-->
+        <div id="footer" data-anchor="f" class="section fp-auto-height">
+            <div id="left">
+                <span><a href="index.html">Visualization</a></span>
+                <span><a href="processbook.html">Process Book</a></span>
+                <span><a href="methodology.html">Methodology</a></span>
+            </div>
+            <div id="right">
+                Created for CS171<br/>
+                December 2016
+            </div>
+        </div>
 
     </div>
     <!--</div>-->
@@ -245,15 +248,17 @@
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/d3.min.js"></script>
+    <script src="js/d3-legend.min.js"></script>
     <script src="js/topojson.v1.min.js"></script>
     <script src="js/queue.v1.min.js"></script>
+    <script src="js/scrolloverflow.min.js"></script>
     <script src="js/jquery.combinedScroll.js"></script>
     <script src="js/queue.min.js"></script>
     <script src="js/d3.tip.js"></script>
     <script src="js/colorbrewer.min.js"></script>
     <script src="js/jquery.easings.min.js"></script>
     <script src="js/awesomplete.min.js"></script>
-    <script type="text/javascript" src="js/jquery.fullpage.min.js"></script>
+    <script src="js/jquery.fullpage.min.js"></script>
 
     <!--<script type="text/javascript">-->
         <!--jQuery(document).ready(function() {-->
@@ -321,8 +326,8 @@
                 resetSliders: false,
                 fadingEffect: false,
                 normalScrollElements: '#element1, .element2',
-                scrollOverflow: false,
-                scrollOverflowOptions: null,
+                scrollOverflow: true, //!
+                //scrollOverflowOptions: null,
                 touchSensitivity: 15,
                 normalScrollElementTouchThreshold: 5,
                 bigSectionsDestination: null,
