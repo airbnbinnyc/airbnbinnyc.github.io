@@ -7,8 +7,11 @@ NeighborhoodLine = function(_parentElement, _raw_price_data, _raw_change_data, _
     this.raw_price_data = _raw_price_data;
     this.raw_change_data = _raw_change_data;
     this.displayData = [];
-    this.neighborhood_dict = _neighborhood_dict
+    this.neighborhood_dict = _neighborhood_dict;
 
+    this.tooltip_colortype_dict = {"percent_illegal": "Percent of listings that <br/> are illegal:    ",
+        "proportion_of_posts": "Listings per 10,000 <br/> Res. Units: ",
+        "proportion_of_illegal_posts": "Illegal listings per <br/> 10,000 Res. Units: "}
 
     this.initVis();
 }
@@ -22,14 +25,14 @@ NeighborhoodLine = function(_parentElement, _raw_price_data, _raw_change_data, _
 NeighborhoodLine.prototype.initVis = function(){
     var vis = this;
 
-    //console.log(vis.neighborhood_dict);
+
 
     // Set up SVG
-    vis.margin = {top: 40, right: 40, bottom: 60, left: 80};
+    vis.margin = {top: 140, right: 40, bottom: 60, left: 80};
 
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 500 - vis.margin.top - vis.margin.bottom;
+        vis.height = 600 - vis.margin.top - vis.margin.bottom;
 
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -65,7 +68,9 @@ NeighborhoodLine.prototype.initVis = function(){
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
-        .orient("bottom");
+        .orient("bottom")
+        .tickFormat(d3.time.format("%b-%y"));
+
 
     vis.yAxis = d3.svg.axis()
         .scale(vis.y)
@@ -89,10 +94,11 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     vis.svg.append("text")
-        .attr("x", vis.width/3)
-        .attr("y", -vis.margin.top+20)
+        .attr("x", vis.width/5)
+        .attr("y", -50)
         .attr("text-anchor", "left")
-        .attr("class", "bar-chart-title")
+        .attr("class", "chart-title")
+        .attr("font-size", 20)
         .text("Inflation-Adjusted Median Housing Prices by NYC Neighborhood");
 
 
@@ -156,7 +162,7 @@ NeighborhoodLine.prototype.initVis = function(){
 
     vis.initialWrangleData();
     vis.wrangleData();
-}
+};
 
 
 
@@ -172,7 +178,7 @@ NeighborhoodLine.prototype.initialWrangleData = function(){
         vis.neighborhoods[dtypes[idx]] = [];
         for (var prop in dtypes_data[idx][0]) {
             if (prop != "Date") {
-                
+
                 vis.neighborhoods[dtypes[idx]].push(
                     {
                         id: prop,
@@ -180,9 +186,9 @@ NeighborhoodLine.prototype.initialWrangleData = function(){
                             return {date: vis.parseTime.parse(d.Date), price: +d[prop], neighborhood: prop};
                         })
                     });
-            };
-        };
-    };
+            }
+        }
+    }
 };
 
 
@@ -198,31 +204,28 @@ NeighborhoodLine.prototype.wrangleData = function(){
     vis.selected_boroughs = {};
 
 
-    $('.checkbox-inline').each(function(){
+    $('.checkbox').each(function(){
         vis.selected_boroughs[($(this).attr("value"))] = $(this).is(":checked")
     });
 
-    console.log(vis.selected_boroughs);
 
     var in_borough = function(datum) {
             return vis.selected_boroughs[vis.neighborhood_dict[datum.id].borough];
-    }
+    };
 
-    vis.all_boroughs_selected = $("#select_all").is(":checked")
-    console.log(vis.all_boroughs_selected);
+    vis.all_boroughs_selected = $("#select_all").is(":checked");
 
     // Filter for selected datatype
-    vis.selected_dtype = $('input[name="options"]:checked', '#neighborhood-line-data-type').val()
+    vis.selected_dtype = $('input[name="options"]:checked', '#neighborhood-line-data-type').val();
 
 
 
     if (vis.all_boroughs_selected) {vis.displayData = vis.neighborhoods[vis.selected_dtype]}
     else {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough)}
 
-    console.log(vis.neighborhoods["abs_price"])
 
     vis.updateVis();
-}
+};
 
 
 
@@ -245,8 +248,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     var selected_color_type = $('input[name="options"]:checked', '#neighborhood-line-color-type').val();
 
-    console.log(vis.displayData);
-    console.log(vis.neighborhood_dict);
+
     // need to get a list of all the values so that we can pass it to the quantile scale
     var vals = [];
     vis.displayData.forEach(function(d) {
@@ -307,11 +309,14 @@ NeighborhoodLine.prototype.updateVis = function(){
             .style("opacity", .9)
             .style("background-color", vis.color_scale_ord(vis.neighborhood_dict[d.id][selected_color_type]));
 
-        vis.tip.html(d.id + ", " + vis.neighborhood_dict[d.id].borough + "<br/>" + vis.neighborhood_dict[d.id][selected_color_type])
+        vis.tip.html(d.id + ", " + vis.neighborhood_dict[d.id].borough + "<br/>" + vis.tooltip_colortype_dict[selected_color_type] +
+            vis.neighborhood_dict[d.id][selected_color_type].toFixed(1))
             .style("left", (d3.event.pageX) + "px")
             .style("top", (d3.event.pageY - 28) + "px");
 
     }
+
+
 
     function mouseout(d,i) {
         vis.neighborhood.classed("n-line-unhovered", false);
@@ -321,7 +326,6 @@ NeighborhoodLine.prototype.updateVis = function(){
             .style("opacity", 0);
     }
 
-    console.log(selected_color_type);
 
     // ordinal color legend
     vis.legend
