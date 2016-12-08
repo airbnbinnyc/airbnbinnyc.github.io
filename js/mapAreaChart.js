@@ -21,6 +21,10 @@ MapAreaChart = function(_parentElement, _data) {
 MapAreaChart.prototype.initVis = function() {
     var vis = this;
 
+    vis.date = airbnbNodeMap.selDate;
+
+    console.log(vis.date);
+
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
     vis.dataCategories = ["total"];
@@ -53,15 +57,6 @@ MapAreaChart.prototype.initVis = function() {
         .y0(function(d) { return vis.y(d.y0); })
         .y1(function(d) { return vis.y(d.y0 + d.y); });
 
-    // vis.colorScale = d3.scale.quantize()
-    //     .domain(vis.getExtent())
-    //     .range(vis.getColorScheme());
-
-    vis.wrangleData();
-};
-
-MapAreaChart.prototype.wrangleData = function() {
-    var vis = this;
 
     Object.keys(vis.data).forEach(function (key) {
         vis.data[key].date = key;
@@ -79,17 +74,21 @@ MapAreaChart.prototype.wrangleData = function() {
         return vis.data[key];
     });
 
+    // document.getElementById('slider').addEventListener('click', function() {
+    //     var vis = this;
+    //
+    //     vis.date = airbnbNodeMap.selDate;
+    //
+    //     console.log(vis.date);
+    //
+    //     vis.updateVis();
+    // });
 
-//     vis.wrangleData2();
-// };
-//
-//
-// MapAreaChart.prototype.wrangleData2 = function() {
-//     var vis = this;
+    vis.wrangleData();
+};
 
-    console.log(vis.dataCategories);
-
-    console.log(vis.dataIntermediate);
+MapAreaChart.prototype.wrangleData = function() {
+    var vis = this;
 
     vis.transposedData = vis.dataCategories.map(function(category) {
         return {
@@ -107,14 +106,10 @@ MapAreaChart.prototype.wrangleData = function() {
         });
     }
 
-    console.log(vis.transposedData);
-
     var stack = d3.layout.stack()
         .values(function(d) { return d.values; });
 
     vis.stackedData = stack(vis.transposedData);
-
-    // console.log(vis.stackedData);
 
     vis.displayData = vis.stackedData;
 
@@ -125,14 +120,13 @@ MapAreaChart.prototype.wrangleData = function() {
 MapAreaChart.prototype.updateVis = function() {
     var vis = this;
 
-    console.log(vis.val);
-
     vis.x.domain([vis.startDate, vis.endDate]);
-    vis.y.domain([0, d3.max(vis.displayData, function(d) {
-            return d3.max(d.values, function(e) {
-                return e.y0 + e.y;
-            });
-        })
+
+    vis.y.domain([0, d3.max(vis.displayData, function (d) {
+        return d3.max(d.values, function (e) {
+            return e.y0 + e.y;
+        });
+    })
     ]);
 
     vis.xAxis = d3.svg.axis()
@@ -157,47 +151,81 @@ MapAreaChart.prototype.updateVis = function() {
         .duration(800)
         .call(vis.yAxis);
 
-    var categories = vis.svg.selectAll(".area")
+    vis.categories = vis.svg.selectAll(".area")
         .data(vis.displayData);
 
-    categories.enter().append("path")
+    vis.categories.enter().append("path")
         .attr("class", "area");
 
-    categories
-        .style("fill", function(d) {
+    vis.categories
+        .style("fill", function (d) {
             var color;
 
-            switch(d.name) {
-                case "total": color = '#007D8C'; break;
-                case "illegal0": color = "white"; break;
-                case "illegal1": color = "black"; break;
-                case "price0": color = "#fee5d9"; break;
-                case "price1": color = "#fcbba1"; break;
-                case "price2": color = "#fc9272"; break;
-                case "price3": color = "#fb6a4a"; break;
-                case "price4": color = "#de2d26"; break;
-                case "price5": color = "#a50f15"; break;
-                default: color = '#007D8C';
+            switch (d.name) {
+                case "total":
+                    color = '#007D8C';
+                    break;
+                case "illegal0":
+                    color = "white";
+                    break;
+                case "illegal1":
+                    color = "black";
+                    break;
+                case "price0":
+                    color = "#fee5d9";
+                    break;
+                case "price1":
+                    color = "#fcbba1";
+                    break;
+                case "price2":
+                    color = "#fc9272";
+                    break;
+                case "price3":
+                    color = "#fb6a4a";
+                    break;
+                case "price4":
+                    color = "#de2d26";
+                    break;
+                case "price5":
+                    color = "#a50f15";
+                    break;
+                default:
+                    color = '#007D8C';
             }
 
             return color;
         })
-        .attr("d", function(d) {
+        .attr("d", function (d) {
             return vis.area(d.values);
         });
 
-    console.log(colorbrewer.Reds[6]);
+    vis.categories.exit().remove();
+    //
+    vis.svg.selectAll(".y").remove();
 
-    categories.exit().remove();
+    vis.svg.append("line")
+        .attr("class", "y")
+        .style("fill", "none")
+        .style("stroke", "black")
+        .attr("x1", vis.x(vis.parseTime.parse(vis.date)))
+        .attr("x2", vis.x(vis.parseTime.parse(vis.date)))
+        .attr("y1", 0)
+        .attr("y2", vis.height);
+
+    document.getElementById('slider').addEventListener('click', function() {
+        vis.date = airbnbNodeMap.selDate;
+
+        vis.updateVis();
+
+        // vis.svg.select("line.y")
+        //     .attr("transform", "translate(" + vis.x(vis.parseTime.parse(vis.date)) + ", 0)");
+    });
 
 };
 
+
 MapAreaChart.prototype.changeData = function() {
     var vis = this;
-
-    // var box = document.getElementById("type");
-    //
-    // vis.val = box.options[box.selectedIndex].value;
 
     vis.val = $('input[name="options"]:checked', '#type').val();
 
@@ -216,4 +244,4 @@ function switchCategories(val) {
     else if (val == "price") {
         return ["price0", "price1", "price2", "price3", "price4", "price5"];
     }
-};
+}
