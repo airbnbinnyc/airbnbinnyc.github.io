@@ -36,7 +36,8 @@ function loadData() {
         .defer(d3.json, "data/AirBNB-neighbourhoods.geojson")
         .defer(d3.csv, "data/timeline.csv")
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
-        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo) {
+        .defer(d3.csv, "data/neighborhood-lines/mean_rent.csv")
+        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, BoroughRentMeans) {
 
             if (error) throw error;
 
@@ -100,7 +101,7 @@ function loadData() {
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
             mapLineGraph = new MapLineGraph("linechart");
-            mapAreaChart = new MapAreaChart("areachart");
+            mapAreaChart = new MapAreaChart("areachart", neighborhoodRentPrice, neighborhood_dict, BoroughRentMeans);
 
             createVis();
         });
@@ -115,7 +116,6 @@ function createVis() {
     $("#select_all").change(function(){  //"select all" change
         $("#borough-checkboxes .checkbox-inline").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
         neighborhoodrent.wrangleData();
-        console.log("hi");
     });
 
     //".checkbox" change

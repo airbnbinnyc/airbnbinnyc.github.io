@@ -192,6 +192,7 @@ NeighborhoodLine.prototype.wrangleData = function(){
     else {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough)}
 
     console.log(vis.neighborhoods["abs_price"])
+
     vis.updateVis();
 }
 

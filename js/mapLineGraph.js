@@ -1,14 +1,16 @@
 
 /*
- *  TaxRevenue - Object constructor function
+ *  MapLineGraph - Object constructor function
  *  @param _parentElement   -- HTML element in which to draw the visualization
  *  @param _data            -- Array with all stations of the bike-sharing network
  */
 
-MapLineGraph = function(_parentElement, _data) {
+MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) {
 
     this.parentElement = _parentElement;
-    this.data = _data;
+    this.rent_data = _rent_data;
+    this.dict = _dict_data;
+    this.borough_means = _borough_means;
 
     this.initVis();
 };
@@ -18,7 +20,7 @@ MapLineGraph = function(_parentElement, _data) {
  *  Initialize area chart
  */
 
-MapLineGraph.prototype.initVis = function() {
+MapAreaChart.prototype.initVis = function() {
     var vis = this;
 
     vis.margin = {top: 10, right: 10, bottom: 10, left: 10};
@@ -37,15 +39,90 @@ MapLineGraph.prototype.initVis = function() {
     vis.x = d3.time.scale().range([0, vis.width]);
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
+    vis.parseTime = d3.time.format("%Y-%m");
+
+    vis.initialWrangle();
     vis.wrangleData();
+
+
+
 };
 
-MapLineGraph.prototype.wrangleData = function() {
+MapAreaChart.prototype.initialWrangle = function() {
     var vis = this;
 
+    console.log(vis.rent_data)
+    console.log(vis.dict)
+    console.log(vis.borough_means)
+
+    // boroughs = ["Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"]
+    // var in_borough = function(borough) {
+    //     return function(datum) {
+    //         return vis.neighborhood_dict[datum.id].borough==borough;
+    //     }
+    // }
+    //
+    // for (idx in boroughs) {
+    //     borough = boroughs[idx]
+    //     neighborhood_filtered = vis.rent_data.filter(in_borough(borough))
+    //     console.log(neighborhood_filtered);
+    // }
+
+
+    vis.neighborhoods = []
+    for (var prop in vis.rent_data[0]) {
+        if (prop != "Date") {
+            vis.neighborhoods.push(
+                {
+                    id: prop,
+                    values: vis.rent_data.map(function (d) {return {date: vis.parseTime.parse(d.Date), price: +d[prop], region_name: prop, emphasize: true};})
+                });
+        };
+    };
+
+    vis.boroughs = []
+    for (var prop in vis.borough_means[0]) {
+        if (prop != "Date") {
+            vis.boroughs.push(
+                {
+                    id: prop,
+                    values: vis.borough_means.map(function (d) {return {date: vis.parseTime.parse(d.Date), price: +d[prop], region_name: prop, emphasize: false};})
+                });
+        };
+    };
+
+
 };
 
-MapLineGraph.prototype.updateVis = function() {
+
+
+MapAreaChart.prototype.wrangleData = function() {
+    var vis = this;
+
+
+    vis.selected_neighborhood = $("#neighborhood-select").val();
+    var  box = document.getElementById("borough_sel");
+    vis.selected_borough = box.options[box.selectedIndex].value);
+
+vis.zoom_level = "borough"
+vis.zoom_level = "neighborhood"
+
+if (vis.zoom_level = "neighborhood") {
+    vis.displayData = vis.neighborhoods.filter(function(d), return d.id == vis.selected_neighborhood)
+
+    // !!! CHECK TO SEE IF THE NEIGHBORHOOD IS IN THE DICT --- IF ITS NOT, SAY NO DATA AVAILABLE???
+    //     !!! PUSH THE PROPER BOROUGH
+    // containing_borough = vis.dict[vis.selected_neighborhood].
+}
+else {
+    vis.displayData = vis.boroughs;
+    //!!! LOOP THROUGH THIS AND CHANGE SELECTED BOROUGH'S EMPHASIZE ATTRIBUTE TO TRUE
+}
+
+
+};
+
+MapAreaChart.prototype.updateVis = function() {
     var vis = this;
 
 }
