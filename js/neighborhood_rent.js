@@ -316,8 +316,6 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     }
 
-
-
     function mouseout(d,i) {
         vis.neighborhood.classed("n-line-unhovered", false);
         d3.select(this).attr("class", "n-line");
