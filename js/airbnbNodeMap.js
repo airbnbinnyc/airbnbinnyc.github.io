@@ -218,7 +218,18 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
     // Add a listener to the slider submit button -- when selected, data from that date will be uploaded to the map
-    document.getElementById('slider-submit-button').addEventListener('click', function(){
+    // document.getElementById('slider-submit-button').addEventListener('click', function(){
+    //     // wait until new dataset is loaded before drawing map
+    //     $.holdReady(true);
+    //     $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
+    //         // change data for visualization
+    //         vis.airbnbData = json;
+    //         $.holdReady(false);
+    //         vis.updateVis();
+    //     });
+    // });
+
+    document.getElementById('slider').addEventListener('mouseup', function(){
         // wait until new dataset is loaded before drawing map
         $.holdReady(true);
         $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {

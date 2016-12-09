@@ -104,20 +104,21 @@ MapLineGraph.prototype.wrangleData = function() {
     var  box = document.getElementById("borough_sel");
     vis.selected_borough = box.options[box.selectedIndex].value;
 
-vis.zoom_level = "borough";
-vis.zoom_level = "neighborhood";
+    // vis.zoom_level = "borough";
+    vis.zoom_level = "neighborhood";
 
-if (vis.zoom_level = "neighborhood") {
-    vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood})
+    if (vis.zoom_level = "neighborhood") {
+        vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood});
+        console.log(vis.displayData)
 
-    // !!! CHECK TO SEE IF THE NEIGHBORHOOD IS IN THE DICT --- IF ITS NOT, SAY NO DATA AVAILABLE???
-    //     !!! PUSH THE PROPER BOROUGH
-    // containing_borough = vis.dict[vis.selected_neighborhood].
-}
-else {
-    vis.displayData = vis.boroughs;
-    //!!! LOOP THROUGH THIS AND CHANGE SELECTED BOROUGH'S EMPHASIZE ATTRIBUTE TO TRUE
-}
+        // !!! CHECK TO SEE IF THE NEIGHBORHOOD IS IN THE DICT --- IF ITS NOT, SAY NO DATA AVAILABLE???
+        //     !!! PUSH THE PROPER BOROUGH
+        // containing_borough = vis.dict[vis.selected_neighborhood].
+    }
+    else {
+        vis.displayData = vis.boroughs;
+        //!!! LOOP THROUGH THIS AND CHANGE SELECTED BOROUGH'S EMPHASIZE ATTRIBUTE TO TRUE
+    }
 
 
 };

@@ -86,13 +86,6 @@ function loadData() {
                 }
             });*/
 
-            // Listen for the event and access the neighborhood value
-            input.addEventListener("awesomplete-selectcomplete", function (e) {
-                console.log(e.text.value);
-            }, false);
-
-
-
 
             // INSTANTIATE VISUALIZATIONS
             airbnbNodeMap = new AirBnBNodeMap("airbnb-map", boroughMap, neighborhoodMap, airbnbData);
@@ -104,6 +97,13 @@ function loadData() {
             mapLineGraph = new MapLineGraph("linechart", neighborhoodRentPrice, neighborhood_dict, boroughMeanRent);
 
             createVis();
+
+
+            // Listen for the event and access the neighborhood value
+            input.addEventListener("awesomplete-selectcomplete", function (e) {
+                console.log(e.text.value);
+                mapLineGraph.wrangleData()
+            }, false);
         });
 
 }
