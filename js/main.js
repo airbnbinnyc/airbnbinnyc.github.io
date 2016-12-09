@@ -36,8 +36,10 @@ function loadData() {
         .defer(d3.csv, "data/timeline.csv")
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
         .defer(d3.json, "data/category_counts.json")
+        .defer(d3.json, "data/borough_category_counts.json")
+        .defer(d3.json, "data/neighborhood_category_counts.json")
         .defer(d3.csv, "data/neighborhood-lines/mean_rent.csv")
-        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, categoryCounts, boroughMeanRent) {
+        .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, categoryCounts, borCategoryCounts, neighCategoryCounts, boroughMeanRent) {
 
             if (error) throw error;
 
@@ -93,7 +95,7 @@ function loadData() {
             neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
-            mapAreaChart = new MapAreaChart("areachart", categoryCounts);
+            mapAreaChart = new MapAreaChart("areachart", categoryCounts, borCategoryCounts, neighCategoryCounts);
             mapLineGraph = new MapLineGraph("linechart", neighborhoodRentPrice, neighborhood_dict, boroughMeanRent);
 
             createVis();
@@ -102,7 +104,8 @@ function loadData() {
             // Listen for the event and access the neighborhood value
             input.addEventListener("awesomplete-selectcomplete", function (e) {
                 console.log(e.text.value);
-                mapLineGraph.wrangleData()
+                mapLineGraph.wrangleData();
+                mapAreaChart.zoomNeighborhood(e.text.value);
             }, false);
         });
 
@@ -146,6 +149,11 @@ function dataManipulation() {
 // update airbnb node map to zoom into borough
 function zoom() {
     airbnbNodeMap.zoom();
+    mapAreaChart.zoomBorough();
+}
+
+function zoomNeighborhood() {
+    mapAreaChart.zoomNeighborhood();
 }
 
 /*
