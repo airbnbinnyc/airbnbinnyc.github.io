@@ -5,10 +5,12 @@
  *  @param _data            -- Array with all stations of the bike-sharing network
  */
 
-MapAreaChart = function(_parentElement, _data) {
+MapAreaChart = function(_parentElement, _totalData, _boroughData, _neighborhoodData) {
 
     this.parentElement = _parentElement;
-    this.data = _data;
+    this.totalData = _totalData;
+    this.boroughData = _boroughData;
+    this.neighborhoodData = _neighborhoodData;
 
     this.initVis();
 };
@@ -23,7 +25,7 @@ MapAreaChart.prototype.initVis = function() {
 
     vis.date = airbnbNodeMap.selDate;
 
-    console.log(vis.date);
+    console.log(vis.neighborhoodData);
 
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
@@ -58,37 +60,19 @@ MapAreaChart.prototype.initVis = function() {
         .y1(function(d) { return vis.y(d.y0 + d.y); });
 
 
-    Object.keys(vis.data).forEach(function (key) {
-        vis.data[key].date = key;
-        vis.data[key].illegal0 = vis.data[key]["illegal"]["0"];
-        vis.data[key].illegal1 = vis.data[key]["illegal"]["1"];
-        vis.data[key].price0 = vis.data[key]["price"]["0"];
-        vis.data[key].price1 = vis.data[key]["price"]["1"];
-        vis.data[key].price2 = vis.data[key]["price"]["2"];
-        vis.data[key].price3 = vis.data[key]["price"]["3"];
-        vis.data[key].price4 = vis.data[key]["price"]["4"];
-        vis.data[key].price5 = vis.data[key]["price"]["5"];
-    });
-
-    vis.dataIntermediate = Object.keys(vis.data).map(function (key) {
-        return vis.data[key];
-    });
-
-    // document.getElementById('slider').addEventListener('click', function() {
-    //     var vis = this;
-    //
-    //     vis.date = airbnbNodeMap.selDate;
-    //
-    //     console.log(vis.date);
-    //
-    //     vis.updateVis();
-    // });
+    vis.zoomData = vis.totalData;
 
     vis.wrangleData();
 };
 
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
+
+    console.log(vis.zoomData);
+
+    vis.dataIntermediate = Object.keys(vis.zoomData).map(function (key) {
+        return vis.zoomData[key];
+    });
 
     vis.transposedData = vis.dataCategories.map(function(category) {
         return {
@@ -244,4 +228,38 @@ function switchCategories(val) {
     else if (val == "price") {
         return ["price0", "price1", "price2", "price3", "price4", "price5"];
     }
+}
+
+MapAreaChart.prototype.zoomBorough = function() {
+    var vis = this;
+
+    var box = document.getElementById("borough_sel");
+
+    vis.filter = box.options[box.selectedIndex].value;
+
+    console.log(vis.filter);
+
+    // vis.zoomData = vis.boroughData[vis.filter];
+
+    if (vis.filter == "all") {
+        vis.zoomData = vis.totalData;
+    }
+
+    else {
+        vis.zoomData = vis.boroughData[vis.filter];
+    }
+
+
+
+    vis.wrangleData();
+}
+
+MapAreaChart.prototype.zoomNeighborhood = function(val) {
+    var vis = this;
+
+    console.log(val);
+
+    vis.zoomData = vis.neighborhoodData[val];
+
+    vis.wrangleData();
 }
