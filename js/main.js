@@ -22,7 +22,6 @@ var colors = {
 };
 
 
-
 function loadData() {
 
     queue()

@@ -13,7 +13,7 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
     this.borough_means = _borough_means;
 
     this.emph_color = colors.red;
-    this.not_emph_color = colors.green.light;
+    this.not_emph_color = colors.green.dark;
     this.initVis();
 };
 
