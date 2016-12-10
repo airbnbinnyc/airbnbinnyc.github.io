@@ -104,7 +104,7 @@ function loadData() {
             // Listen for the event and access the neighborhood value
             input.addEventListener("awesomplete-selectcomplete", function (e) {
                 console.log(e.text.value);
-                mapLineGraph.wrangleData();
+                mapLineGraph.wrangleData_neighborhood();
                 mapAreaChart.zoomNeighborhood(e.text.value);
             }, false);
         });
@@ -150,10 +150,12 @@ function dataManipulation() {
 function zoom() {
     airbnbNodeMap.zoom();
     mapAreaChart.zoomBorough();
+    mapLineGraph.wrangleData_borough();
 }
 
 function zoomNeighborhood() {
     mapAreaChart.zoomNeighborhood();
+    mapLineGraph.wrangleData_neighborhood();
 }
 
 /*

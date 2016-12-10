@@ -12,6 +12,8 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
     this.dict = _dict_data;
     this.borough_means = _borough_means;
 
+    this.emph_color = colors.red;
+    this.not_emph_color = colors.green.light;
     this.initVis();
 };
 
@@ -59,7 +61,6 @@ MapLineGraph.prototype.initVis = function() {
         .tickFormat(d3.time.format("%b-%y"))
         .ticks(6);
 
-
     vis.yAxis = d3.svg.axis()
         .scale(vis.y)
         .orient("left");
@@ -71,27 +72,27 @@ MapLineGraph.prototype.initVis = function() {
     vis.svg.append("g")
         .attr("class", "axis axis--y");
 
-
     yaxlabel = vis.svg.append("text")
         .attr("transform", "rotate(-90)")
-        .attr("x", -vis.height*4/5)
+        .attr("x", -vis.height )
         .attr("y", -vis.margin.left+2)
         .attr("dy", "0.71em")
         .attr("fill", "#000")
         .text("");
 
+    yaxlabel.text("Median Monthly Rental Prices");
 
     vis.svg.append("text")
-        .attr("x", vis.width/5)
-        .attr("y", -50)
+        .attr("x", vis.margin.left/2)
+        .attr("y", -5)
         .attr("text-anchor", "left")
         .attr("class", "chart-title")
-        .attr("font-size", 20)
-        .text("Inflation-Adjusted Median Housing Prices by NYC Neighborhood");
+        .attr("font-size", 15)
+        .text("Inflation-Adjusted Median Housing Prices by NYC Region");
 
 
     vis.initialWrangle();
-    vis.wrangleData();
+    vis.wrangleData_borough();
 };
 
 MapLineGraph.prototype.initialWrangle = function() {
@@ -106,21 +107,8 @@ MapLineGraph.prototype.initialWrangle = function() {
     console.log(vis.dict);
     console.log(vis.borough_means);
 
-    // boroughs = ["Brooklyn", "Bronx", "Manhattan", "Queens", "Staten Island"]
-    // var in_borough = function(borough) {
-    //     return function(datum) {
-    //         return vis.neighborhood_dict[datum.id].borough==borough;
-    //     }
-    // }
-    //
-    // for (idx in boroughs) {
-    //     borough = boroughs[idx]
-    //     neighborhood_filtered = vis.rent_data.filter(in_borough(borough))
-    //     console.log(neighborhood_filtered);
-    // }
 
-
-    vis.neighborhoods = []
+    vis.neighborhoods = [];
     for (var prop in vis.rent_data[0]) {
         if (prop != "Date") {
             vis.neighborhoods.push(
@@ -128,10 +116,10 @@ MapLineGraph.prototype.initialWrangle = function() {
                     id: prop,
                     values: vis.rent_data.map(function (d) {return {date: vis.parseTime.parse(d.Date), price: +d[prop], region_name: prop, emphasize: true};})
                 });
-        };
-    };
+        }
+    }
 
-    console.log(vis.neighborhoods)
+    console.log(vis.neighborhoods);
     vis.boroughs = []
     for (var prop in vis.borough_means[0]) {
         if (prop != "Date") {
@@ -142,46 +130,60 @@ MapLineGraph.prototype.initialWrangle = function() {
                 })
         }
     };
-
-
 };
 
 
 
-MapLineGraph.prototype.wrangleData = function() {
+MapLineGraph.prototype.wrangleData_neighborhood = function() {
     var vis = this;
 
 
     vis.selected_neighborhood = $("#neighborhood-select").val();
+
+    vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood});
+    if (vis.displayData.length != 0) {
+        vis.displayData[0].emphasize=true;
+        console.log(vis.displayData[0]);
+        var containing_borough = vis.boroughs.filter(function(d) {return d.id == vis.dict[vis.selected_neighborhood].borough})[0];
+        containing_borough.emphasize =false;
+        vis.displayData.push(containing_borough);
+        console.log(vis.displayData);
+    }
+
+    // HANDLE NEIGHBORHOOD NOT BEING IN THE DICT???
+
+
+        //     !!! PUSH THE PROPER BOROUGH
+        // containing_borough = vis.dict[vis.selected_neighborhood].
+    vis.updateVis();
+};
+
+
+MapLineGraph.prototype.wrangleData_borough = function() {
+    var vis = this;
+
     var  box = document.getElementById("borough_sel");
     vis.selected_borough = box.options[box.selectedIndex].value;
 
-    // vis.zoom_level = "borough";
-    vis.zoom_level = "neighborhood";
 
-    if (vis.zoom_level = "neighborhood") {
-        vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood});
-        if (vis.displayData.length != 0) {
-            vis.displayData[0].emphasize=true;
-            console.log(vis.displayData[0]);
-            var containing_borough = vis.boroughs.filter(function(d) {return d.id == vis.dict[vis.selected_neighborhood].borough})[0];
-            containing_borough.emphasize =false;
-            vis.displayData.push(containing_borough);
-            console.log(vis.displayData);
+    vis.displayData = vis.boroughs;
+    console.log(vis.displayData);
+
+    console.log(vis.selected_borough);
+    if (vis.selected_borough == "all") {
+        for (i = 0; i < vis.displayData.length; i++) {
+            vis.displayData[i].emphasize = false
         }
-
-
-        // !!! CHECK TO SEE IF THE NEIGHBORHOOD IS IN THE DICT --- IF ITS NOT, SAY NO DATA AVAILABLE???
-        //     !!! PUSH THE PROPER BOROUGH
-        // containing_borough = vis.dict[vis.selected_neighborhood].
     }
     else {
-        vis.displayData = vis.boroughs;
-        //!!! LOOP THROUGH THIS AND CHANGE SELECTED BOROUGH'S EMPHASIZE ATTRIBUTE TO TRUE
+        for (i = 0; i < vis.displayData.length; i++) {
+            if (vis.displayData[i].id == vis.selected_borough) {vis.displayData[i].emphasize = true}
+            else {vis.displayData[i].emphasize = false}
+        }
     }
 
-    vis.updateVis();
 
+    vis.updateVis();
 };
 
 MapLineGraph.prototype.updateVis = function() {
@@ -207,7 +209,6 @@ MapLineGraph.prototype.updateVis = function() {
     vis.svg.select(".axis--y").transition().call(vis.yAxis);
     vis.svg.select(".axis--x").transition().call(vis.xAxis);
 
-    yaxlabel.text("Percent change in rental prices");
 
 
     vis.dataline = d3.svg.line()
@@ -229,18 +230,18 @@ MapLineGraph.prototype.updateVis = function() {
 
     vis.neighborhood
         .attr("d", function(d) { return vis.dataline(d.values); })
-        .style("stroke", function(d) { if (d.emphasize){return "red"} else {return "black"} })
+        .style("stroke", function(d) { if (d.emphasize){return vis.emph_color} else {return vis.not_emph_color} })
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
 
 
     function mouseover(d, i) {
-        vis.neighborhood.classed("n-line-unhovered", true);
+        // vis.neighborhood.classed("n-line-unhovered", true);
         d3.select(this).attr("class", "n-line-hovered");
         vis.tip.transition()
             .duration(200)
             .style("opacity", .9)
-            .style("background-color", "#aaaaaa");
+            .style("background-color", function() {if (d.emphasize) {return vis.emph_color} else {return vis.not_emph_color}});
 
         vis.tip.html(d.id)
             .style("left", (d3.event.pageX) + "px")
