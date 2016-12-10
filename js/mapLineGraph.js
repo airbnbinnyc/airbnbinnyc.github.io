@@ -97,15 +97,11 @@ MapLineGraph.prototype.initVis = function() {
 
 MapLineGraph.prototype.initialWrangle = function() {
     var vis = this;
-    //
-    console.log(vis.parseTime.parse("2015-11"));
-    console.log(vis.parseTime.parse(vis.rent_data[0]["Date"]));
+
 
     vis.rent_data = vis.rent_data.filter(function(d) {return vis.parseTime.parse(d.Date) >= vis.parseTime.parse("2015-01")});
     vis.borough_means = vis.borough_means.filter(function(d) {return vis.parseTime.parse(d.Date) >= vis.parseTime.parse("2015-01")});
 
-    console.log(vis.dict);
-    console.log(vis.borough_means);
 
 
     vis.neighborhoods = [];
@@ -119,8 +115,7 @@ MapLineGraph.prototype.initialWrangle = function() {
         }
     }
 
-    console.log(vis.neighborhoods);
-    vis.boroughs = []
+    vis.boroughs = [];
     for (var prop in vis.borough_means[0]) {
         if (prop != "Date") {
             vis.boroughs.push(
@@ -143,11 +138,9 @@ MapLineGraph.prototype.wrangleData_neighborhood = function() {
     vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood});
     if (vis.displayData.length != 0) {
         vis.displayData[0].emphasize=true;
-        console.log(vis.displayData[0]);
         var containing_borough = vis.boroughs.filter(function(d) {return d.id == vis.dict[vis.selected_neighborhood].borough})[0];
         containing_borough.emphasize =false;
         vis.displayData.push(containing_borough);
-        console.log(vis.displayData);
     }
 
     // HANDLE NEIGHBORHOOD NOT BEING IN THE DICT???
@@ -167,9 +160,7 @@ MapLineGraph.prototype.wrangleData_borough = function() {
 
 
     vis.displayData = vis.boroughs;
-    console.log(vis.displayData);
 
-    console.log(vis.selected_borough);
     if (vis.selected_borough == "all") {
         for (i = 0; i < vis.displayData.length; i++) {
             vis.displayData[i].emphasize = false
@@ -188,6 +179,11 @@ MapLineGraph.prototype.wrangleData_borough = function() {
 
 MapLineGraph.prototype.updateVis = function() {
     var vis = this;
+
+    vis.slider = $("#slider");
+
+
+    console.log(vis.slider);
 
 
     // update axes

@@ -59,11 +59,22 @@ function loadData() {
 
             // create a list with all neighborhood names
             var neighborhoodList = [];
-            neighborhoodMap.features.forEach(function(d) {
+
+            // uses all neighborhoods in shape file????
+            // neighborhoodMap.features.forEach(function(d) {
+            //     neighborhoodList.push(
+            //         {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
+            //         value: d.properties.neighbourhood});
+            // });
+            //
+            //
+
+            // only allows for neighborhoods we have data for
+            for (var key in neighborhood_dict) {
                 neighborhoodList.push(
-                    {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
-                    value: d.properties.neighbourhood});
-            });
+                    {label: key + ", " + neighborhood_dict[key].borough,
+                        value: key});
+            }
 
             // make autocompleting input for neighborhood selection
             var input = document.getElementById("neighborhood-select");

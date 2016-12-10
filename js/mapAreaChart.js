@@ -115,6 +115,7 @@ MapAreaChart.prototype.updateVis = function() {
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
+        .tickFormat(d3.time.format("%b-%y"))
         .orient("bottom");
 
     vis.yAxis = d3.svg.axis()
