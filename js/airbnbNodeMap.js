@@ -95,11 +95,11 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.svg.call(vis.tip);
 
     // create a projection
-    var scale  = 60000;
+    var scale  = 50000;
     var offset = [vis.width/2, vis.height/2];
 
     // create new path
-    vis.path = d3.geo.path().projection(vis.projection);
+    vis.path = d3.geo.path();
 
     // new projection
     vis.projection = d3.geo.mercator().center([-74.0059, 40.7128])
@@ -347,10 +347,11 @@ AirBnBNodeMap.prototype.colorNodes = function () {
             }
             else if (vis.val == "illegal") {
                 var extent = ["Legal", "Illegal"];
-                return extent;
+                return extent[i];
             }
             else {
                 var extent = vis.colorScale.invertExtent(d);
+                console.log(extent);
                 //extent will be a two-element array, format it however you want:
                 var format = d3.format("0.2f");
                 return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
@@ -371,10 +372,6 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
 
     // print number of listings to listing-count
     document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
-
-    // vis.colorScale = d3.scale.quantize()
-    //     .domain(vis.getExtent())
-    //     .range(vis.getColorScheme());
 
     vis.svg.selectAll(".node").remove();
 
@@ -413,8 +410,6 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
                 .style("stroke", "none");
             vis.tip.hide(d);
         });
-
-    console.log(vis.zoom_stat);
 
     if (vis.zoom_stat == "True") {
         var e = vis.boroughMap.features.filter(function (n, i) {
