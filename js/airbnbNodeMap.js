@@ -191,10 +191,12 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     vis.legendBox = vis.svg.append('rect')
         .attr('class', 'legendBox')
-        .attr('width', 140)
+        .attr('width', 135)
         .attr('height', 190)
         .attr('fill', 'white')
-        .attr('y', 190);
+        .attr('y', 190)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 1.5);
 
     // append legend
     vis.legend = vis.svg.selectAll('g.legendEntry')
@@ -203,12 +205,13 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr('class', 'legendEntry');
 
     vis.legend
-        .append('circle')
-        .attr("cx", 10)
-        .attr("cy", function(d, i) {
-            return i * 20 + 205;
+        .append('rect')
+        .attr("x", 5)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
         })
-        .attr("r", 5)
+        .attr("width", 10)
+        .attr("height", 10)
         .style("stroke", "black")
         .style("stroke-width", 1)
         .style("fill", function(d){return d;});
@@ -338,12 +341,13 @@ AirBnBNodeMap.prototype.colorNodes = function () {
         .attr('class', 'legendEntry');
 
     vis.legend
-        .append('circle')
-        .attr("cx", 10)
-        .attr("cy", function(d, i) {
-            return i * 20 + 205;
+        .append('rect')
+        .attr("x", 5)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
         })
-        .attr("r", 5)
+        .attr("width", 10)
+        .attr("height", 10)
         .style("stroke", "black")
         .style("stroke-width", 1)
         .style("fill", function(d){return d;});
