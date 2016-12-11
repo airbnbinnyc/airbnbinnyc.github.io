@@ -224,6 +224,32 @@ nav.horizontal-page-navigation .current a {
     pointer-events: none;
 }
 
+#listing-density-info {
+    color: #41898B;
+    font-size: 20px;
+    text-anchor: right;
+}
+
+.hoverinfo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 15px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.hoverinfo p {
+    display: none;
+    color: #eeeeee;
+}
+
+.hoverinfo:hover p {
+    background-color: #41898B;
+    display: block;
+    z-index: -1;
+}
+
 
 /** TIMELINE **/
 

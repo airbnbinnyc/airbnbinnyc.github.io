@@ -90,7 +90,6 @@ MapLineGraph.prototype.initVis = function() {
         .attr("font-size", 15)
         .text("Inflation-Adjusted Median Housing Prices by NYC Region");
 
-
     vis.initialWrangle();
     vis.wrangleData_borough();
 };
@@ -253,3 +252,5 @@ MapLineGraph.prototype.updateVis = function() {
             .style("opacity", 0);
     }
 };
+
+
