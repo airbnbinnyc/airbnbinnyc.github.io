@@ -22,7 +22,6 @@ var colors = {
 };
 
 
-
 function loadData() {
 
     queue()
@@ -59,11 +58,22 @@ function loadData() {
 
             // create a list with all neighborhood names
             var neighborhoodList = [];
-            neighborhoodMap.features.forEach(function(d) {
+
+            // uses all neighborhoods in shape file????
+            // neighborhoodMap.features.forEach(function(d) {
+            //     neighborhoodList.push(
+            //         {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
+            //         value: d.properties.neighbourhood});
+            // });
+            //
+            //
+
+            // only allows for neighborhoods we have data for
+            for (var key in neighborhood_dict) {
                 neighborhoodList.push(
-                    {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
-                    value: d.properties.neighbourhood});
-            });
+                    {label: key + ", " + neighborhood_dict[key].borough,
+                        value: key});
+            }
 
             // make autocompleting input for neighborhood selection
             var input = document.getElementById("neighborhood-select");
@@ -104,7 +114,7 @@ function loadData() {
             // Listen for the event and access the neighborhood value
             input.addEventListener("awesomplete-selectcomplete", function (e) {
                 console.log(e.text.value);
-                mapLineGraph.wrangleData();
+                mapLineGraph.wrangleData_neighborhood();
                 mapAreaChart.zoomNeighborhood(e.text.value);
             }, false);
         });
@@ -150,10 +160,12 @@ function dataManipulation() {
 function zoom() {
     airbnbNodeMap.zoom();
     mapAreaChart.zoomBorough();
+    mapLineGraph.wrangleData_borough();
 }
 
 function zoomNeighborhood() {
     mapAreaChart.zoomNeighborhood();
+    mapLineGraph.wrangleData_neighborhood();
 }
 
 /*

@@ -327,13 +327,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     // ordinal color legend
     vis.legend
-        .labelFormat(function(x) {
-            if (selected_color_type == "percent_illegal") {
-                return d3.format(".0%")(x);
-            } else {
-                return d3.format(".0f")(x);
-            }
-        })
+        .labelFormat(d3.format(".0f"))
         .scale(vis.color_scale_ord);
 
     vis.key

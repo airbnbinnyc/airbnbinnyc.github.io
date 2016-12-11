@@ -51,6 +51,7 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
         // update what the selected date is
         vis.selDate = vis.yyyymmdd(vis.dates[+value]);
     });
+    console.log(vis.slider);
 
     this.initVis();
 };
