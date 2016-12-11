@@ -182,9 +182,9 @@
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
             <div id="vis4">
                 <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <form id="neighborhood-line-data-type" onchange=neighborhoodrent.wrangleData()>
-                        <label>Data to display (y-axis):</label>
+                        <label>Data to display (y-axis):<br></label>
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-primary active">
                                 <input type="radio" name="options" value="abs_price" autocomplete="off" checked> Price
@@ -195,7 +195,8 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-sm-5">
+                <div class="col-sm-9">
+                    <div class="col-sm-6">
                     <form id="neighborhood-line-color-type" onchange=neighborhoodrent.updateVis()>
                         <label>Color lines by:</label>
                         <div class="btn-group" data-toggle="buttons">
@@ -210,13 +211,18 @@
                             </label>
                         </div>
                     </form>
-                    <div class="hoverinfo"> <span id="listing-density-info" class="glyphicon glyphicon-question-sign"> </span>
-                        <p> "Listing density" refers to the number of <br>
-                            listings on the Airbnb website at the most <br>
-                            recent scrape date, normalized by the total <br>
-                            number of residential units in the region.</p>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="hoverinfo"> <span id="listing-density-info" class="glyphicon glyphicon-question-sign"> </span>
+                            <p> "Listing density" refers to the <br>
+                                number of listings on the Airbnb <br>
+                                website at the most recent scrape <br>
+                                date, normalized by the total  <br>
+                                residential units in the region.</p>
+                        </div>
                     </div>
                 </div>
+
                 </div>
                 <div class="col-sm-10">
                     <div id="neighborhood-line-chart-area" class="row"></div>
