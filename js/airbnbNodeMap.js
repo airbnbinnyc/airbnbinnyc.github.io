@@ -211,9 +211,10 @@ AirBnBNodeMap.prototype.initVis = function() {
         .text("Listing");
 
 
-    // Edit tip **TO DO**
+    // Tip text
     vis.tip.html(function(d) {
-        return "<strong>Room type: </strong>" + d.room_type;
+        return ("<strong>Room type: </strong>" + d.room_type + "<br>"
+            + "<strong>Price: $</strong>" + d.price);
     });
 
 
@@ -507,7 +508,4 @@ AirBnBNodeMap.prototype.zoom = function() {
         .attr("transform", function(d) {
             return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
         });
-
-    // REDRAW TIPS **TO DO**
-
 };
