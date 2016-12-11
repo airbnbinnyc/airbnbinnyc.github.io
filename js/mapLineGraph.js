@@ -248,6 +248,14 @@ MapLineGraph.prototype.updateVis = function() {
             .duration(500)
             .style("opacity", 0);
     }
+
+
+    document.getElementById('slider').addEventListener('click', function() {
+        vis.date = airbnbNodeMap.selDate;
+
+        vis.updateVis();
+
+    });
 };
 
 

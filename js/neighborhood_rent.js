@@ -28,11 +28,11 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     // Set up SVG
-    vis.margin = {top: 140, right: 40, bottom: 60, left: 80};
+    vis.margin = {top: 20, right: 40, bottom: 60, left: 80};
 
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 600 - vis.margin.top - vis.margin.bottom;
+        vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
