@@ -356,3 +356,9 @@ nav.horizontal-page-navigation .current a {
     width: 300px;
     border-radius: 2px;
 }
+
+/* Legend */
+g.legendEntry {
+    background-color: white;
+    text-color: blue;
+}
