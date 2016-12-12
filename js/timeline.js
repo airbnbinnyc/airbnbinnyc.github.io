@@ -43,7 +43,6 @@ Timeline.prototype.initVis = function() {
 
     // Initialize tooltip
     vis.tip = d3.tip()
-        //.attr('class', 'd3-tip')
         .attr("class", "timelineTip");
 
     // Invoke the tip in the context of your visualization
