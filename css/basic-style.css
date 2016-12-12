@@ -1,71 +1,16 @@
 /** BODY **/
-
-/* toggle button colors */
-.btn-primary {
-    background-color: #4EA4A6;
-    border-color: #41898B;
+.section {
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
-
-.btn-primary.active {
-    background-color: #007D8C;
-    border-color: #005C66;
+#section0, #section2, #section4, #section6, #section8, #section10 {
+    background-color: #ffc0be;
 }
 
-.btn-primary:hover {
-    background-color: #006b7b;
-    border-color: #004852;
+#section1, #section3, #section5, #section7, #section9, #section11 {
+    background-color: #c7fcff;
 }
-
-
-.btn-primary.active:hover {
-    background-color: #005C66;
-    border-color: #003d47;
-}
-
-#nav-header {
-    background-color: #be504f;
-    font-weight: 400;
-}
-
-#video-div {
-    margin: 0 auto;
-    display: table;
-}
-
-.nav a {
-    color: #ffffff;
-}
-
-.nav {
-    color: #ffffff;
-}
-
-#footer {
-    background-color: #007D8C;
-    font-weight: 400;
-}
-
-.nav div {
-    position: absolute;
-}
-
-.nav span {
-    margin-right: 50px;
-    font-size: 15px;
-}
-
-.nav .left {
-    left: 0;
-    top: -25px;
-}
-
-.nav #right {
-    text-align: right;
-    right: 210px;
-    top: -35px;
-}
-
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -112,6 +57,7 @@ p {
     margin-bottom: 10px;
 }
 
+/* TABLE */
 th {
     text-align: center;
 }
@@ -125,17 +71,72 @@ td {
     border-right: 1px solid black;
 }
 
-.section {
-    padding-left: 100px;
-    padding-right: 100px;
+
+/* toggle button colors */
+.btn-primary {
+    background-color: #4EA4A6;
+    border-color: #41898B;
 }
 
-#section0, #section2, #section4, #section6, #section8, #section10 {
-    background-color: #ffc0be;
+
+.btn-primary.active {
+    background-color: #007D8C;
+    border-color: #005C66;
 }
 
-#section1, #section3, #section5, #section7, #section9, #section11 {
-    background-color: #c7fcff;
+.btn-primary:hover {
+    background-color: #006b7b;
+    border-color: #004852;
+}
+
+
+.btn-primary.active:hover {
+    background-color: #005C66;
+    border-color: #003d47;
+}
+
+/* HEADER/FOOTER */
+.nav a {
+    color: #ffffff;
+}
+
+.nav {
+    color: #ffffff;
+}
+#nav-header {
+    background-color: #be504f;
+    font-weight: 400;
+}
+
+#footer {
+    background-color: #007D8C;
+    font-weight: 400;
+}
+
+.nav div {
+    position: absolute;
+}
+
+.nav span {
+    margin-right: 50px;
+    font-size: 15px;
+}
+
+.nav .left {
+    left: 0;
+    top: -25px;
+}
+
+.nav #right {
+    text-align: right;
+    right: 210px;
+    top: -35px;
+}
+
+/* MISC DIV ALIGNMENT */
+#video-div {
+    margin: 0 auto;
+    display: table;
 }
 
 .row {
