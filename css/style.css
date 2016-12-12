@@ -15,8 +15,9 @@
     display: inline;
 }
 
-#borough-checkboxes label {
+#borough-checkboxes div label {
     padding-left: 2px;
+    font-weight: normal;
 }
 
 #footer {
