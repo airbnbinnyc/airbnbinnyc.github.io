@@ -129,7 +129,8 @@ Timeline.prototype.updateVis = function() {
     vis.eventImg
         .enter()
         .append("a")
-        .attr("xlink:href", function(d) { return d.url;});
+        .attr("xlink:href", function(d) { return d.url;})
+        .attr("target", "_blank");
 
     vis.eventImg
         .append("image")
