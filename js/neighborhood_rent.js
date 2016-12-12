@@ -100,7 +100,7 @@ NeighborhoodLine.prototype.initVis = function(){
 
     vis.key = d3.select("#neighborhood-line-legend")
         .append("svg")
-        .attr("width", 100 + vis.legend_margin.left + vis.legend_margin.right )
+        .attr("width", 160 + vis.legend_margin.left + vis.legend_margin.right )
         .attr("height", 100 + vis.legend_margin.top + vis.legend_margin.bottom )
         .append("g")
         .attr("class", "legendQuant") // only needed for ordinal legend
@@ -295,7 +295,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     // ordinal color legend
     vis.legend
-        .labelFormat(d3.format(".0f"))
+        .labelFormat(d3.format(".00f"))
         .scale(vis.color_scale_ord)
         .shapeWidth(20)
         .shapeHeight(20)
