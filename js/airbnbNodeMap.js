@@ -141,7 +141,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
     // create color scale for nodes
-    vis.colorScale = d3.scale.quantize()
+    vis.colorScale = d3.scale.threshold()
         .domain(vis.getExtent())
         .range(vis.getColorScheme());
 
@@ -286,7 +286,7 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
         var color = ['#8da0cb', colors.red];
     }
     else {
-        var color = colorbrewer.Reds[9];
+        var color = colorbrewer.Reds[6];
     }
     return color;
 
@@ -303,7 +303,7 @@ AirBnBNodeMap.prototype.getExtent = function() {
         var extent = [0, 1];
     }
     else {
-        var extent = [0, 50, 100, 150, 200, 250, 300];
+        var extent = [50, 100, 150, 200, 300, 500];
     }
 
     return extent;
@@ -329,49 +329,49 @@ AirBnBNodeMap.prototype.colorNodes = function () {
             }
         });
 
-    // redraw legend
-    vis.svg.selectAll(".legendEntry").remove();
-
-    // append legend
-    vis.legend = vis.svg.selectAll('g.legendEntry')
-        .data(vis.colorScale.range())
-        .enter().append('g')
-        .attr('class', 'legendEntry');
-
-    vis.legend
-        .append('rect')
-        .attr("x", 5)
-        .attr("y", function(d, i) {
-            return i * 20 + 200;
-        })
-        .attr("width", 10)
-        .attr("height", 10)
-        .style("stroke", "black")
-        .style("stroke-width", 1)
-        .style("fill", function(d){return d;});
-
-    //the data objects are the fill colors
-    vis.legend
-        .append('text')
-        .attr("x", 20)
-        .attr("y", function(d, i) {
-            return i * 20 + 210;
-        })
-        .text(function(d,i) {
-            if (vis.val == "None") {
-                return "Listing";
-            }
-            else if (vis.val == "illegal") {
-                var extent = ["Legal", "Illegal"];
-                return extent[i];
-            }
-            else {
-                var extent = vis.colorScale.invertExtent(d);
-                //extent will be a two-element array, format it however you want:
-                var format = d3.format("0.2f");
-                return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
-            }
-        });
+    // // redraw legend
+    // vis.svg.selectAll(".legendEntry").remove();
+    //
+    // // append legend
+    // vis.legend = vis.svg.selectAll('g.legendEntry')
+    //     .data(vis.colorScale.range())
+    //     .enter().append('g')
+    //     .attr('class', 'legendEntry');
+    //
+    // vis.legend
+    //     .append('rect')
+    //     .attr("x", 5)
+    //     .attr("y", function(d, i) {
+    //         return i * 20 + 200;
+    //     })
+    //     .attr("width", 10)
+    //     .attr("height", 10)
+    //     .style("stroke", "black")
+    //     .style("stroke-width", 1)
+    //     .style("fill", function(d){return d;});
+    //
+    // //the data objects are the fill colors
+    // vis.legend
+    //     .append('text')
+    //     .attr("x", 20)
+    //     .attr("y", function(d, i) {
+    //         return i * 20 + 210;
+    //     })
+    //     .text(function(d,i) {
+    //         if (vis.val == "None") {
+    //             return "Listing";
+    //         }
+    //         else if (vis.val == "illegal") {
+    //             var extent = ["Legal", "Illegal"];
+    //             return extent[i];
+    //         }
+    //         else {
+    //             var extent = vis.colorScale.invertExtent(d);
+    //             //extent will be a two-element array, format it however you want:
+    //             var format = d3.format("0.2f");
+    //             return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+    //         }
+    //     });
 
 
     vis.updateVis();
