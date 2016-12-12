@@ -6,12 +6,10 @@ var taxRevenue,
     mapAreaChart;
 var neighborhood_dict = {};
 
-
-
 // adds pretty alert message
 swal({
     title: "Please be patient!",
-    text: "We have a lot of data. \nThe page may take a few seconds to load.",
+    text: "We have a lot of data.\nThe page may take a few seconds to load.",
     type: "warning",
     allowEscapeKey: true,
     showConfirmButton: false
