@@ -87,7 +87,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // NODE MAP //
     vis.width = $("#" + vis.parentElement).width();
-    vis.height = 500;
+    vis.height = 480;
 
     vis.svg = d3.select("#airbnb-map").append("svg")
         .attr("width", vis.width)
@@ -102,7 +102,7 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.svg.call(vis.tip);
 
     // create a projection
-    var scale  = 50000;
+    var scale  = 48000;
     var offset = [vis.width/2, vis.height/2];
 
     // create new path
@@ -238,6 +238,8 @@ AirBnBNodeMap.prototype.initVis = function() {
         + "<strong>Price: $</strong>" + d.price);
     });
 
+    document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
+
     document.getElementById('slider').addEventListener('mouseup', function(){
         // wait until new dataset is loaded before drawing map
         $.holdReady(true);
@@ -296,13 +298,15 @@ AirBnBNodeMap.prototype.getExtent = function() {
         vis.extent = [0.1, 1.1];
     }
     else {
-        vis.extent = [50, 100, 150, 200, 300, 500];
+        vis.extent = [50, 100, 150, 200, 300, 100000];
     }
 
     return vis.extent;
 };
 
+// TODO
 AirBnBNodeMap.prototype.colorNodes = function () {
+
     var vis = this;
 
     // update colorScale
@@ -379,10 +383,12 @@ AirBnBNodeMap.prototype.colorNodes = function () {
                 var extent = vis.colorScale.invertExtent(d);
                 //extent will be a two-element array, format it however you want:
                 var format = d3.format("0.2f");
-                if (extent[0]) {
+                if (extent[0] && (extent[1] !== 100000)) {
                     return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
                 }
-                else {
+                else if (extent[1] == 100000) {
+                    return "$" + format(Math.round(+extent[0])) + "+";
+                } else {
                     return "$0 - $"+ format(Math.round(+extent[1]));
                 }
             }
@@ -394,6 +400,7 @@ AirBnBNodeMap.prototype.colorNodes = function () {
 
 // function to redraw the nodes if time has changed
 
+// TODO - called by above
 AirBnBNodeMap.prototype.updateVis = function() {
 
     var vis = this;
@@ -495,6 +502,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
  *  The zooming into neighborhood function
  */
 
+// TODO
 AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var vis = this;
@@ -615,6 +623,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
 
 // function for zooming into borough
+// TODO
 AirBnBNodeMap.prototype.zoomBor = function(selBor) {
     var vis = this;
 
@@ -704,6 +713,7 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
 
     // update html
     document.getElementById('listing-count').innerHTML = (vis.num_listings).toString();
+
 };
 
 // function for zooming out
