@@ -285,7 +285,7 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
         var color = ['#007D8C'];
     }
     else if (vis.val == "illegal") {
-        var color = ['white', 'black'];
+        var color = ['#8da0cb', colors.red];
     }
     else {
         var color = colorbrewer.Reds[9];
@@ -460,7 +460,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         d3.selectAll("circle")
             .filter(function(d) {
                 // select all nodes not in selected borough
-                if (d.borough != vis.sel_bor) {
+                if (d.neighborhood != vis.sel_neigh) {
                     return true;
                 }
                 else {
@@ -477,16 +477,25 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
 
 
 /*
- *  The zooming function
+ *  The zooming into neighborhood function
  */
 
-AirBnBNodeMap.prototype.zoom = function() {
+AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var vis = this;
 
-    var box = document.getElementById("borough_sel");
+    // var box = document.getElementById("borough_sel");
+    //
+    // vis.sel_bor = box.options[box.selectedIndex].value;
 
-    vis.sel_bor = box.options[box.selectedIndex].value;
+    vis.sel_neigh = selNeigh;
+
+    var f = vis.neighborhoodMap.features.filter(function (n, i) {
+        return n.properties.neighbourhood === vis.sel_neigh;
+    });
+
+    vis.sel_bor = f[0].properties.neighbourhood_group;
+
 
     var e = vis.boroughMap.features.filter(function (n, i) {
         return n.properties.borough === vis.sel_bor;
@@ -503,6 +512,8 @@ AirBnBNodeMap.prototype.zoom = function() {
     }
 
     e = e[max_ind];
+
+    console.log(e);
 
     var x, y, k;
 
@@ -540,6 +551,8 @@ AirBnBNodeMap.prototype.zoom = function() {
         .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
         .style("stroke-width", 1.5 / k + "px");
 
+    // console.log(vis.neigh);
+
 
     // REDRAW NODES
     vis.node.transition()
@@ -554,7 +567,7 @@ AirBnBNodeMap.prototype.zoom = function() {
             // if user is zoomed in
             if (vis.zoom_stat == true) {
                 // select all nodes not in selected borough
-                if (d.borough != vis.sel_bor) {
+                if (d.neighborhood != vis.sel_neigh) {
                     return true;
                 }
                 else {
@@ -575,7 +588,7 @@ AirBnBNodeMap.prototype.zoom = function() {
             // if user is zoomed in
             if (vis.zoom_stat == true) {
                 // select all nodes IN selected borough
-                if (d.borough != vis.sel_bor) {
+                if (d.neighborhood != vis.sel_neigh) {
                     return false;
                 }
                 else {

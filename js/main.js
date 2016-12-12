@@ -116,6 +116,7 @@ function loadData() {
                 console.log(e.text.value);
                 mapLineGraph.wrangleData_neighborhood();
                 mapAreaChart.zoomNeighborhood(e.text.value);
+                airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
         });
 
@@ -163,7 +164,11 @@ function zoom() {
     mapLineGraph.wrangleData_borough();
 }
 
+
+// is this doing things? //
 function zoomNeighborhood() {
+    console.log('neigh zoom');
+    airbnbNodeMap.zoom();
     mapAreaChart.zoomNeighborhood();
     mapLineGraph.wrangleData_neighborhood();
 }
