@@ -1,6 +1,3 @@
-/**
- * Created by nbw on 11/24/16.
- */
 
 NeighborhoodLine = function(_parentElement, _raw_price_data, _raw_change_data, _neighborhood_dict){
     this.parentElement = _parentElement;
@@ -9,30 +6,30 @@ NeighborhoodLine = function(_parentElement, _raw_price_data, _raw_change_data, _
     this.displayData = [];
     this.neighborhood_dict = _neighborhood_dict;
 
+    // this specifies the text for the colortype in the tooltip based on what has been selected
     this.tooltip_colortype_dict = {"percent_illegal": "Percent of listings that <br/> are illegal:    ",
         "proportion_of_posts": "Listings per 10,000 <br/> Res. Units: ",
-        "proportion_of_illegal_posts": "Illegal listings per <br/> 10,000 Res. Units: "}
+        "proportion_of_illegal_posts": "Illegal listings per <br/> 10,000 Res. Units: "};
 
     this.initVis();
-}
+};
 
 
 
 /*
- * Initialize visualization (static content; e.g. SVG area, axes)
+ * INITIALIZE VISUALIZATION
  */
 
 NeighborhoodLine.prototype.initVis = function(){
     var vis = this;
 
 
-
     // Set up SVG
     vis.margin = {top: 100, right: 40, bottom: 60, left: 80};
 
 
-    vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 500 - vis.margin.top - vis.margin.bottom;
+    vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right;
+    vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -47,13 +44,7 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.x = d3.time.scale().range([0, vis.width]);
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
-    vis.color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
     vis.color_scale_ord = d3.scale.quantile()
-        // shades of Airbnb red
-           // .range(["#FFCFCC", "#FF9A99", "#F16664", "#EE3C3B", "#8C090F"]);
-
-        // originally i used a set of colorbrewer colors
-        //.range(colorbrewer.OrRd[7].slice(2));
         .range(colorbrewer.PuBuGn[6].slice(1));
 
     vis.line = d3.svg.line()
@@ -106,9 +97,6 @@ NeighborhoodLine.prototype.initVis = function(){
     // Initialize legend
     vis.legend_margin = {top: 80, right: 0, bottom: 100, left: 0};
 
-    // vis.legend_width = $("#neighborhood-line-legend").width()/10 ,
-    //     vis.legend_height = 300 - vis.legend_margin.top - vis.legend_margin.bottom;
-
 
     vis.key = d3.select("#neighborhood-line-legend")
         .append("svg")
@@ -139,29 +127,6 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("dy", ".71em")
         .style("text-anchor", "start");
 
-
-    // this makes the original continuous legend
-/*    vis.legend = vis.key.append("defs")
-        .append("svg:linearGradient")
-        .attr("id", "gradient")
-        .attr("x1", "100%")
-        .attr("y1", "0%")
-        .attr("x2", "100%")
-        .attr("y2", "100%")
-        .attr("spreadMethod", "pad");
-
-    vis.highcolor = vis.legend.append("stop")
-        .attr("offset", "0%")
-        .attr("stop-color", "white")
-        .attr("stop-opacity", .8);
-
-    vis.lowcolor = vis.legend.append("stop")
-        .attr("offset", "100%")
-        .attr("stop-color", "black")
-        .attr("stop-opacity", .8);*/
-
-
-
     vis.initialWrangleData();
     vis.wrangleData();
 };
@@ -172,6 +137,8 @@ NeighborhoodLine.prototype.initVis = function(){
 // Reformat all data -- this only needs to be done once
 NeighborhoodLine.prototype.initialWrangleData = function(){
     var vis = this;
+
+    // creates an empty dictionary: will be filled in with {"abs_price": ... , "percent_change": ...}
     vis.neighborhoods = {};
 
     var dtypes = ["abs_price", "percent_change"];
@@ -180,7 +147,8 @@ NeighborhoodLine.prototype.initialWrangleData = function(){
         vis.neighborhoods[dtypes[idx]] = [];
         for (var prop in dtypes_data[idx][0]) {
             if (prop != "Date") {
-
+                // generates an array of id,values pairs
+                // (id refers to neighborhood name, values refers a list of date, price or percent change pairs)
                 vis.neighborhoods[dtypes[idx]].push(
                     {
                         id: prop,
@@ -202,38 +170,36 @@ NeighborhoodLine.prototype.initialWrangleData = function(){
 NeighborhoodLine.prototype.wrangleData = function(){
     var vis = this;
 
+
+    // This function checks to see if a datapoint (neighborhood)  is in as selected borough
+    var in_borough = function(datum) {
+        return vis.selected_boroughs[vis.neighborhood_dict[datum.id].borough];
+    };
+
+
     // Get selected boroughs
     vis.selected_boroughs = {};
-
 
     $('.checkbox').each(function(){
         vis.selected_boroughs[($(this).attr("value"))] = $(this).is(":checked")
     });
 
-
-    var in_borough = function(datum) {
-            return vis.selected_boroughs[vis.neighborhood_dict[datum.id].borough];
-    };
-
     vis.all_boroughs_selected = $("#select_all").is(":checked");
+
 
     // Filter for selected datatype
     vis.selected_dtype = $('input[name="options"]:checked', '#neighborhood-line-data-type').val();
 
 
-
+    // based on checkboxes, filter the data to contain just selected boroughs
     if (vis.all_boroughs_selected) {vis.displayData = vis.neighborhoods[vis.selected_dtype]}
     else {vis.displayData = vis.neighborhoods[vis.selected_dtype].filter(in_borough)}
-
 
     vis.updateVis();
 };
 
 
 
-/*
- * The drawing function - should use the D3 update sequence (enter, update, exit)
- */
 
 NeighborhoodLine.prototype.updateVis = function(){
     var vis = this;
@@ -247,9 +213,8 @@ NeighborhoodLine.prototype.updateVis = function(){
         d3.max(vis.displayData, function(c) { return d3.max(c.values, function(d) { return d.price; }); })
     ]);
 
-
+    // get selected color type to display correct data values
     var selected_color_type = $('input[name="options"]:checked', '#neighborhood-line-color-type').val();
-
 
     // need to get a list of all the values so that we can pass it to the quantile scale
     var vals = [];
@@ -264,8 +229,7 @@ NeighborhoodLine.prototype.updateVis = function(){
     // set domain of quantile scale
     vis.color_scale_ord.domain(vals);
 
-    vis.color_scale.domain(d3.extent(vis.displayData, function(d) {return vis.neighborhood_dict[d.id][selected_color_type]}));
-
+    // update axes
     vis.svg.append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + vis.height +10 +")")
@@ -278,7 +242,7 @@ NeighborhoodLine.prototype.updateVis = function(){
         else {yaxlabel.text("Median Rental Prices ($/month)")}
 
 
-
+    // update lines
     vis.dataline = d3.svg.line()
         .x(function(d) { return vis.x(d.date); })
         .y(function(d) { return vis.y(d.price); })
@@ -295,7 +259,7 @@ NeighborhoodLine.prototype.updateVis = function(){
         .attr("class", "n-line");
 
 
-
+    // color lines by legend values and add interactions for hovering
     vis.neighborhood
         .attr("d", function(d) { return vis.dataline(d.values); })
         .style("stroke", function(d) { return vis.color_scale_ord(vis.neighborhood_dict[d.id][selected_color_type]); })
@@ -303,6 +267,7 @@ NeighborhoodLine.prototype.updateVis = function(){
         .on("mouseout", mouseout);
 
 
+    // on mouseover, we decrease every other line's opacity and add a tooltip
     function mouseover(d, i) {
         vis.neighborhood.classed("n-line-unhovered", true);
         d3.select(this).attr("class", "n-line-hovered");
@@ -318,6 +283,7 @@ NeighborhoodLine.prototype.updateVis = function(){
 
     }
 
+    // on mouseout, we revert all the lines back to normal and remove the tooltip
     function mouseout(d,i) {
         vis.neighborhood.classed("n-line-unhovered", false);
         d3.select(this).attr("class", "n-line");
@@ -359,56 +325,6 @@ NeighborhoodLine.prototype.updateVis = function(){
                 }
             });
 
-// for original continuous legend
-/*    // UPDATE LEGEND!
-    vis.highcolor.attr("stop-color", vis.color_scale.range()[1]);
-
-    vis.lowcolor.attr("stop-color", vis.color_scale.range()[0]);
-
-    // add legend rectangle and fill with gradient
-    vis.key.append("rect")
-        .transition()
-        .attr("x", vis.legend_margin.left)
-        .attr("y", vis.legend_margin.top)
-        .attr("width", vis.legend_width)
-        .attr("height", vis.legend_height)
-        .style("stroke", "#000")
-        .style("fill", "url(#gradient)");
-
-    // create a scale to map from data values to legend in order to
-    vis.legendy = d3.scale.linear().range([vis.legend_height, 0])
-        .domain(d3.extent(vis.displayData, function(d) {return vis.neighborhood_dict[d.id][selected_color_type]}));
-
-    vis.legendyAxis = d3.svg.axis()
-        .scale(vis.legendy)
-        .orient("right")
-        .tickSize(5)
-
-    //remove outdated axis values
-    d3.select("#legend-axis").remove()
-
-    // add axis
-    vis.key.append("g")
-        .attr("id", "legend-axis")
-        .attr("class", "y axis")
-        .attr("transform", "translate(" + (vis.legend_margin.left + vis.legend_width) + "," + vis.legend_margin.top + ")")
-        .transition()
-        .call(vis.legendyAxis);
-
-
-    // add a legend title based on selected values
-    $(".legend-title").html("");
-    vis.legendlabels =  vis.key
-        .append("text")
-        .attr("class", "legend-title")
-        .attr("x", -vis.legend_height)
-        .attr("y", -vis.legend_margin.top)
-        .attr("dy", ".71em")
-        .style("text-anchor", "start")
-        .attr("transform", "rotate(-90)")
-        .text("Percent of Airbnb listings that were illegal");
-
-    */
-}
+};
 
 
