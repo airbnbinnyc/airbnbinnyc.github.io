@@ -539,27 +539,12 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var x, y, k;
 
-    if (e && vis.centered !== e) {
-        var centroid = vis.path.centroid(e);
-        x = centroid[0];
-        y = centroid[1];
-        k = 2;
-        vis.centered = e;
-        vis.zoom_stat = true;
-    } else {
-        x = vis.width / 2;
-        y = vis.height / 2;
-        k = 1;
-        vis.centered = null;
-        vis.zoom_stat = false;
-
-        // make nodes visible again when zooming out
-        console.log('zoom out');
-        d3.selectAll("circle")
-            .transition()
-            .duration(750)
-            .attr("opacity", 0.2);
-    }
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
 
     // zoom into neighborhoods
     vis.neigh.transition()
@@ -661,27 +646,12 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
 
     var x, y, k;
 
-    if (e && vis.centered !== e) {
-        var centroid = vis.path.centroid(e);
-        x = centroid[0];
-        y = centroid[1];
-        k = 2;
-        vis.centered = e;
-        vis.zoom_stat = true;
-    } else {
-        x = vis.width / 2;
-        y = vis.height / 2;
-        k = 1;
-        vis.centered = null;
-        vis.zoom_stat = false;
-
-        // make nodes visible again when zooming out
-        console.log('zoom out');
-        d3.selectAll("circle")
-            .transition()
-            .duration(750)
-            .attr("opacity", 0.2);
-    }
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
 
     // zoom into neighborhoods
     vis.neigh.transition()
