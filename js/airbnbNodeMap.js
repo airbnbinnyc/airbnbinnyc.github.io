@@ -486,9 +486,11 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var vis = this;
 
-    // var box = document.getElementById("borough_sel");
-    //
-    // vis.sel_bor = box.options[box.selectedIndex].value;
+    // check if selected option is a borough
+    var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+    if (borList.indexOf(selNeigh) >= 0) {
+        vis.zoomBor(selNeigh);
+    }
 
     vis.sel_neigh = selNeigh;
 
@@ -615,4 +617,14 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         .transition()
         .duration(750)
         .attr("opacity", 0.2);
+};
+
+
+// function for zooming into borough TODO
+AirBnBNodeMap.prototype.zoomBor = function(selBor) {
+    var vis = this;
+
+    vis.selBor = selBor;
+
+
 };

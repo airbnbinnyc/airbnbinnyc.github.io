@@ -85,6 +85,17 @@ function loadData() {
                         value: key});
             }
 
+            // create a list of boroughs
+            var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+
+            // add boroughs as zoom options
+            for (var key in borList) {
+                neighborhoodList.push(
+                    {label: borList[key] + " (All)",
+                        value: borList[key]}
+                )
+            }
+
             // make autocompleting input for neighborhood selection
             var input = document.getElementById("neighborhood-select");
             var selector = new Awesomplete(input, {
