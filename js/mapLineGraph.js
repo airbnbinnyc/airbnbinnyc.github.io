@@ -25,6 +25,8 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
 MapLineGraph.prototype.initVis = function() {
     var vis = this;
 
+    vis.date = airbnbNodeMap.selDate;
+
     vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
@@ -42,6 +44,7 @@ MapLineGraph.prototype.initVis = function() {
     vis.y = d3.scale.linear().range([vis.height, 0]);
 
     vis.parseTime = d3.time.format("%Y-%m");
+    vis.sliderParseTime = d3.time.format("%Y-%m-%d");
 
 
     vis.line = d3.svg.line()
@@ -249,12 +252,26 @@ MapLineGraph.prototype.updateVis = function() {
             .style("opacity", 0);
     }
 
+    vis.svg.selectAll(".y").remove();
+
+    vis.svg.append("line")
+        .attr("class", "y")
+        .style("fill", "none")
+        .style("stroke", "black")
+        .attr("x1", vis.x(vis.sliderParseTime.parse(vis.date)))
+        .attr("x2", vis.x(vis.sliderParseTime.parse(vis.date)))
+        .attr("y1", 0)
+        .attr("y2", vis.height);
 
     document.getElementById('slider').addEventListener('click', function() {
         vis.date = airbnbNodeMap.selDate;
 
+        console.log("hi");
+        console.log(vis.sliderParseTime.parse(vis.date));
         vis.updateVis();
 
+        // vis.svg.select("line.y")
+        //     .attr("transform", "translate(" + vis.x(vis.parseTime.parse(vis.date)) + ", 0)");
     });
 };
 
