@@ -165,6 +165,7 @@ function loadData() {
 
             $("#zoom-out-button").click(function () {
                 mapLineGraph.wrangleData_all();
+                mapAreaChart.zoomTotal();
 
             });
 
@@ -208,7 +209,6 @@ function dataManipulation() {
 // update airbnb node map to zoom into borough
 function zoom() {
     airbnbNodeMap.zoom();
-    mapAreaChart.zoomBorough();
     mapLineGraph.wrangleData_borough();
 }
 
@@ -217,7 +217,6 @@ function zoom() {
 function zoomNeighborhood() {
     console.log('neigh zoom');
     airbnbNodeMap.zoom();
-    mapAreaChart.zoomNeighborhood();
     mapLineGraph.wrangleData_neighborhood();
 }
 
