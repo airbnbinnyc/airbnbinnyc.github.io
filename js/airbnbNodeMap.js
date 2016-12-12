@@ -280,15 +280,15 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var color = ['#007D8C'];
+        vis.color = ['#007D8C'];
     }
     else if (vis.val == "illegal") {
-        var color = ['#8da0cb', colors.red];
+        vis.color = ['#8da0cb', colors.red];
     }
     else {
-        var color = colorbrewer.Reds[6];
+        vis.color = colorbrewer.Reds[6];
     }
-    return color;
+    return vis.color;
 
 };
 
@@ -297,16 +297,17 @@ AirBnBNodeMap.prototype.getExtent = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var extent = [0, 0];
+        vis.extent = [0, 0];
     }
+    // Due to threshold scale, domain must be higher than values in data
     else if (vis.val == "illegal") {
-        var extent = [0, 1];
+        vis.extent = [0.1, 1.1];
     }
     else {
-        var extent = [50, 100, 150, 200, 300, 500];
+        vis.extent = [50, 100, 150, 200, 300, 500];
     }
 
-    return extent;
+    return vis.extent;
 };
 
 AirBnBNodeMap.prototype.colorNodes = function () {
@@ -316,6 +317,9 @@ AirBnBNodeMap.prototype.colorNodes = function () {
     vis.colorScale
         .domain(vis.getExtent())
         .range(vis.getColorScheme());
+
+    console.log(vis.color);
+    console.log(vis.extent);
 
     // recolor nodes
     vis.circles.transition()

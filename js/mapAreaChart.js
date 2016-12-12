@@ -25,8 +25,6 @@ MapAreaChart.prototype.initVis = function() {
 
     vis.date = airbnbNodeMap.selDate;
 
-    console.log(vis.neighborhoodData);
-
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
     vis.dataCategories = ["total"];
@@ -85,8 +83,6 @@ MapAreaChart.prototype.initVis = function() {
 
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
-
-    console.log(vis.zoomData);
 
     vis.dataIntermediate = Object.keys(vis.zoomData).map(function (key) {
         return vis.zoomData[key];
@@ -250,8 +246,6 @@ function switchCategories(val) {
 MapAreaChart.prototype.zoomBorough = function(val) {
     var vis = this;
 
-    console.log(val);
-
     vis.zoomData = vis.boroughData[val];
 
     vis.wrangleData();
@@ -260,8 +254,6 @@ MapAreaChart.prototype.zoomBorough = function(val) {
 MapAreaChart.prototype.zoomNeighborhood = function(val) {
     var vis = this;
 
-    console.log(val);
-
     vis.zoomData = vis.neighborhoodData[val];
 
     vis.wrangleData();
@@ -269,8 +261,6 @@ MapAreaChart.prototype.zoomNeighborhood = function(val) {
 
 MapAreaChart.prototype.zoomTotal = function() {
     var vis = this;
-
-    console.log("total");
 
     vis.zoomData = vis.totalData;
 
