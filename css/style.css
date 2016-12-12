@@ -23,24 +23,6 @@
     border-color: #003d47;
 }
 
-#bor-check {
-    padding-left: 0;
-    padding-right: 0;
-}
-
-.cell .label {
-    font-size: 13px;
-}
-
-.checkbox {
-    display: inline;
-}
-
-#borough-checkboxes div label {
-    padding-left: 2px;
-    font-weight: normal;
-}
-
 #nav-header {
     background-color: #be504f;
     font-weight: 400;
@@ -64,7 +46,7 @@
     font-size: 15px;
 }
 
-.nav #left {
+.nav .left {
     left: 0;
     top: -25px;
 }
@@ -73,6 +55,24 @@
     text-align: right;
     right: 110px;
     top: -35px;
+}
+
+#bor-check {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.cell .label {
+    font-size: 13px;
+}
+
+.checkbox {
+    display: inline;
+}
+
+#borough-checkboxes div label {
+    padding-left: 2px;
+    font-weight: normal;
 }
 
 body {
