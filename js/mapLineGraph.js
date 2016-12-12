@@ -1,9 +1,4 @@
 
-/*
- *  MapLineGraph - Object constructor function
- *  @param _parentElement   -- HTML element in which to draw the visualization
- *  @param _data            -- Array with all stations of the bike-sharing network
- */
 
 MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) {
 
@@ -12,19 +7,18 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
     this.dict = _dict_data;
     this.borough_means = _borough_means;
 
+    // color of lines based on whether or not they're emphasized
     this.emph_color = colors.red;
     this.not_emph_color = colors.green.dark;
     this.initVis();
 };
 
 
-/*
- *  Initialize area chart
- */
 
 MapLineGraph.prototype.initVis = function() {
     var vis = this;
 
+    // initialize svg
     vis.date = airbnbNodeMap.selDate;
 
     vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
@@ -100,12 +94,13 @@ MapLineGraph.prototype.initVis = function() {
 MapLineGraph.prototype.initialWrangle = function() {
     var vis = this;
 
-
+    // we only want to display the months for which we have airbnb data
     vis.rent_data = vis.rent_data.filter(function(d) {return vis.parseTime.parse(d.Date) >= vis.parseTime.parse("2015-01")});
     vis.borough_means = vis.borough_means.filter(function(d) {return vis.parseTime.parse(d.Date) >= vis.parseTime.parse("2015-01")});
 
 
-
+    // generates an array of id,values pairs
+    // (id refers to neighborhood name, values refers a list of date, price or percent change pairs)
     vis.neighborhoods = [];
     for (var prop in vis.rent_data[0]) {
         if (prop != "Date") {
@@ -117,6 +112,8 @@ MapLineGraph.prototype.initialWrangle = function() {
         }
     }
 
+    // generates an array of id,values pairs
+    // (id refers to borough name, values refers a list of date, price or percent change pairs)
     vis.boroughs = [];
     for (var prop in vis.borough_means[0]) {
         if (prop != "Date") {
@@ -126,16 +123,15 @@ MapLineGraph.prototype.initialWrangle = function() {
                     values: vis.borough_means.map(function (d) {return {date: vis.parseTime.parse(d.Date), price: +d[prop], region_name: prop, emphasize: false};})
                 })
         }
-    };
+    }
 
 };
-
 
 
 MapLineGraph.prototype.wrangleData_neighborhood = function() {
     var vis = this;
 
-
+    // if we're displaying a neighborhood, we want to show its line (emphasized) along with its containing borough (unemphasized)
     vis.selected_neighborhood = $("#neighborhood-select").val();
 
     vis.displayData = vis.neighborhoods.filter(function(d) {return d.id == vis.selected_neighborhood});
@@ -146,11 +142,6 @@ MapLineGraph.prototype.wrangleData_neighborhood = function() {
         vis.displayData.push(containing_borough);
     }
 
-    // HANDLE NEIGHBORHOOD NOT BEING IN THE DICT???
-
-
-        //     !!! PUSH THE PROPER BOROUGH
-        // containing_borough = vis.dict[vis.selected_neighborhood].
     vis.updateVis();
 };
 
@@ -158,10 +149,10 @@ MapLineGraph.prototype.wrangleData_neighborhood = function() {
 MapLineGraph.prototype.wrangleData_borough = function() {
     var vis = this;
 
+    // if we're zoomed in on a borough, we want to show all borough means lines with the selected borough emphasized
     vis.selected_borough = $("#neighborhood-select").val();
 
     vis.displayData = vis.boroughs;
-
 
     for (i = 0; i < vis.displayData.length; i++) {
         if (vis.displayData[i].id == vis.selected_borough) {vis.displayData[i].emphasize = true}
@@ -175,13 +166,12 @@ MapLineGraph.prototype.wrangleData_borough = function() {
 MapLineGraph.prototype.wrangleData_all = function() {
     var vis = this;
 
-
+    // if we're displaying "all" data, we want to draw all borough means lines unemphaized
     vis.displayData = vis.boroughs;
 
     for (i = 0; i < vis.displayData.length; i++) {
         vis.displayData[i].emphasize = false;
     }
-
 
     vis.updateVis();
 };
@@ -201,8 +191,6 @@ MapLineGraph.prototype.updateVis = function() {
         d3.max(vis.displayData, function(c) { return d3.max(c.values, function(d) { return d.price; }); })
     ]);
 
-
-
     vis.svg.append("g")
         .attr("class", "axis axis--x")
         .attr("transform", "translate(0," + vis.height +10 +")")
@@ -212,7 +200,7 @@ MapLineGraph.prototype.updateVis = function() {
     vis.svg.select(".axis--x").transition().call(vis.xAxis);
 
 
-
+    // draw lines
     vis.dataline = d3.svg.line()
         .x(function(d) { return vis.x(d.date); })
         .y(function(d) { return vis.y(d.price); })
@@ -229,13 +217,12 @@ MapLineGraph.prototype.updateVis = function() {
         .attr("class", "n-line");
 
 
-
+    // color based on emphasis and make tooltips appear on hover
     vis.neighborhood
         .attr("d", function(d) { return vis.dataline(d.values); })
         .style("stroke", function(d) { if (d.emphasize){return vis.emph_color} else {return vis.not_emph_color} })
         .on("mouseover", mouseover)
         .on("mouseout", mouseout);
-
 
     function mouseover(d, i) {
         // vis.neighborhood.classed("n-line-unhovered", true);
@@ -259,6 +246,7 @@ MapLineGraph.prototype.updateVis = function() {
             .style("opacity", 0);
     }
 
+    // erase the old line and add a new line based on the slider's date
     vis.svg.selectAll(".y").remove();
 
     vis.svg.append("line")
@@ -270,6 +258,8 @@ MapLineGraph.prototype.updateVis = function() {
         .attr("y1", 0)
         .attr("y2", vis.height);
 
+
+    // listen for changes in the slider
     document.getElementById('slider').addEventListener('click', function() {
         vis.date = airbnbNodeMap.selDate;
 
@@ -277,8 +267,6 @@ MapLineGraph.prototype.updateVis = function() {
         console.log(vis.sliderParseTime.parse(vis.date));
         vis.updateVis();
 
-        // vis.svg.select("line.y")
-        //     .attr("transform", "translate(" + vis.x(vis.parseTime.parse(vis.date)) + ", 0)");
     });
 };
 
