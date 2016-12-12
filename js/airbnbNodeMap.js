@@ -1,4 +1,3 @@
-
 /*
  *  AirBnBNodeMap - Object constructor function
  *  @param _parentElement   -- HTML element in which to draw the visualization
@@ -84,6 +83,9 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // variable for zoom status - start not zoomed
     vis.zoom_stat = false;
+
+    // variable for whether or not a borough is zoomed - start not selected
+    vis.bor_zoom = false;
 
 
     // NODE MAP //
@@ -226,7 +228,7 @@ AirBnBNodeMap.prototype.initVis = function() {
     // Tip text
     vis.tip.html(function(d) {
         return ("<strong>Room type: </strong>" + d.room_type + "<br>"
-            + "<strong>Price: $</strong>" + d.price);
+        + "<strong>Price: $</strong>" + d.price);
     });
 
     document.getElementById('slider').addEventListener('mouseup', function(){
@@ -371,11 +373,9 @@ AirBnBNodeMap.prototype.colorNodes = function () {
     vis.updateVis();
 };
 
-
-
 // function to redraw the nodes if time has changed
 
-AirBnBNodeMap.prototype.updateVis = function(d) {
+AirBnBNodeMap.prototype.updateVis = function() {
 
     var vis = this;
 
@@ -445,18 +445,31 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
                 return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
             });
 
-        var num_listings = 0;
+        vis.num_listings = 0;
 
         // erase nodes not in selected region
         d3.selectAll("circle")
             .filter(function(d) {
-                if (i < 39561) {
+
+                // if borough is zoomed in
+                if (vis.bor_zoom == true) {
+                    // select all nodes not in selected borough
+                    if (d.borough != vis.sel_bor) {
+                        return true;
+                    }
+                    else {
+                        vis.num_listings += 1;
+                        return false;
+                    }
+                }
+                // if neighborhood is zoomed in
+                else {
                     // select all nodes not in selected region
                     if (d.neighborhood != vis.sel_neigh) {
                         return true;
                     }
                     else {
-                        num_listings += 1;
+                        vis.num_listings += 1;
                         return false;
                     }
                 }
@@ -467,7 +480,7 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
             .attr("opacity", 0);
 
         // print number of listings in zoomed region to listing-count
-        document.getElementById('listing-count').innerHTML = (num_listings).toString();
+        document.getElementById('listing-count').innerHTML = (vis.num_listings).toString();
     }
     // map is not zoomed
     else {
@@ -489,10 +502,12 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
     // check if selected option is a borough
     var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
     if (borList.indexOf(selNeigh) >= 0) {
+        vis.bor_zoom = true;
         vis.zoomBor(selNeigh);
         return;
     }
 
+    vis.bor_zoom = false;
     vis.sel_neigh = selNeigh;
 
     var f = vis.neighborhoodMap.features.filter(function (n, i) {
@@ -582,7 +597,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         .duration(750)
         .attr("opacity", 0);
 
-    var num_listings = 0;
+    vis.num_listings = 0;
 
     // fill in nodes in selected neighborhood
     d3.selectAll("circle")
@@ -595,7 +610,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
                         return false;
                     }
                     else {
-                        num_listings += 1;
+                        vis.num_listings += 1;
                         return true;
                     }
                 }
@@ -609,7 +624,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         .attr("opacity", 0.2);
 
     // print number of listings in zoomed region to listing-count
-    document.getElementById('listing-count').innerHTML = (num_listings).toString();
+    document.getElementById('listing-count').innerHTML = (vis.num_listings).toString();
 };
 
 
@@ -664,6 +679,8 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
             return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
         });
 
+    vis.num_listings = 0;
+
     // erase nodes not in selected borough
     d3.selectAll("circle")
         .filter(function(d) {
@@ -674,6 +691,7 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
                     return true;
                 }
                 else {
+                    vis.num_listings += 1;
                     return false;
                 }
             }
@@ -684,6 +702,10 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
         .transition()
         .duration(750)
         .attr("opacity", 0);
+
+
+    // update html
+    document.getElementById('listing-count').innerHTML = (vis.num_listings).toString();
 
     // fill in nodes in selected borough
     d3.selectAll("circle")
