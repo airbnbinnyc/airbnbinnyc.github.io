@@ -499,7 +499,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     // if we don't have data for that neighborhood in that time
     if (typeof f[0] === "undefined") {
-        alert("Sorry! We do not have data for that neighborhood at that time. Try another time and/or neighborhood!");
+        alert("Sorry! There are no listings in this data at this time. Please try another neighborhood/date!");
         return;
     }
 

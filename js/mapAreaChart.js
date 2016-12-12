@@ -202,8 +202,6 @@ MapAreaChart.prototype.updateVis = function() {
 
         vis.updateVis();
 
-        // vis.svg.select("line.y")
-        //     .attr("transform", "translate(" + vis.x(vis.parseTime.parse(vis.date)) + ", 0)");
     });
 
 };
@@ -239,8 +237,6 @@ MapAreaChart.prototype.zoomBorough = function() {
     vis.filter = box.options[box.selectedIndex].value;
 
     console.log(vis.filter);
-
-    // vis.zoomData = vis.boroughData[vis.filter];
 
     if (vis.filter == "all") {
         vis.zoomData = vis.totalData;

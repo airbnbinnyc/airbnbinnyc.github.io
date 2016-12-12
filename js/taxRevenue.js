@@ -54,9 +54,6 @@ TaxRevenue.prototype.initVis = function() {
     // Invoke the tip in the context of your visualization
     vis.svg.call(vis.tip);
 
-    // vis.stack = d3.layout.stack()
-    //     .values(function(d) {return d.values});
-
     vis.wrangleData();
 };
 
@@ -120,10 +117,6 @@ TaxRevenue.prototype.updateVis = function() {
     vis.x.domain([0, d3.max(vis.displayData[vis.displayData.length - 1],
         function(d) {return d.y0 + d.y;})
     ]);
-
-    // vis.x.domain([0, d3.max(vis.displayData, function (d) {
-    //     return d.total;
-    // })]);
 
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
@@ -212,8 +205,6 @@ TaxRevenue.prototype.updateVis = function() {
 
     vis.groups.exit().remove();
 
-
-
     vis.labels = vis.svg.selectAll(".text")
         .data(vis.displayData[0]);
 
@@ -280,8 +271,6 @@ function formatCurrency(d) {
 
 TaxRevenue.prototype.changeData = function() {
     var vis = this;
-
-    //vis.unitValue = d3.select("#budgetUnit").property("value");
 
     vis.unitValue = $('input[name="options"]:checked', '#budgetUnit2').val();
 
