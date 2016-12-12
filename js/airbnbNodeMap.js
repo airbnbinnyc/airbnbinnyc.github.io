@@ -622,7 +622,107 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 AirBnBNodeMap.prototype.zoomBor = function(selBor) {
     var vis = this;
 
-    vis.selBor = selBor;
+    vis.sel_bor = selBor;
+
+    var e = vis.boroughMap.features.filter(function (n, i) {
+        return n.properties.borough === vis.sel_bor;
+    });
+
+    // get index for largest (most complicated/coordinates) land mass - main land mass
+    var max_val = 0;
+    var max_ind = 0;
+    for (var i = 0; i < e.length; i++) {
+        if (e[i].geometry.coordinates[0].length > max_val) {
+            max_val = e[i].geometry.coordinates[0].length;
+            max_ind = i;
+        }
+    }
+
+    e = e[max_ind];
+
+    var x, y, k;
+
+    if (e && vis.centered !== e) {
+        var centroid = vis.path.centroid(e);
+        x = centroid[0];
+        y = centroid[1];
+        k = 2;
+        vis.centered = e;
+        vis.zoom_stat = true;
+    } else {
+        x = vis.width / 2;
+        y = vis.height / 2;
+        k = 1;
+        vis.centered = null;
+        vis.zoom_stat = false;
+
+        // make nodes visible again when zooming out
+        console.log('zoom out');
+        d3.selectAll("circle")
+            .transition()
+            .duration(750)
+            .attr("opacity", 0.2);
+    }
+
+    // zoom into neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom into borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
 
 
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
+
+    // erase nodes not in selected borough
+    d3.selectAll("circle")
+        .filter(function(d) {
+            // if user is zoomed in
+            if (vis.zoom_stat == true) {
+                // select all nodes not in selected borough
+                if (d.borough != vis.sel_bor) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        })
+        .transition()
+        .duration(750)
+        .attr("opacity", 0);
+
+    // fill in nodes in selected borough
+    d3.selectAll("circle")
+        .filter(function(d) {
+            // if user is zoomed in
+            if (vis.zoom_stat == true) {
+                // select all nodes IN selected borough
+                if (d.borough != vis.sel_bor) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        })
+        .transition()
+        .duration(750)
+        .attr("opacity", 0.2);
 };
