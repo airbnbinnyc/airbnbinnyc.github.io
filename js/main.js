@@ -173,7 +173,6 @@ function loadData() {
 
 }
 
-
 function createVis() {
 
 

@@ -13,32 +13,55 @@
     <link rel="stylesheet" href="css/awesomplete.css">
     <link rel="stylesheet" href="css/basic-style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.fullpage.min.css">
-    <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
 
-<h1>Project Screen Cast</h1>
+<!--<div class="container-fluid">-->
+<div id="fullpage">
 
+    <div id="nav-header" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
+            <span><a href="index.html">Visualization</a></span>
+            <span><a href="processbook.html">Process Book</a></span>
+            <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
+        </div>
+    </div>
 
+    <div id="section0" data-anchor="s0" class="section">
+        <h1>Project Screen Cast</h1>
+        <div id="video-div">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/G7RgN9ijwE4" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </div>
 
-<div>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/G7RgN9ijwE4" frameborder="0" allowfullscreen></iframe>
+    <div id="footer" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
+            <span><a href="index.html">Visualization</a></span>
+            <span><a href="processbook.html">Process Book</a></span>
+            <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
+        </div>
+        <div id="right">
+            Created for CS171<br/>
+            December 2016
+        </div>
+    </div>
+
 </div>
 
 
-<div >
-    <div id="left">
-        <span><a href="index.html">Visualization</a></span>
-        <span><a href="processbook.html">Process Book</a></span>
-        <span><a href="methodology.html">Methodology</a></span>
-        <span><a href="video.html">Video</a></span>
-    </div>
-    <div id="right">
-        Created for CS171<br/>
-        December 2016
-    </div>
-</div>
+<!-- Load JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scrolloverflow.min.js"></script>
+<script src="js/jquery.combinedScroll.js"></script>
+<script src="js/queue.min.js"></script>
+<script src="js/jquery.fullpage.min.js"></script>
+
+<!-- script for carousels and scrolling -->
+<script src="js/page-run.js"></script>
 
 </body>
 </html>
