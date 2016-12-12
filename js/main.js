@@ -139,17 +139,20 @@ function loadData() {
                 console.log(borList.indexOf(e.text.value));
                 if (borList.indexOf(e.text.value) >= 0) {
                     // a borough has been selected
-                    console.log("BOROUGH")
+                    console.log("BOROUGH");
+                    console.log(e.text.value);
                     mapLineGraph.wrangleData_borough();
+                    mapAreaChart.zoomBorough(e.text.value);
                 }
                 else {
                     // a neighborhood has been selected
-                    console.log("NEIGHBORHOOD")
+                    console.log("NEIGHBORHOOD");
                     mapLineGraph.wrangleData_neighborhood();
+                    mapAreaChart.zoomNeighborhood(e.text.value);
                 }
                 console.log(e.text.value);
 
-                mapAreaChart.zoomNeighborhood(e.text.value);
+
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
 

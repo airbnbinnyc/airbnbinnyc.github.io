@@ -247,24 +247,26 @@ function switchCategories(val) {
     }
 }
 
-MapAreaChart.prototype.zoomBorough = function() {
+MapAreaChart.prototype.zoomBorough = function(val) {
     var vis = this;
 
-    var box = document.getElementById("borough_sel");
+    // var box = document.getElementById("borough_sel");
+    //
+    // vis.filter = box.options[box.selectedIndex].value;
+    //
+    // console.log(vis.filter);
+    //
+    // if (vis.filter == "all") {
+    //     vis.zoomData = vis.totalData;
+    // }
+    //
+    // else {
+    //     vis.zoomData = vis.boroughData[vis.filter];
+    // }
 
-    vis.filter = box.options[box.selectedIndex].value;
+    console.log(val);
 
-    console.log(vis.filter);
-
-    if (vis.filter == "all") {
-        vis.zoomData = vis.totalData;
-    }
-
-    else {
-        vis.zoomData = vis.boroughData[vis.filter];
-    }
-
-
+    vis.zoomData = vis.boroughData[val];
 
     vis.wrangleData();
 }
