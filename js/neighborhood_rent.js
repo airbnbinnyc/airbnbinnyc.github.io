@@ -335,7 +335,10 @@ NeighborhoodLine.prototype.updateVis = function(){
     // ordinal color legend
     vis.legend
         .labelFormat(d3.format(".0f"))
-        .scale(vis.color_scale_ord);
+        .scale(vis.color_scale_ord)
+        .shapeWidth(20)
+        .shapeHeight(20)
+        .shapePadding(5);
 
     vis.key
         .call(vis.legend);
