@@ -151,10 +151,10 @@ MapAreaChart.prototype.updateVis = function() {
                     color = '#007D8C';
                     break;
                 case "illegal0":
-                    color = "white";
+                    color = "#8da0cb";
                     break;
                 case "illegal1":
-                    color = "black";
+                    color = colors.red;
                     break;
                 case "price0":
                     color = "#fee5d9";
