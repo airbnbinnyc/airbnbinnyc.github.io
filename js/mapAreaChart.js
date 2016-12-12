@@ -35,10 +35,10 @@ MapAreaChart.prototype.initVis = function() {
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
 
-    vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
+    vis.margin = {top: 50, right: 20, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 250 - vis.margin.top - vis.margin.bottom;
+        vis.height = 280 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -61,6 +61,24 @@ MapAreaChart.prototype.initVis = function() {
 
 
     vis.zoomData = vis.totalData;
+
+    yaxlabel = vis.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -vis.height )
+        .attr("y", -vis.margin.left+2)
+        .attr("dy", "0.71em")
+        .attr("fill", "#000")
+        .text("");
+
+    yaxlabel.text("Number of Listings");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2)
+        .attr("y", -5)
+        .attr("text-anchor", "middle")
+        .attr("class", "chart-title")
+        .attr("font-size", 15)
+        .text("Total Airbnb Listings Over Time");
 
     vis.wrangleData();
 };
