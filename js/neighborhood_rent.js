@@ -254,6 +254,7 @@ NeighborhoodLine.prototype.updateVis = function(){
     // need to get a list of all the values so that we can pass it to the quantile scale
     var vals = [];
     vis.displayData.forEach(function(d) {
+        console.log(d)
         vals.push(vis.neighborhood_dict[d.id][selected_color_type]);
     });
 
