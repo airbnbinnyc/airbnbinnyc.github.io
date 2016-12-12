@@ -24,7 +24,7 @@
     <div id="fullpage">
 
         <div id="nav-header" data-anchor="h" class="nav section fp-auto-height">
-            <div id="left">
+            <div class="left">
                 <span><a href="index.html#s2">Visualization</a></span>
                 <span><a href="processbook.html">Process Book</a></span>
                 <span><a href="methodology.html">Methodology</a></span>
@@ -39,7 +39,7 @@
             <h1>Airbnb in NYC: The Controversy</h1>
             <p>In October 2016, the governor of New York signed a bill into law that is predicted to severely restrict Airbnb in New York City. The controversial law is the latest move in a series of increasingly contentious conflicts between Airbnb, New York City, and the hotel industry. New York lawmakers argue that many Airbnb listings violate the Multiple Dwelling law, passed in 2011. They claim that commercial operators essentially run illegal hotels using Airbnb, which drive up rental costs for NYC residents by limiting available housing units. This also decreases demand for legal hotels, and reduces the city’s hotel tax revenue.</p>
             <p>The new law prohibits advertising listings that are illegal under the Multiple Dwelling law, which mostly means short-term rentals available for less than 30 days. Violators can be fined up to $7,500. Airbnb claims that the law is unconstitutional, and violates free speech rights. They argue that their service helps middle class families trying to make extra money. The new law could lead to a drop in listings in New York City, its biggest market in the US.</p>
-            <p><strong>What is Airbnb’s true impact on the city? Use this page to explore the data.</strong></p>
+            <p><strong>Trace the developments in the Airbnb story in NYC. Hover for a description of each event, and click for more information.</strong></p>
             <div id="timeline"></div>
         </div>
 
@@ -206,7 +206,7 @@
         </div>
 
         <div id="section6" data-anchor="s6" class="section">
-            <h2>These illegal listings may or may not be driving up long-term housing prices.</h2>
+            <h2>These illegal listings might be driving up long-term housing prices.</h2>
             <p>
                 New York legislators claim that illegal Airbnbs unfairly remove properties from the housing market and
                 thereby drive up rental prices. That's why they've chosen to fine hosts who list their apartments illegally.
@@ -248,23 +248,21 @@
                     </div>
                 </form>
                 </div>
-
+            </div>
+            <div class="col-sm-10">
+                <div id="neighborhood-line-chart-area" class="row"></div>
+            </div>
+            <div class="col-sm-2" id="bor-check">
+                <div id="borough-checkboxes">
+                    <label>Display boroughs:</label>
+                    <div><input type="checkbox" id="select_all" value="all" checked="checked"/><label for="select_all">Select All</label></div>
+                    <div><input class="checkbox" id="check-bronx" type="checkbox" value="Bronx" checked="checked"/><label for="check-bronx">Bronx</label></div>
+                    <div><input class="checkbox" id="check-brooklyn" type="checkbox" value="Brooklyn" checked="checked"/><label for="check-brooklyn">Brooklyn</label></div>
+                    <div><input class="checkbox" id="check-manhattan" type="checkbox" value="Manhattan" checked="checked"/><label for="check-manhattan">Manhattan</label></div>
+                    <div><input class="checkbox" id="check-queens" type="checkbox" value="Queens" checked="checked"/><label for="check-queens">Queens</label></div>
+                    <div><input class="checkbox" id="check-SI" type="checkbox" value="Staten Island" checked="checked"/><label for="check-SI">Staten Island</label></div>
                 </div>
-                <div class="col-sm-10">
-                    <div id="neighborhood-line-chart-area" class="row"></div>
-                </div>
-                <div class="col-sm-2" id="bor-check">
-                    <div id="borough-checkboxes">
-                        <label>Display boroughs:</label>
-                        <div><input type="checkbox" id="select_all" value="all" checked="checked"/><label for="select_all">Select All</label></div>
-                        <div><input class="checkbox" id="check-bronx" type="checkbox" value="Bronx" checked="checked"/><label for="check-bronx">Bronx</label></div>
-                        <div><input class="checkbox" id="check-brooklyn" type="checkbox" value="Brooklyn" checked="checked"/><label for="check-brooklyn">Brooklyn</label></div>
-                        <div><input class="checkbox" id="check-manhattan" type="checkbox" value="Manhattan" checked="checked"/><label for="check-manhattan">Manhattan</label></div>
-                        <div><input class="checkbox" id="check-queens" type="checkbox" value="Queens" checked="checked"/><label for="check-queens">Queens</label></div>
-                        <div><input class="checkbox" id="check-SI" type="checkbox" value="Staten Island" checked="checked"/><label for="check-SI">Staten Island</label></div>
-                    </div>
-                    <div class="row" id="neighborhood-line-legend"> </div>
-                </div>
+                <div class="row" id="neighborhood-line-legend"> </div>
             </div>
         </div>
 
@@ -274,7 +272,7 @@
         </div>
 
         <div id="footer" data-anchor="f" class="nav section fp-auto-height">
-            <div id="left">
+            <div class="left">
                 <span><a href="index.html">Visualization</a></span>
                 <span><a href="processbook.html">Process Book</a></span>
                 <span><a href="methodology.html">Methodology</a></span>
@@ -287,7 +285,6 @@
         </div>
 
     </div>
-    <!--</div>-->
 
     <!-- Load JS libraries -->
     <script src="js/jquery.min.js"></script>
@@ -306,37 +303,13 @@
     <script src="js/jquery.fullpage.min.js"></script>
     <script src="js/sweetalert.min.js"></script>
 
-    <!--<script type="text/javascript">-->
-        <!--jQuery(document).ready(function() {-->
-
-            <!--// Hook up the current state to the nav bar-->
-            <!--$('.horizontal-page-navigation').onePageNav();-->
-
-        <!--});-->
-    <!--</script>-->
-
     <script type="text/javascript">
         $(document).ready(function () {
             $('#myCarousel').carousel({
                 interval: 10000
             })
             $('#myCarousel').on('slid.bs.carousel', function() {
-                //alert("slid");
             });
-//            $('.fdi-Carousel .item').each(function () {
-//                var next = $(this).next();
-//                if (!next.length) {
-//                    next = $(this).siblings(':first');
-//            }
-//            next.children(':first-child').clone().appendTo($(this));
-//
-//                if (next.next().length > 0) {
-//                    next.next().children(':first-child').clone().appendTo($(this));
-//                }
-//                else {
-//                    $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-//                }
-//            });
         });
     </script>
 
@@ -389,8 +362,8 @@
                 paddingTop: '3em',
                 paddingBottom: '10px',
                 fixedElements: '#header, .footer',
-                responsiveWidth: 1000,
-                responsiveHeight: 750,
+                responsiveWidth: 1100,
+                responsiveHeight: 600,
                 responsiveSlides: false,
 
                 //Custom selectors

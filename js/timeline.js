@@ -43,7 +43,6 @@ Timeline.prototype.initVis = function() {
 
     // Initialize tooltip
     vis.tip = d3.tip()
-        //.attr('class', 'd3-tip')
         .attr("class", "timelineTip");
 
     // Invoke the tip in the context of your visualization
@@ -129,7 +128,8 @@ Timeline.prototype.updateVis = function() {
     vis.eventImg
         .enter()
         .append("a")
-        .attr("xlink:href", function(d) { return d.url;});
+        .attr("xlink:href", function(d) { return d.url;})
+        .attr("target", "_blank");
 
     vis.eventImg
         .append("image")

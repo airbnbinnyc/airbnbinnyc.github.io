@@ -19,11 +19,12 @@
 <!--<div class="container-fluid">-->
 <div id="fullpage">
 
-    <div id="footer" data-anchor="f" class="section fp-auto-height">
-        <div id="left">
+    <div id="nav-header" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
             <span><a href="index.html">Visualization</a></span>
             <span><a href="processbook.html">Process Book</a></span>
             <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
         </div>
     </div>
 
@@ -60,19 +61,19 @@
         </p>
         <table>
             <tr>
-                <th colspan="2">Taxes Paid to New York City</th>
+                <th class="line" colspan="2">Taxes Paid to New York City</th>
                 <th colspan="2">Taxes Paid to New York State</th>
             </tr>
             <tr>
-                <td>NYC Sales Tax</td><td>4.5%</td>
+                <td>NYC Sales Tax</td><td class="line" >4.5%</td>
                 <td>NYS Sales Tax</td><td>4%</td>
             </tr>
             <tr>
-                <td>NYC Hotel Occupancy Tax Rate</td><td>5.875%</td>
+                <td>NYC Hotel Occupancy Tax Rate</td><td class="line" >5.875%</td>
                 <td>MCTD State Sales & Use Tax</td><td>0.375%</td>
             </tr>
             <tr>
-                <td>NYC Hotel Room Occupancy Tax</td><td>$2 per room per night</td>
+                <td>NYC Hotel Room Occupancy Tax</td><td class="line" >$2 per room per night</td>
                 <td>NYS Javits Expansion Fund</td><td>$1.50 per room per night</td>
             </tr>
         </table>
@@ -153,11 +154,12 @@
         <p>FILLER TEXT YAY</p>
     </div>
 
-    <div id="footer" data-anchor="f" class="section fp-auto-height">
-        <div id="left">
+    <div id="footer" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
             <span><a href="index.html">Visualization</a></span>
             <span><a href="processbook.html">Process Book</a></span>
             <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
         </div>
         <div id="right">
             Created for CS171<br/>
@@ -175,31 +177,6 @@
 <script src="js/jquery.combinedScroll.js"></script>
 <script src="js/queue.min.js"></script>
 <script src="js/jquery.fullpage.min.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#myCarousel').carousel({
-            interval: 10000
-        })
-        $('#myCarousel').on('slid.bs.carousel', function() {
-            //alert("slid");
-        });
-//            $('.fdi-Carousel .item').each(function () {
-//                var next = $(this).next();
-//                if (!next.length) {
-//                    next = $(this).siblings(':first');
-//            }
-//            next.children(':first-child').clone().appendTo($(this));
-//
-//                if (next.next().length > 0) {
-//                    next.next().children(':first-child').clone().appendTo($(this));
-//                }
-//                else {
-//                    $(this).siblings(':first').children(':first-child').clone().appendTo($(this));
-//                }
-//            });
-    });
-</script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -250,8 +227,8 @@
             paddingTop: '3em',
             paddingBottom: '10px',
             fixedElements: '#header, .footer',
-            responsiveWidth: 1000,
-            responsiveHeight: 750,
+            responsiveWidth: 1100,
+            responsiveHeight: 600,
             responsiveSlides: false,
 
             //Custom selectors
