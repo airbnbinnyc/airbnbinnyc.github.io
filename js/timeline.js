@@ -22,7 +22,7 @@ var formatDate = d3.time.format("%b %d, %Y");
 Timeline.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 0, right: 10, bottom: 0, left: 10};
+    vis.margin = {top: 0, right: 10, bottom: 0, left: 20};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
         vis.height = 320 - vis.margin.top - vis.margin.bottom;

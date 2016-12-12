@@ -298,13 +298,15 @@ AirBnBNodeMap.prototype.getExtent = function() {
         vis.extent = [0.1, 1.1];
     }
     else {
-        vis.extent = [50, 100, 150, 200, 300, 500];
+        vis.extent = [50, 100, 150, 200, 300, 100000];
     }
 
     return vis.extent;
 };
 
+// TODO
 AirBnBNodeMap.prototype.colorNodes = function () {
+
     var vis = this;
 
     // update colorScale
@@ -381,10 +383,12 @@ AirBnBNodeMap.prototype.colorNodes = function () {
                 var extent = vis.colorScale.invertExtent(d);
                 //extent will be a two-element array, format it however you want:
                 var format = d3.format("0.2f");
-                if (extent[0]) {
+                if (extent[0] && (extent[1] !== 100000)) {
                     return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
                 }
-                else {
+                else if (extent[1] == 100000) {
+                    return "$" + format(Math.round(+extent[0])) + "+";
+                } else {
                     return "$0 - $"+ format(Math.round(+extent[1]));
                 }
             }
@@ -396,6 +400,7 @@ AirBnBNodeMap.prototype.colorNodes = function () {
 
 // function to redraw the nodes if time has changed
 
+// TODO - called by above
 AirBnBNodeMap.prototype.updateVis = function() {
 
     var vis = this;
@@ -497,6 +502,7 @@ AirBnBNodeMap.prototype.updateVis = function() {
  *  The zooming into neighborhood function
  */
 
+// TODO
 AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var vis = this;
@@ -617,6 +623,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
 
 // function for zooming into borough
+// TODO
 AirBnBNodeMap.prototype.zoomBor = function(selBor) {
     var vis = this;
 
@@ -706,6 +713,7 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
 
     // update html
     document.getElementById('listing-count').innerHTML = (vis.num_listings).toString();
+
 };
 
 // function for zooming out
