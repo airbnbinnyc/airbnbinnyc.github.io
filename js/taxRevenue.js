@@ -17,7 +17,7 @@ TaxRevenue = function(_parentElement, _data) {
 
 
 /*
- *  Initialize station map
+ *  Initialize bar chart
  */
 
 TaxRevenue.prototype.initVis = function() {
@@ -26,7 +26,7 @@ TaxRevenue.prototype.initVis = function() {
     vis.margin = {top: 40, right: 0, bottom: 25, left: 200};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 500 - vis.margin.top - vis.margin.bottom;
+        vis.height = 450 - vis.margin.top - vis.margin.bottom;
 
 
     vis.svg = d3.select("#tax-revenue").append("svg")
@@ -65,6 +65,7 @@ TaxRevenue.prototype.initVis = function() {
 TaxRevenue.prototype.wrangleData = function() {
     var vis = this;
 
+    // filter data based on selected value: city or state
     vis.filteredData = vis.data.filter(function(d) {
         return (d.unit == vis.unitValue && d.fy == vis.yearValue);
     });
@@ -84,6 +85,7 @@ TaxRevenue.prototype.wrangleData = function() {
                         {name: "Projected Airbnb Revenue", color: colors.red},
                         {name: "Actual Expenditures", color: colors.green.light}];
 
+    // map data for stack layout
     vis.dataIntermediate1 = vis.filteredData.map(function (d) {
         return {dept: d["dept"], a: d["actual"], b: d["projection"]}
     });
@@ -118,6 +120,7 @@ TaxRevenue.prototype.updateVis = function() {
         function(d) {return d.y0 + d.y;})
     ]);
 
+    // draw axes
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")
@@ -147,7 +150,7 @@ TaxRevenue.prototype.updateVis = function() {
     });
 
     /*
-     * Stacked bar chart using d3.stack layout - haven't been able to get it to work yet, but it's the best option if I can fix it.
+     * Stacked bar chart using d3.stack layout
      */
 
     vis.groups = vis.svg.selectAll(".group")
@@ -190,6 +193,7 @@ TaxRevenue.prototype.updateVis = function() {
 
     ;
 
+    // tooltips
     vis.bars
         .on("mouseover", function(d) {
             d3.select(this)
@@ -205,6 +209,7 @@ TaxRevenue.prototype.updateVis = function() {
 
     vis.groups.exit().remove();
 
+    // y-axis labels
     vis.labels = vis.svg.selectAll(".text")
         .data(vis.displayData[0]);
 
