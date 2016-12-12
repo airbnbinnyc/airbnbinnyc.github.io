@@ -28,11 +28,11 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     // Set up SVG
-    vis.margin = {top: 140, right: 40, bottom: 60, left: 80};
+    vis.margin = {top: 100, right: 40, bottom: 60, left: 80};
 
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 600 - vis.margin.top - vis.margin.bottom;
+        vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
@@ -103,10 +103,10 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     // Initialize legend
-    vis.legend_margin = {top: 80, right: 0, bottom: 0, left: 0};
+    vis.legend_margin = {top: 80, right: 0, bottom: 100, left: 0};
 
-    vis.legend_width = $("#neighborhood-line-legend").width()/10 ,
-        vis.legend_height = 300 - vis.legend_margin.top - vis.legend_margin.bottom;
+    // vis.legend_width = $("#neighborhood-line-legend").width()/10 ,
+    //     vis.legend_height = 300 - vis.legend_margin.top - vis.legend_margin.bottom;
 
 
     vis.key = d3.select("#neighborhood-line-legend")
@@ -137,6 +137,12 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("y", -vis.legend_margin.top/4)
         .attr("dy", ".71em")
         .style("text-anchor", "start");
+
+    vis.info_box = vis.key.append("circle")
+        .attr("cx", $("#neighborhood-line-legend").width() - vis.legend_margin.right)
+        .attr("cy", vis.legend_height)
+        .attr("r", 10)
+        .attr("fill", "#ff0000");
 
     // this makes the original continuous legend
 /*    vis.legend = vis.key.append("defs")

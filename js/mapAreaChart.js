@@ -35,7 +35,7 @@ MapAreaChart.prototype.initVis = function() {
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
 
-    vis.margin = {top: 20, right: 10, bottom: 40, left: 60};
+    vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
         vis.height = 250 - vis.margin.top - vis.margin.bottom;

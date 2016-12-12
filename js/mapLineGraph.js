@@ -25,7 +25,7 @@ MapLineGraph = function(_parentElement, _rent_data, _dict_data, _borough_means) 
 MapLineGraph.prototype.initVis = function() {
     var vis = this;
 
-    vis.margin = {top: 20, right: 10, bottom: 40, left: 60};
+    vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
         vis.height = 250 - vis.margin.top - vis.margin.bottom;
@@ -90,7 +90,6 @@ MapLineGraph.prototype.initVis = function() {
         .attr("font-size", 15)
         .text("Inflation-Adjusted Median Housing Prices by NYC Region");
 
-
     vis.initialWrangle();
     vis.wrangleData_borough();
 };
@@ -125,6 +124,7 @@ MapLineGraph.prototype.initialWrangle = function() {
                 })
         }
     };
+
 };
 
 
@@ -180,14 +180,10 @@ MapLineGraph.prototype.wrangleData_borough = function() {
 MapLineGraph.prototype.updateVis = function() {
     var vis = this;
 
-    vis.slider = $("#slider");
-
-
-    console.log(vis.slider);
-
 
     // update axes
-    vis.x.domain(d3.extent(vis.rent_data, function(d) { return vis.parseTime.parse(d.Date); }));
+    // vis.x.domain(d3.extent(vis.rent_data, function(d) { return vis.parseTime.parse(d.Date); }));
+    vis.x.domain([vis.parseTime.parse("2015-01"), vis.parseTime.parse("2016-10")]);
 
 
     vis.y.domain([
@@ -252,4 +248,14 @@ MapLineGraph.prototype.updateVis = function() {
             .duration(500)
             .style("opacity", 0);
     }
+
+
+    document.getElementById('slider').addEventListener('click', function() {
+        vis.date = airbnbNodeMap.selDate;
+
+        vis.updateVis();
+
+    });
 };
+
+

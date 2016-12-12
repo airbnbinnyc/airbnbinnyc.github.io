@@ -6,26 +6,35 @@
     border-color: #41898B;
 }
 
+#nav-header {
+    background-color: #be504f;
+    font-weight: 400;
+}
+
+#nav-header a {
+    color: #ffffff
+}
+
 #footer {
     background-color: #e7e7e7;
     font-weight: 400;
 }
 
-#footer div {
+.nav div {
     position: absolute;
 }
 
-#footer span {
+.nav span {
     margin-right: 50px;
     font-size: 15px;
 }
 
-#footer #left {
+.nav #left {
     left: 0;
     top: -25px;
 }
 
-#footer #right {
+.nav #right {
     text-align: right;
     right: 110px;
     top: -35px;
@@ -222,6 +231,32 @@ nav.horizontal-page-navigation .current a {
     border-radius: 8px;
     border-color: black;
     pointer-events: none;
+}
+
+#listing-density-info {
+    color: #41898B;
+    font-size: 20px;
+    text-anchor: right;
+}
+
+.hoverinfo {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    font-size: 15px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.hoverinfo p {
+    display: none;
+    color: #eeeeee;
+}
+
+.hoverinfo:hover p {
+    background-color: #41898B;
+    display: block;
+    z-index: -1;
 }
 
 
