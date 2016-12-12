@@ -165,7 +165,7 @@ function loadData() {
 
             $("#zoom-out-button").click(function () {
                 mapLineGraph.wrangleData_all();
-
+                airbnbNodeMap.zoomOut();
             });
 
         });

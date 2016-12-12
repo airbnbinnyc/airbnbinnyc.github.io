@@ -453,11 +453,11 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
 
         var num_listings = 0;
 
-        // erase nodes not in selected borough
+        // erase nodes not in selected region
         d3.selectAll("circle")
             .filter(function(d) {
                 if (i < 39561) {
-                    // select all nodes not in selected borough
+                    // select all nodes not in selected region
                     if (d.neighborhood != vis.sel_neigh) {
                         return true;
                     }
@@ -496,6 +496,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
     var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
     if (borList.indexOf(selNeigh) >= 0) {
         vis.zoomBor(selNeigh);
+        return;
     }
 
     vis.sel_neigh = selNeigh;
@@ -510,7 +511,6 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         alert("Sorry! There are no listings in this data at this time. Please try another neighborhood/date!");
         return;
     }
-
 
     vis.sel_bor = f[0].properties.neighbourhood_group;
 
@@ -632,7 +632,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 };
 
 
-// function for zooming into borough TODO
+// function for zooming into borough
 AirBnBNodeMap.prototype.zoomBor = function(selBor) {
     var vis = this;
 
@@ -739,4 +739,43 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
         .transition()
         .duration(750)
         .attr("opacity", 0.2);
+};
+
+// function for zooming out
+AirBnBNodeMap.prototype.zoomOut = function() {
+    var vis = this;
+
+    var x, y, k;
+    x = vis.width / 2;
+    y = vis.height / 2;
+    k = 1;
+    vis.centered = null;
+    vis.zoom_stat = false;
+
+    // make nodes visible again when zooming out
+    console.log('zoom out');
+    d3.selectAll("circle")
+        .transition()
+        .duration(750)
+        .attr("opacity", 0.2);
+
+    // zoom out on neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom out on borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
 };
