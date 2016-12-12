@@ -87,7 +87,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // NODE MAP //
     vis.width = $("#" + vis.parentElement).width();
-    vis.height = 500;
+    vis.height = 480;
 
     vis.svg = d3.select("#airbnb-map").append("svg")
         .attr("width", vis.width)
@@ -102,7 +102,7 @@ AirBnBNodeMap.prototype.initVis = function() {
     vis.svg.call(vis.tip);
 
     // create a projection
-    var scale  = 50000;
+    var scale  = 48000;
     var offset = [vis.width/2, vis.height/2];
 
     // create new path
@@ -237,6 +237,8 @@ AirBnBNodeMap.prototype.initVis = function() {
         return ("<strong>Room type: </strong>" + d.room_type + "<br>"
         + "<strong>Price: $</strong>" + d.price);
     });
+
+    document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
 
     document.getElementById('slider').addEventListener('mouseup', function(){
         // wait until new dataset is loaded before drawing map
