@@ -187,8 +187,8 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // DRAW LEGEND
 
-    vis.legendBox = vis.svg.append('rect')
-        .attr('class', 'legendBox')
+    vis.key = vis.svg.append('rect')
+        .attr('class', 'key')
         .attr('width', 135)
         .attr('height', 190)
         .attr('fill', 'white')
@@ -196,32 +196,34 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr('stroke', 'black')
         .attr('stroke-width', 1.5);
 
-    // append legend
-    vis.legend = vis.svg.selectAll('g.legendEntry')
-        .data(vis.colorScale.range())
-        .enter().append('g')
-        .attr('class', 'legendEntry');
+    vis.legend = d3.legend.color();
 
-    vis.legend
-        .append('rect')
-        .attr("x", 5)
-        .attr("y", function(d, i) {
-            return i * 20 + 200;
-        })
-        .attr("width", 10)
-        .attr("height", 10)
-        .style("stroke", "black")
-        .style("stroke-width", 1)
-        .style("fill", function(d){return d;});
-
-    //the data objects are the fill colors
-    vis.legend
-        .append('text')
-        .attr("x", 20)
-        .attr("y", function(d, i) {
-            return i * 20 + 210;
-        })
-        .text("Listing");
+    // // append legend
+    // vis.legend = vis.svg.selectAll('g.legendEntry')
+    //     .data(vis.colorScale.range())
+    //     .enter().append('g')
+    //     .attr('class', 'legendEntry');
+    //
+    // vis.legend
+    //     .append('rect')
+    //     .attr("x", 5)
+    //     .attr("y", function(d, i) {
+    //         return i * 20 + 200;
+    //     })
+    //     .attr("width", 10)
+    //     .attr("height", 10)
+    //     .style("stroke", "black")
+    //     .style("stroke-width", 1)
+    //     .style("fill", function(d){return d;});
+    //
+    // //the data objects are the fill colors
+    // vis.legend
+    //     .append('text')
+    //     .attr("x", 20)
+    //     .attr("y", function(d, i) {
+    //         return i * 20 + 210;
+    //     })
+    //     .text("Listing");
 
 
     // Tip text
@@ -480,6 +482,16 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         // print number of listings in zoomed region to listing-count
         document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
     }
+
+    vis.legend
+        // .labelFormat(d3.format(".0f"))
+        .scale(vis.colorScale);
+        // .shapeWidth(20)
+        // .shapeHeight(20)
+        // .shapePadding(5);
+
+    vis.key
+        .call(vis.legend);
 
 };
 
