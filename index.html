@@ -171,11 +171,27 @@
         </div>
 
         <div id="section5" data-anchor="s5" class="section">
-            <h2>Many Airbnb listings in NYC are illegal</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
-            <p>Morbi ullamcorper nisi vel orci accumsan elementum. Fusce at nisi pellentesque, commodo magna id, tempor libero. Aenean sem odio, congue vitae nulla ut, sagittis maximus felis. Nunc pellentesque fermentum est, in porttitor lectus iaculis ut. Vestibulum mattis lacus lectus, id varius ipsum faucibus quis. Nullam eget dignissim lorem, sed sagittis quam. Etiam finibus, eros quis dictum fringilla, dui urna consectetur magna, et congue urna nibh in leo. Vestibulum varius felis at consequat sagittis. Vestibulum a vulputate ex. Phasellus ut nunc nunc. Praesent iaculis porttitor lobortis. Cras vestibulum.</p>
+            <h2>The majority of Airbnb listings in NYC are illegal</h2>
+            <p>
+                The most recent set of NYC housing codes were enacted in 2010. They are designed to prevent people from renting out their homes in a way that mimics
+                self-run hotels and unfairly removes properties from the rental market. Therefore, Airbnb listings are illegal if they meet all three of the following
+                conditions.
+            </p>
+            <ul>
+                <li>
+                    Multiple residential dwelling unit (i.e. apartment).
+                </li>
+                <li>
+                    Rented for fewer than 30 days.
+                </li>
+                <li>
+                    Owner/host is not on the premises during the rental.
+                </li>
+            </ul>
+            <p>
+                Follow along with the below animation to see how we determined that the majority of NYC Airbnb listings are rented illegally.
+            </p>
             <div id="sankey"></div>
-            <div id="sankey2"><!--<img src="http://placehold.it/900x500?text=Vis+3:+Illegal+Listings Sankey" class="center">--></div>
         </div>
 
         <div id="section6" data-anchor="s6" class="section">
@@ -228,14 +244,14 @@
                 <div class="col-sm-10">
                     <div id="neighborhood-line-chart-area" class="row"></div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-2" id="bor-check">
                     <div id="borough-checkboxes">
-                        <input type="checkbox" id="select_all" value="all" checked="checked"/> Select All
-                        <input class="checkbox" type="checkbox" value="Bronx" checked="checked"/> Bronx
-                        <input class="checkbox" type="checkbox" value="Brooklyn" checked="checked"/> Brooklyn
-                        <input class="checkbox" type="checkbox" value="Manhattan" checked="checked"/> Manhattan
-                        <input class="checkbox" type="checkbox" value="Queens" checked="checked"/> Queens
-                        <input class="checkbox" type="checkbox" value="Staten Island" checked="checked"/> Staten Island
+                        <div><input type="checkbox" id="select_all" value="all" checked="checked"/><label for="select_all">Select All</label></div>
+                        <div><input class="checkbox" id="check-bronx" type="checkbox" value="Bronx" checked="checked"/><label for="check-bronx">Bronx</label></div>
+                        <div><input class="checkbox" id="check-brooklyn" type="checkbox" value="Brooklyn" checked="checked"/><label for="check-brooklyn">Brooklyn</label></div>
+                        <div><input class="checkbox" id="check-manhattan" type="checkbox" value="Manhattan" checked="checked"/><label for="check-manhattan">Manhattan</label></div>
+                        <div><input class="checkbox" id="check-queens" type="checkbox" value="Queens" checked="checked"/><label for="check-queens">Queens</label></div>
+                        <div><input class="checkbox" id="check-SI" type="checkbox" value="Staten Island" checked="checked"/><label for="check-SI">Staten Island</label></div>
                     </div>
                     <div class="row" id="neighborhood-line-legend"> </div>
                 </div>

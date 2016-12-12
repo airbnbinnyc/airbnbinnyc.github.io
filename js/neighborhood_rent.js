@@ -50,10 +50,11 @@ NeighborhoodLine.prototype.initVis = function(){
     vis.color_scale = d3.scale.linear().domain([0, 1]).range(["#aaaaFF", "#FF0000"]);
     vis.color_scale_ord = d3.scale.quantile()
         // shades of Airbnb red
-        .range(["#FFCFCC", "#FF9A99", "#F16664", "#EE3C3B", "#8C090F"]);
+           // .range(["#FFCFCC", "#FF9A99", "#F16664", "#EE3C3B", "#8C090F"]);
 
         // originally i used a set of colorbrewer colors
-        //.range(colorbrewer.PuRd[6].slice(1));
+        //.range(colorbrewer.OrRd[7].slice(2));
+        .range(colorbrewer.PuBuGn[6].slice(1));
 
     vis.line = d3.svg.line()
         .x(function(d) { return x(d.Date); })
