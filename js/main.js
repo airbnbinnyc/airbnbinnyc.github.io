@@ -46,7 +46,7 @@ function loadData() {
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
         .defer(d3.json, "data/category_counts.json")
         .defer(d3.json, "data/borough_category_counts.json")
-        .defer(d3.json, "data/neighborhood_category_counts.json")
+        .defer(d3.json, "data/neighborhood_category_counts_new.json")
         .defer(d3.csv, "data/neighborhood-lines/mean_rent.csv")
         .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, categoryCounts, borCategoryCounts, neighCategoryCounts, boroughMeanRent) {
 
@@ -83,6 +83,17 @@ function loadData() {
                 neighborhoodList.push(
                     {label: key + ", " + neighborhood_dict[key].borough,
                         value: key});
+            }
+
+            // create a list of boroughs
+            var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+
+            // add boroughs as zoom options
+            for (var key in borList) {
+                neighborhoodList.push(
+                    {label: borList[key] + " (All)",
+                        value: borList[key]}
+                )
             }
 
             // make autocompleting input for neighborhood selection
