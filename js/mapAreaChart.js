@@ -58,8 +58,10 @@ MapAreaChart.prototype.initVis = function() {
         .y1(function(d) { return vis.y(d.y0 + d.y); });
 
 
+    // initialize data
     vis.zoomData = vis.totalData;
 
+    // label axes and chart
     yaxlabel = vis.svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -vis.height )
@@ -84,6 +86,7 @@ MapAreaChart.prototype.initVis = function() {
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
 
+    // format data for stack layout
     vis.dataIntermediate = Object.keys(vis.zoomData).map(function (key) {
         return vis.zoomData[key];
     });
@@ -127,6 +130,7 @@ MapAreaChart.prototype.updateVis = function() {
     })
     ]);
 
+    // draw axes
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .tickFormat(d3.time.format("%b-%y"))
@@ -150,12 +154,14 @@ MapAreaChart.prototype.updateVis = function() {
         .duration(800)
         .call(vis.yAxis);
 
+    // draw area chart
     vis.categories = vis.svg.selectAll(".area")
         .data(vis.displayData);
 
     vis.categories.enter().append("path")
         .attr("class", "area");
 
+    // color based on selection
     vis.categories
         .style("fill", function (d) {
             var color;
@@ -199,7 +205,8 @@ MapAreaChart.prototype.updateVis = function() {
         });
 
     vis.categories.exit().remove();
-    //
+
+    // Draw a line to indicate the selected date
     vis.svg.selectAll(".y").remove();
 
     vis.svg.append("line")
@@ -231,6 +238,7 @@ MapAreaChart.prototype.changeData = function() {
     vis.wrangleData();
 };
 
+// switch categories based on selection
 function switchCategories(val) {
     if (val == "None") {
         return ["total"];
@@ -243,13 +251,15 @@ function switchCategories(val) {
     }
 }
 
+// Zoom based on selection
+
 MapAreaChart.prototype.zoomBorough = function(val) {
     var vis = this;
 
     vis.zoomData = vis.boroughData[val];
 
     vis.wrangleData();
-}
+};
 
 MapAreaChart.prototype.zoomNeighborhood = function(val) {
     var vis = this;
@@ -257,7 +267,7 @@ MapAreaChart.prototype.zoomNeighborhood = function(val) {
     vis.zoomData = vis.neighborhoodData[val];
 
     vis.wrangleData();
-}
+};
 
 MapAreaChart.prototype.zoomTotal = function() {
     var vis = this;
@@ -265,4 +275,4 @@ MapAreaChart.prototype.zoomTotal = function() {
     vis.zoomData = vis.totalData;
 
     vis.wrangleData();
-}
+};

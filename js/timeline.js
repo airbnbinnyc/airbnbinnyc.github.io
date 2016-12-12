@@ -84,6 +84,8 @@ Timeline.prototype.updateVis = function() {
 
     vis.x.domain([startDate, endDate]);
 
+    // draw timeline axis
+
     vis.xAxis = d3.svg.axis()
         .scale(vis.x)
         .orient("bottom")
@@ -100,6 +102,10 @@ Timeline.prototype.updateVis = function() {
         return (d.caption)
     });
 
+    // Draw each item on the timeline: a line connecting it to the axis, the image, the link, and a circle around the image.
+
+
+    // Draw line
     vis.eventLine = vis.svg.selectAll(".eventLine")
         .data(vis.displayData);
 
@@ -122,6 +128,7 @@ Timeline.prototype.updateVis = function() {
         })
     ;
 
+    // draw image and link
     vis.eventImg = vis.svg.selectAll(".eventImg")
         .data(vis.displayData);
 
@@ -160,6 +167,7 @@ Timeline.prototype.updateVis = function() {
         })
     ;
 
+    // draw circle
     vis.eventCircle = vis.svg.selectAll(".eventCircle")
         .data(vis.displayData);
 
@@ -180,6 +188,7 @@ Timeline.prototype.updateVis = function() {
         })
         .attr("r", 50);
 
+    // Add dates of each event
     vis.eventLabels = vis.svg.selectAll(".eventText")
         .data(vis.displayData);
 
