@@ -163,6 +163,11 @@ function loadData() {
             e.keyCode = 27;
             $(".sweet-alert").trigger(e);
 
+            $("#zoom-out-button").click(function () {
+                mapLineGraph.wrangleData_all();
+
+            });
+
         });
 
 }
