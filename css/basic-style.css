@@ -137,3 +137,8 @@ td {
 #section1, #section3, #section5, #section7, #section9, #section11 {
     background-color: #c7fcff;
 }
+
+.row {
+    margin-left: inherit;
+    margin-right: inherit;
+}
