@@ -93,9 +93,7 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr("height", vis.height);
 
     // CREATE TOOLTIP //
-    vis.svg.selectAll(".d3-tip").remove();
     // Initialize tooltip
-
     vis.tip = d3.tip()
         .attr('class', 'd3-tip');
 
@@ -188,9 +186,9 @@ AirBnBNodeMap.prototype.initVis = function() {
     // DRAW LEGEND
 
     vis.legendBox = vis.svg.append('rect')
-        .attr('class', 'legendBox')
+        .attr('class', 'key')
         .attr('width', 135)
-        .attr('height', 190)
+        .attr('height', 130)
         .attr('fill', 'white')
         .attr('y', 190)
         .attr('stroke', 'black')
@@ -230,20 +228,6 @@ AirBnBNodeMap.prototype.initVis = function() {
             + "<strong>Price: $</strong>" + d.price);
     });
 
-
-
-    // Add a listener to the slider submit button -- when selected, data from that date will be uploaded to the map
-    // document.getElementById('slider-submit-button').addEventListener('click', function(){
-    //     // wait until new dataset is loaded before drawing map
-    //     $.holdReady(true);
-    //     $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
-    //         // change data for visualization
-    //         vis.airbnbData = json;
-    //         $.holdReady(false);
-    //         vis.updateVis();
-    //     });
-    // });
-
     document.getElementById('slider').addEventListener('mouseup', function(){
         // wait until new dataset is loaded before drawing map
         $.holdReady(true);
@@ -280,15 +264,15 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var color = ['#007D8C'];
+        vis.color = ['#007D8C'];
     }
     else if (vis.val == "illegal") {
-        var color = ['#8da0cb', colors.red];
+        vis.color = ['#8da0cb', colors.red];
     }
     else {
-        var color = colorbrewer.Reds[6];
+        vis.color = colorbrewer.Reds[6];
     }
-    return color;
+    return vis.color;
 
 };
 
@@ -297,16 +281,17 @@ AirBnBNodeMap.prototype.getExtent = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var extent = [0, 0];
+        vis.extent = [0, 0];
     }
+    // Due to threshold scale, domain must be higher than values in data
     else if (vis.val == "illegal") {
-        var extent = [0, 1];
+        vis.extent = [0.1, 1.1];
     }
     else {
-        var extent = [50, 100, 150, 200, 300, 500];
+        vis.extent = [50, 100, 150, 200, 300, 500];
     }
 
-    return extent;
+    return vis.extent;
 };
 
 AirBnBNodeMap.prototype.colorNodes = function () {
@@ -316,6 +301,9 @@ AirBnBNodeMap.prototype.colorNodes = function () {
     vis.colorScale
         .domain(vis.getExtent())
         .range(vis.getColorScheme());
+
+    console.log(vis.color);
+    console.log(vis.extent);
 
     // recolor nodes
     vis.circles.transition()
@@ -329,49 +317,54 @@ AirBnBNodeMap.prototype.colorNodes = function () {
             }
         });
 
-    // // redraw legend
-    // vis.svg.selectAll(".legendEntry").remove();
-    //
-    // // append legend
-    // vis.legend = vis.svg.selectAll('g.legendEntry')
-    //     .data(vis.colorScale.range())
-    //     .enter().append('g')
-    //     .attr('class', 'legendEntry');
-    //
-    // vis.legend
-    //     .append('rect')
-    //     .attr("x", 5)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 200;
-    //     })
-    //     .attr("width", 10)
-    //     .attr("height", 10)
-    //     .style("stroke", "black")
-    //     .style("stroke-width", 1)
-    //     .style("fill", function(d){return d;});
-    //
-    // //the data objects are the fill colors
-    // vis.legend
-    //     .append('text')
-    //     .attr("x", 20)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 210;
-    //     })
-    //     .text(function(d,i) {
-    //         if (vis.val == "None") {
-    //             return "Listing";
-    //         }
-    //         else if (vis.val == "illegal") {
-    //             var extent = ["Legal", "Illegal"];
-    //             return extent[i];
-    //         }
-    //         else {
-    //             var extent = vis.colorScale.invertExtent(d);
-    //             //extent will be a two-element array, format it however you want:
-    //             var format = d3.format("0.2f");
-    //             return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
-    //         }
-    //     });
+    // redraw legend
+    vis.svg.selectAll(".legendEntry").remove();
+
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
+
+    vis.legend
+        .append('rect')
+        .attr("x", 5)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text(function(d,i) {
+            if (vis.val == "None") {
+                return "Listing";
+            }
+            else if (vis.val == "illegal") {
+                var extent = ["Legal", "Illegal"];
+                return extent[i];
+            }
+            else {
+                var extent = vis.colorScale.invertExtent(d);
+                //extent will be a two-element array, format it however you want:
+                var format = d3.format("0.2f");
+                if (extent[0]) {
+                    return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+                }
+                else {
+                    return "$0 - $"+ format(Math.round(+extent[1]));
+                }
+            }
+        });
 
 
     vis.updateVis();
@@ -453,11 +446,11 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
 
         var num_listings = 0;
 
-        // erase nodes not in selected borough
+        // erase nodes not in selected region
         d3.selectAll("circle")
             .filter(function(d) {
                 if (i < 39561) {
-                    // select all nodes not in selected borough
+                    // select all nodes not in selected region
                     if (d.neighborhood != vis.sel_neigh) {
                         return true;
                     }
@@ -496,6 +489,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
     var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
     if (borList.indexOf(selNeigh) >= 0) {
         vis.zoomBor(selNeigh);
+        return;
     }
 
     vis.sel_neigh = selNeigh;
@@ -510,7 +504,6 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         alert("Sorry! There are no listings in this data at this time. Please try another neighborhood/date!");
         return;
     }
-
 
     vis.sel_bor = f[0].properties.neighbourhood_group;
 
@@ -534,27 +527,12 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var x, y, k;
 
-    if (e && vis.centered !== e) {
-        var centroid = vis.path.centroid(e);
-        x = centroid[0];
-        y = centroid[1];
-        k = 2;
-        vis.centered = e;
-        vis.zoom_stat = true;
-    } else {
-        x = vis.width / 2;
-        y = vis.height / 2;
-        k = 1;
-        vis.centered = null;
-        vis.zoom_stat = false;
-
-        // make nodes visible again when zooming out
-        console.log('zoom out');
-        d3.selectAll("circle")
-            .transition()
-            .duration(750)
-            .attr("opacity", 0.2);
-    }
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
 
     // zoom into neighborhoods
     vis.neigh.transition()
@@ -632,7 +610,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 };
 
 
-// function for zooming into borough TODO
+// function for zooming into borough
 AirBnBNodeMap.prototype.zoomBor = function(selBor) {
     var vis = this;
 
@@ -656,27 +634,12 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
 
     var x, y, k;
 
-    if (e && vis.centered !== e) {
-        var centroid = vis.path.centroid(e);
-        x = centroid[0];
-        y = centroid[1];
-        k = 2;
-        vis.centered = e;
-        vis.zoom_stat = true;
-    } else {
-        x = vis.width / 2;
-        y = vis.height / 2;
-        k = 1;
-        vis.centered = null;
-        vis.zoom_stat = false;
-
-        // make nodes visible again when zooming out
-        console.log('zoom out');
-        d3.selectAll("circle")
-            .transition()
-            .duration(750)
-            .attr("opacity", 0.2);
-    }
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
 
     // zoom into neighborhoods
     vis.neigh.transition()
@@ -739,4 +702,43 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
         .transition()
         .duration(750)
         .attr("opacity", 0.2);
+};
+
+// function for zooming out
+AirBnBNodeMap.prototype.zoomOut = function() {
+    var vis = this;
+
+    var x, y, k;
+    x = vis.width / 2;
+    y = vis.height / 2;
+    k = 1;
+    vis.centered = null;
+    vis.zoom_stat = false;
+
+    // make nodes visible again when zooming out
+    console.log('zoom out');
+    d3.selectAll("circle")
+        .transition()
+        .duration(750)
+        .attr("opacity", 0.2);
+
+    // zoom out on neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom out on borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
 };
