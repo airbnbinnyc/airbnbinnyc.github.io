@@ -538,44 +538,6 @@ Sankey.prototype.Draw1 = function() {
         .transition().delay(1200).duration(800).attr("opacity", 1);
 };
 
-// original draw 1 function
-/*Sankey.prototype.Draw1 = function() {
-    var vis = this;
-
-    vis.textCenter
-        .transition().duration(800).attr("opacity", 0);
-
-    vis.nextText
-        .transition().duration(800).text("Next");
-
-    vis.node.selectAll(".all")
-        .transition().delay(800).duration(800).attr("opacity", 1);
-
-    vis.main.selectAll(".link-all-apts")
-        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
-
-    vis.main.selectAll(".link-all-legal")
-        .transition().delay(800).duration(800).attr("stroke-opacity", 0.1);
-
-    vis.node.selectAll(".apts")
-        .transition().delay(800).duration(800).attr("opacity", 1);
-
-    vis.node.selectAll(".legal")
-        .transition().delay(800).duration(800).attr("opacity", 1);
-
-    vis.textTop
-        .transition().delay(800)
-        .text("Renting a house or condo is always legal.");
-
-    vis.textBottom
-        .transition().delay(800)
-        .text("However, the " + vis.formatNum(vis.apartments.length) + " apartments listed might be illegal.");
-
-    vis.textCenter
-        .transition().delay(1200).duration(800).attr("opacity", 1);
-};*/
-
-
 Sankey.prototype.Draw2 = function() {
     var vis = this;
 
@@ -852,14 +814,6 @@ Sankey.prototype.DrawReset = function() {
         .attr("opacity", 1);
 
 };
-
-
-
-
-
-
-
-
 
 
 
