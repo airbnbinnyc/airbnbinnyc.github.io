@@ -50,7 +50,7 @@
             <div class="row">
                 <div class="col-md-7">
                     <div class="row">
-                        <div class="col-md-5">
+                        <div class="col-md-9">
                             <label>Zoom Into Neighborhood or Borough:
                             <input id="neighborhood-select" class="dropdown-input" onchange="zoomNeighborhood()"/>
                             </label>
@@ -65,12 +65,18 @@
                     <div id="vis1">
                         <div id="airbnb-map"></div>
                     </div>
-                    <h4>Number of Listings: <span id="listing-count"></span></h4>
                     <div class="row">
-                        <!--<div id="field" class="col-sm-1 slider-field"> </div>-->
-                        <div id="slider" class="col-sm-7"></div>
-                        <div id="sel-date" class="col-sm-2"></div>
-                        <!--<div class="col-sm-2"> <button id="slider-submit-button" type="button">Update Map</button>  </div>-->
+                        <div class="col-md-6">
+                            <h4>Selected Date: <span id="sel-date"></span></h4>
+                        </div>
+                        <div class="col-md-6">
+                            <h4>Number of Listings: <span id="listing-count"></span></h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2">Jan 1, 2015</div>
+                        <div id="slider" class="col-sm-8"></div>
+                        <div class="col-md-2">Oct 1, 2016</div>
                     </div>
                 </div>
                 <div class="col-md-5">

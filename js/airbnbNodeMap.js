@@ -41,12 +41,14 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
 
     });
 
+    vis.formatTime = d3.time.format("%b %d, %Y");
+
     vis.slider.noUiSlider.on('update', function(value) {
         // format date **TO DO**
 
 
         // print selected date
-        document.getElementById('sel-date').innerHTML = (vis.yyyymmdd(vis.dates[+value])).toString();
+        document.getElementById('sel-date').innerHTML = (vis.formatTime(vis.dates[+value]));
 
         // update what the selected date is
         vis.selDate = vis.yyyymmdd(vis.dates[+value]);
