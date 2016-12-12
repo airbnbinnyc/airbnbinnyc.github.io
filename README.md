@@ -1,5 +1,7 @@
 # CS171_Final_Project
 
+Link to website: https://airbnbinnyc.github.io/
+Link to video: https://airbnbinnyc.github.io/video.html
 
 Our Code:
 * borough_rent_calculations.ipynb
@@ -27,7 +29,6 @@ Downloaded Libraries:
 * jquery.fullpage.min.js.map
 * nyc.geojson
 * css folder
-  * awesomplete.css
   * awesomplete.css
   * colorbrewer.css
   * jquery.fullpage.min.css
@@ -59,7 +60,6 @@ Other Files:
 * data folder
   * from varying sources, including tomslee.net, zillow.com, and insideairbnb.com
 * img folder
-* ProcessBook.docx
 
 
 The README file must give an overview of what you are handing in: which parts are your code, which parts are libraries, and so on. The README must contain URLs to your project websites and screencast videos. The README must also explain any non-obvious features of your interface.
