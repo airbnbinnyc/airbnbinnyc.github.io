@@ -1,17 +1,17 @@
-var neighborhood_dict = {};
-
 // Variable for the visualization instance
 var taxRevenue,
     airbnbNodeMap,
     neighborhoodrent,
     mapLineGraph,
     mapAreaChart;
+var neighborhood_dict = {};
+
 
 
 // adds pretty alert message
 swal({
     title: "Please be patient!",
-    text: "We have a lot of data. The page may take a few seconds to load.",
+    text: "We have a lot of data. \nThe page may take a few seconds to load.",
     type: "warning",
     allowEscapeKey: true,
     showConfirmButton: false
@@ -53,11 +53,7 @@ function loadData() {
 
             if (error) throw error;
 
-            allData = airbnbData.slice(0, 101);
-
-            neighborhoodRentPrice = NRentPrice;
-            neighborhoodRentChange = NRentChange;
-
+            // Generate a dictionary containing various info about each neighborhood
             for (i = 0; i < neighborhoodInfo.length; i++) {
                 neighborhoodInfo[i].number_of_posts = +neighborhoodInfo[i].number_of_posts;
                 neighborhoodInfo[i].number_of_illegal_posts = +neighborhoodInfo[i].number_of_illegal_posts;
@@ -67,37 +63,19 @@ function loadData() {
                 neighborhood_dict[neighborhoodInfo[i].neighborhood] = neighborhoodInfo[i]
             }
 
-            // create a list with all neighborhood names
+            // create a list with all neighborhood names (will be used for dropdown menu for map vis)
             var neighborhoodList = [];
 
-            // uses all neighborhoods in shape file????
-            // neighborhoodMap.features.forEach(function(d) {
-            //     neighborhoodList.push(
-            //         {label: d.properties.neighbourhood + ", " + d.properties.neighbourhood_group,
-            //         value: d.properties.neighbourhood});
-            // });
-            //
-            //
-
-            // only allows for neighborhoods we have data for
+            // allow user to select from all neighborhoods we have data for
             for (var key in neighborhood_dict) {
                 neighborhoodList.push(
                     {label: key + ", " + neighborhood_dict[key].borough,
                         value: key});
             }
 
-            // create a list of boroughs
+            // allow user to select from all boroughs
             var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
-
-            // add boroughs as zoom options
-            for (var key in borList) {
-                    neighborhoodList.push(
-                        {
-                            label: borList[key] + " (All)",
-                            value: borList[key]
-                        }
-                    )
-            }
+            for (var key in borList) {neighborhoodList.push({label: borList[key] + " (All)", value: borList[key]})}
 
             // make autocompleting input for neighborhood selection
             var input = document.getElementById("neighborhood-select");
@@ -106,56 +84,42 @@ function loadData() {
                 sort: function(a,b) {
                     a.label < b.label;
                 }
-                //minChars: 0
             });
-
-/*            Awesomplete.$('.dropdown-btn').addEventListener("click", function() {
-                if (selector.ul.childNodes.length === 0) {
-                    selector.minChars = 0;
-                    selector.evaluate();
-                }
-                else if (selector.ul.hasAttribute('hidden')) {
-                    selector.open();
-                }
-                else {
-                    selector.close();
-                }
-            });*/
 
 
             // INSTANTIATE VISUALIZATIONS
+            // timeline & sankey are self contained so we instantiate them here;
+            // the others are not self contained so they're declared globally at the top
             airbnbNodeMap = new AirBnBNodeMap("airbnb-map", boroughMap, neighborhoodMap, airbnbData);
             taxRevenue = new TaxRevenue("tax-revenue", taxData);
-            neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", neighborhoodRentPrice, neighborhoodRentChange, neighborhood_dict);
+            neighborhoodrent = new NeighborhoodLine("neighborhood-line-chart-area", NRentPrice, NRentChange, neighborhood_dict);
             var timeline = new Timeline("timeline", timelineData);
             var sankey = new Sankey("#sankey", newestDataset);
             mapAreaChart = new MapAreaChart("areachart", categoryCounts, borCategoryCounts, neighCategoryCounts);
-            mapLineGraph = new MapLineGraph("linechart", neighborhoodRentPrice, neighborhood_dict, boroughMeanRent);
-
-            createVis();
+            mapLineGraph = new MapLineGraph("linechart", NRentPrice, neighborhood_dict, boroughMeanRent);
 
 
-            // Listen for the event and access the neighborhood value
+
+            // Listen for changes in the neighborhood/borough dropdown
             input.addEventListener("awesomplete-selectcomplete", function (e) {
-                console.log(borList.indexOf(e.text.value));
+                // if the selected region is a borough:
                 if (borList.indexOf(e.text.value) >= 0) {
-                    // a borough has been selected
-                    console.log("BOROUGH");
-                    console.log(e.text.value);
                     mapLineGraph.wrangleData_borough();
-                    mapAreaChart.zoomBorough(e.text.value);
                 }
+                // if the selected region is a neighborhood:
                 else {
-                    // a neighborhood has been selected
-                    console.log("NEIGHBORHOOD");
                     mapLineGraph.wrangleData_neighborhood();
-                    mapAreaChart.zoomNeighborhood(e.text.value);
                 }
-                console.log(e.text.value);
-
-
+                mapAreaChart.zoomNeighborhood(e.text.value);
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
+
+            // make map coordinate views react to zoom out button
+            $("#zoom-out-button").click(function () {
+                mapLineGraph.wrangleData_all();
+                mapAreaChart.zoomTotal();
+                airbnbNodeMap.zoomOut();
+            });
 
 
             // mimics escape key to alert message
@@ -163,42 +127,10 @@ function loadData() {
             e.which = 27; //choose the one you want
             e.keyCode = 27;
             $(".sweet-alert").trigger(e);
-
-            $("#zoom-out-button").click(function () {
-                mapLineGraph.wrangleData_all();
-                mapAreaChart.zoomTotal();
-                airbnbNodeMap.zoomOut();
-            });
-
         });
 
 }
 
-function createVis() {
-
-
-    // Checkbox stuff
-    $("#select_all").change(function(){  //"select all" change
-        $("#borough-checkboxes .checkbox").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
-        neighborhoodrent.wrangleData();
-        console.log("hi");
-    });
-
-    //".checkbox" change
-    $('#borough-checkboxes .checkbox').change(function(){
-        //uncheck "select all", if one of the listed checkbox item is unchecked
-        if(false == $(this).prop("checked")){ //if this item is unchecked
-            $("#select_all").prop('checked', false); //change "select all" checked status to false
-        }
-        //check "select all" if all checkbox items are checked
-        if ($('#borough-checkboxes .checkbox:checked').length == $('#borough-checkboxes .checkbox').length ){
-            $("#select_all").prop('checked', true);
-        }
-        neighborhoodrent.wrangleData();
-    });
-
-
-}
 
 // update visualization to select filter for node coloring
 function dataManipulation() {
@@ -212,15 +144,3 @@ function zoom() {
     mapLineGraph.wrangleData_borough();
 }
 
-
-// is this doing things? //
-function zoomNeighborhood() {
-    console.log('neigh zoom');
-    airbnbNodeMap.zoom();
-    mapLineGraph.wrangleData_neighborhood();
-}
-
-/*
-function changeNeighborhood(val) {
-    console.log(val);
-}*/

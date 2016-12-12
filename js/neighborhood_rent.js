@@ -95,13 +95,13 @@ NeighborhoodLine.prototype.initVis = function(){
 
 
     // Initialize legend
-    vis.legend_margin = {top: 80, right: 0, bottom: 100, left: 0};
+    vis.legend_margin = {top: 80, right: 20, bottom: 20, left: 20};
 
 
     vis.key = d3.select("#neighborhood-line-legend")
         .append("svg")
-        .attr("width", vis.width + vis.legend_margin.left + vis.legend_margin.right)
-        .attr("height", vis.height + vis.legend_margin.top + vis.legend_margin.bottom)
+        .attr("width", 100 + vis.legend_margin.left + vis.legend_margin.right )
+        .attr("height", 100 + vis.legend_margin.top + vis.legend_margin.bottom )
         .append("g")
         .attr("class", "legendQuant") // only needed for ordinal legend
         .attr("transform", "translate(" + vis.legend_margin.left + "," + vis.legend_margin.top + ")");
@@ -328,3 +328,24 @@ NeighborhoodLine.prototype.updateVis = function(){
 };
 
 
+
+
+
+// Listen to checkboxes
+$("#select_all").change(function(){  //"select all" change
+    $("#borough-checkboxes .checkbox").prop('checked', $(this).prop("checked")); //change all ".checkbox" checked status
+    neighborhoodrent.wrangleData();
+});
+
+//".checkbox" change
+$('#borough-checkboxes .checkbox').change(function(){
+    //uncheck "select all", if one of the listed checkbox item is unchecked
+    if(false == $(this).prop("checked")){ //if this item is unchecked
+        $("#select_all").prop('checked', false); //change "select all" checked status to false
+    }
+    //check "select all" if all checkbox items are checked
+    if ($('#borough-checkboxes .checkbox:checked').length == $('#borough-checkboxes .checkbox').length ){
+        $("#select_all").prop('checked', true);
+    }
+    neighborhoodrent.wrangleData();
+});
