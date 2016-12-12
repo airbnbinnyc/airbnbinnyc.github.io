@@ -140,8 +140,6 @@ AirBnBNodeMap.prototype.initVis = function() {
         .style("stroke", "#555");
 
 
-
-
     // create color scale for nodes
     vis.colorScale = d3.scale.quantize()
         .domain(vis.getExtent())

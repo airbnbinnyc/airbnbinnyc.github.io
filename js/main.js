@@ -46,7 +46,7 @@ function loadData() {
         .defer(d3.csv, "data/neighborhood-lines/neighborhood_info.csv")
         .defer(d3.json, "data/category_counts.json")
         .defer(d3.json, "data/borough_category_counts.json")
-        .defer(d3.json, "data/neighborhood_category_counts.json")
+        .defer(d3.json, "data/neighborhood_category_counts_new.json")
         .defer(d3.csv, "data/neighborhood-lines/mean_rent.csv")
         .await(function(error, boroughMap, airbnbData, taxData, NRentPrice, NRentChange, newestDataset, neighborhoodMap, timelineData, neighborhoodInfo, categoryCounts, borCategoryCounts, neighCategoryCounts, boroughMeanRent) {
 
