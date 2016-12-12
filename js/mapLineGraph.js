@@ -158,9 +158,11 @@ MapLineGraph.prototype.wrangleData_neighborhood = function() {
 MapLineGraph.prototype.wrangleData_borough = function() {
     var vis = this;
 
-    var  box = document.getElementById("borough_sel");
-    vis.selected_borough = box.options[box.selectedIndex].value;
+    // var  box = document.getElementById("borough_sel");
+    // vis.selected_borough = box.options[box.selectedIndex].value;
+    //
 
+    vis.selected_borough = $("#neighborhood-select").val();
 
     vis.displayData = vis.boroughs;
 
