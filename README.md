@@ -3,8 +3,12 @@
 
 Our Code:
 * borough_rent_calculations.ipynb
-* css/basic-style.css
-* css/vis-page-style.css
+* index.html
+* css
+  * basic-style.css
+  * vis-page-style.css
+* js
+  * airbnbNodeMap.js
 
 Downloaded Libraries:
 * css/awesomplete.css
@@ -13,11 +17,21 @@ Downloaded Libraries:
 * css/jquery.fullpage.min.css
 * css/nouislider.css
 * css/sweetalert.css
+* jquery.fullpage.min.css.map
+* jquery.fullpage.min.js.map
+* js/awesomplete.min.js
+* js/bootstrap.min.js
+* js/colorbrewer.min.js
+* js/d3-legend.min.js
+* js/d3.min.js
+* js/d3.tip.js
+* js/jquery.combinedScroll.js
+* js/
 
 Other Files:
 * css/header-image-6.png
 * data folder
-  * from varying sources, including tomslee and insideairbnb.com
+  * from varying sources, including tomslee.net, zillow.com, and insideairbnb.com
 * img folder
 
 
