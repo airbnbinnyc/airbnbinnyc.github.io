@@ -43,9 +43,6 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
     vis.formatTime = d3.time.format("%b %d, %Y");
 
     vis.slider.noUiSlider.on('update', function(value) {
-        // format date **TO DO**
-
-
         // print selected date
         document.getElementById('sel-date').innerHTML = (vis.formatTime(vis.dates[+value]));
 
@@ -172,21 +169,6 @@ AirBnBNodeMap.prototype.initVis = function() {
             return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })
         .attr('class', 'circ');
-        // .on("mouseover", function(d) {
-        //     d3.select(this)
-        //         .moveToFront()
-        //         .attr("r", 5)
-        //         .attr("opacity", 1)
-        //         .style("stroke", "black");
-        //     vis.tip.show(d);
-        // })
-        // .on("mouseout", function(d) {
-        //     d3.select(this)
-        //         .attr("r", 2)
-        //         .attr("opacity", 0.2)
-        //         .style("stroke", "none");
-        //     vis.tip.hide(d);
-        // });
 
     $('.circ').bind('mouseover', function(d) {
         d3.select(this)
@@ -261,8 +243,6 @@ AirBnBNodeMap.prototype.initVis = function() {
             vis.updateVis();
         });
     });
-
-    // vis.updateVis();
 
 
 };
@@ -422,13 +402,15 @@ AirBnBNodeMap.prototype.updateVis = function() {
         .attr("transform", function(d) {
             return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         });
-        // make node larger and darker on mouseover
+    // make node larger and darker on mouseover
     $('.circ').bind('mouseover', function(d) {
         d3.select(this)
             .moveToFront()
             .attr("r", 5)
             .attr("opacity", 1)
             .style("stroke", "black");
+
+        console.log(d.currentTarget);
 
         vis.tip.show(d.currentTarget.__data__, d.currentTarget);
     });
@@ -440,21 +422,6 @@ AirBnBNodeMap.prototype.updateVis = function() {
 
         vis.tip.hide(d.currentTarget.__data__, d.currentTarget);
     });
-        // .on("mouseover", function(d) {
-        //     d3.select(this)
-        //         .attr("r", 5)
-        //         .attr("opacity", 1)
-        //         .style("stroke", "black")
-        //         .moveToFront();
-        //     vis.tip.show(d);
-        // })
-        // .on("mouseout", function(d) {
-        //     d3.select(this)
-        //         .attr("r", 2)
-        //         .attr("opacity", 0.2)
-        //         .style("stroke", "none");
-        //     vis.tip.hide(d);
-        // });
 
     if (vis.zoom_stat == true) {
         var e = vis.boroughMap.features.filter(function (n, i) {
@@ -738,7 +705,8 @@ AirBnBNodeMap.prototype.zoomOut = function() {
     d3.selectAll("circle")
         .transition()
         .duration(750)
-        .attr("opacity", 0.2);
+        .attr("opacity", 0.2)
+        .attr('class', 'circ');
 
     // zoom out on neighborhoods
     vis.neigh.transition()
