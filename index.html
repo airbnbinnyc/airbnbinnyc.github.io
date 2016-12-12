@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/colorbrewer.css">
     <link rel="stylesheet" href="css/nouislider.css">
     <link rel="stylesheet" href="css/awesomplete.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/vis-page-style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.fullpage.min.css">
     <link rel="stylesheet" href="css/sweetalert.css">
 
@@ -152,8 +152,21 @@
         </div>
 
         <div id="section4" data-anchor="s4" class="section">
-            <h2>New York City and State lose $93 million a year in unpaid taxes.</h2>
-            <p>Under current laws, Airbnb is not permitted to collect and remit taxes to New York City. New York city and state lawmakers, and well as the New York hotel association, oppose Airbnb’s attempt to be allowed to do so. They fear legitimizing Airbnb’s operations when a large proportion of their listings are illegal, and argue that such an action would put hosts at risk by providing evidence of their illegal activity, and doesn’t address the issue of housing shortages. If Airbnb illegal listings are reducing demand for legal hotels in New York City, then the city is also losing tax revenues that would be paid on legal hotel rooms.</p>
+            <h2>Last year, New York City and State lost $93 million in unpaid taxes.</h2>
+            <p>
+                Under current laws, Airbnb is not permitted to collect and remit taxes to New York City. New York city
+                and state lawmakers, and well as the New York hotel association, oppose Airbnb’s attempt to be allowed
+                to do so. They fear legitimizing Airbnb’s operations when a large proportion of their listings are
+                illegal, and argue that such an action would put hosts at risk by providing evidence of their illegal
+                activity, and doesn’t address the issue of housing shortages. If Airbnb illegal listings are reducing
+                demand for legal hotels in New York City, then the city is also losing tax revenues that would be paid
+                on legal hotel rooms.
+            </p>
+            <p>
+                Furthermore, Airbnb very rarely publishes information on just how much tax revenue they would owe New York
+                City. In April 2014, they claimed that annual tax revenue from NYC listings would be $21 million. By
+                Jan 2015, that estimate was $65 million. Today, it's even higher.
+            </p>
 
             <div id="vis2">
                 <div class="row">
@@ -262,8 +275,37 @@
         </div>
 
         <div id="section7" data-anchor="s7" class="section">
-            <h2>Some concluding thoughts</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie.</p>
+            <h2>Concluding thoughts</h2>
+            <p>
+                When it comes to Airbnb in New York City, there are two main concerns: lost tax revenue and rent increases.
+            </p>
+            <p>
+                It's clear that, like many other cities, NYC has a serious problem with lost tax revenue. In Fiscal Year
+                2016, the city and state lost out on a combined total of $93 million in taxes. Given the rapid growth of
+                Airbnbs in NYC, that number will only increase in the future. Unfortunately, lawmakers can't find a way
+                to collect these taxes because doing so would legitimize the significant amount of illegal NYC listings.
+            </p>
+            <p>
+                The concern with rent increases is specific to New York City. Policymakers claim that illegal Airbnb
+                rentals remove property from the housing market, and thereby drive up prices on remaining apartments.
+                This certainly makes sense from a theoretic and economic perspective; decreasing the supply should increase
+                the price. However, that relationship isn't clearly visible in the data.
+            </p>
+            <p>
+                It's true that certain NYC neighborhoods have very high rent. It's also true that those neighborhoods
+                tend to have a lot of illegal Airbnbs. But all that tells us is some places are more desirable than others,
+                and people are willing to pay more to live there (whether temporarily or long-term).
+            </p>
+            <p>
+                When we look at the percent <em>change</em> in rent over the last four years, it doesn't look like
+                the neighborhoods with the largest amount of Airbnbs have significantly faster price increases. Some
+                high-Airbnb neighborhoods have rent that increases quickly. Some have rent that increases relatively slowly.
+                But there doesn't seem to be an obvious trend.
+            </p>
+            <p>
+                So, while it's clear that Airbnb in NYC poses a significant tax problem, there isn't a clear issue with
+                rent increases.
+            </p>
         </div>
 
         <div id="footer" data-anchor="f" class="nav section fp-auto-height">
@@ -298,9 +340,6 @@
     <script src="js/jquery.fullpage.min.js"></script>
     <script src="js/sweetalert.min.js"></script>
 
-    <!-- script for carousels and scrolling -->
-    <script src="js/page-run.js"></script>
-
     <!-- Visualization objects -->
     <script src="js/sankey.js"></script>
     <script src="js/taxRevenue.js"></script>
@@ -311,7 +350,11 @@
     <script src="js/mapLineGraph.js"></script>
     <script src="js/mapAreaChart.js"></script>
 
+    <!-- script for carousels and scrolling -->
+    <script src="js/page-run.js"></script>
+
     <!-- Load data, create visualizations -->
     <script src="js/main.js"></script>
+
 </body>
 </html>

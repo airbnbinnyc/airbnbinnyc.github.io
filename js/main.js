@@ -122,6 +122,9 @@ function loadData() {
             });
 
 
+            // start magical scrolling
+            scrollSetUp();
+
             // mimics escape key to alert message
             var e = jQuery.Event("keydown");
             e.which = 27; //choose the one you want
