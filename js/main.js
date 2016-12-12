@@ -7,6 +7,16 @@ var taxRevenue,
     mapLineGraph,
     mapAreaChart;
 
+
+// adds pretty alert message
+swal({
+    title: "Please be patient!",
+    text: "We have a lot of data. The page may take a few seconds to load.",
+    type: "warning",
+    allowEscapeKey: true,
+    showConfirmButton: false
+});
+
 // Start application by loading the data
 loadData();
 
@@ -118,6 +128,14 @@ function loadData() {
                 mapAreaChart.zoomNeighborhood(e.text.value);
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
+
+
+            // mimics escape key to alert message
+            var e = jQuery.Event("keydown");
+            e.which = 27; //choose the one you want
+            e.keyCode = 27;
+            $(".sweet-alert").trigger(e);
+
         });
 
 }
@@ -145,8 +163,6 @@ function createVis() {
         }
         neighborhoodrent.wrangleData();
     });
-
-
 
 
 }

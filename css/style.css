@@ -6,9 +6,30 @@
     border-color: #41898B;
 }
 
+
+.btn-primary.active {
+    background-color: #007D8C;
+    border-color: #005C66;
+}
+
+.btn-primary:hover {
+    background-color: #006b7b;
+    border-color: #004852;
+}
+
+
+.btn-primary.active:hover {
+    background-color: #005C66;
+    border-color: #003d47;
+}
+
 #bor-check {
     padding-left: 0;
     padding-right: 0;
+}
+
+.cell .label {
+    font-size: 13px;
 }
 
 .checkbox {
@@ -53,11 +74,6 @@
     text-align: right;
     right: 110px;
     top: -35px;
-}
-
-.btn-primary.active {
-    background-color: #007D8C;
-    border-color: #005C66;
 }
 
 body {
