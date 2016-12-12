@@ -48,7 +48,8 @@
             <a href="http://www.bls.gov/cpi/">here</a>.
         </p>
         <p>
-            Information on housing units per neighborhood was obtained from NICASIA??
+            Information on housing units per neighborhood was calculated from datasets provided by the <a href=https://www1.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page>
+            NYC Department of City Planning</a>.
         </p>
     </div>
 
@@ -151,8 +152,26 @@
 
     <div id="section3" data-anchor="s3" class="section">
         <h2>Posting Density</h2>
-        <p>FILLER TEXT YAY</p>
+        <p>In order to calculate the total number of residential units in each neighborhood and borough, we downloaded
+            a <a href="https://www1.nyc.gov/site/planning/data-maps/open-data/dwn-pluto-mappluto.page">dataset</a> containing
+            extensive land use and geographic data provided by the NYC Department of City Planning. We then filtered the dataset to only contain buildings with residential
+            units. Each building contains location coordinates in the New York-Long Island State Plane coordinate system.
+            We used a website called <a href="http://www.earthpoint.us/BatchConvert.aspx">Earth Point</a> to convert these
+            coordinates to normal Latitude-Longitude coordinates. Based on shapefiles provided by
+            <a href="http://www.zillow.com/howto/api/neighborhood-boundaries.htm">Zillow</a>, we then mapped each building
+            to a neighborhood and borough based on its Lat-Long position. Finally, for each neighborhood and borough, we
+            summed over the total residential units of all buildings assigned to that region.
+        </p>
+        <p> In order to calculate the density of Airbnb listings in each borough and neighborhood, we first mapped each
+            listing to a neighborhood and borough (via its geographical coordinates) and then calculated the total number
+            of listings assigned to each each region. The density of Airbnb posts for a given region is a simple ratio of
+            the number of listings to the number of residential units in the region. For the purposes of our visualization,
+            we multiplied this ratio by 10,000 to provide the user with a more intuitive value of "number of listings
+            per 10,000 residential units" in a given region.
+        </p>
     </div>
+
+
 
     <div id="footer" data-anchor="f" class="nav section fp-auto-height">
         <div class="left">
