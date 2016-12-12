@@ -1,7 +1,10 @@
 # CS171_Final_Project
 
 Link to website: https://airbnbinnyc.github.io/
+
 Link to video: https://airbnbinnyc.github.io/video.html
+
+Note: for the most part, mouse scroll will take you through the sections of our website. However, depending on browser window size, there may be a sub-scroll for each section. Caution is advised.
 
 Our Code:
 * borough_rent_calculations.ipynb
@@ -60,7 +63,4 @@ Other Files:
 * data folder
   * from varying sources, including tomslee.net, zillow.com, and insideairbnb.com
 * img folder
-
-
-The README file must give an overview of what you are handing in: which parts are your code, which parts are libraries, and so on. The README must contain URLs to your project websites and screencast videos. The README must also explain any non-obvious features of your interface.
 
