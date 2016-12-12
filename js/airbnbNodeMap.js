@@ -93,9 +93,7 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr("height", vis.height);
 
     // CREATE TOOLTIP //
-    vis.svg.selectAll(".d3-tip").remove();
     // Initialize tooltip
-
     vis.tip = d3.tip()
         .attr('class', 'd3-tip');
 
@@ -141,7 +139,7 @@ AirBnBNodeMap.prototype.initVis = function() {
 
 
     // create color scale for nodes
-    vis.colorScale = d3.scale.quantize()
+    vis.colorScale = d3.scale.threshold()
         .domain(vis.getExtent())
         .range(vis.getColorScheme());
 
@@ -188,9 +186,9 @@ AirBnBNodeMap.prototype.initVis = function() {
     // DRAW LEGEND
 
     vis.legendBox = vis.svg.append('rect')
-        .attr('class', 'legendBox')
+        .attr('class', 'key')
         .attr('width', 135)
-        .attr('height', 190)
+        .attr('height', 130)
         .attr('fill', 'white')
         .attr('y', 190)
         .attr('stroke', 'black')
@@ -230,20 +228,6 @@ AirBnBNodeMap.prototype.initVis = function() {
             + "<strong>Price: $</strong>" + d.price);
     });
 
-
-
-    // Add a listener to the slider submit button -- when selected, data from that date will be uploaded to the map
-    // document.getElementById('slider-submit-button').addEventListener('click', function(){
-    //     // wait until new dataset is loaded before drawing map
-    //     $.holdReady(true);
-    //     $.getJSON("data/json_files_by_date/" + vis.selDate + ".json", function(json) {
-    //         // change data for visualization
-    //         vis.airbnbData = json;
-    //         $.holdReady(false);
-    //         vis.updateVis();
-    //     });
-    // });
-
     document.getElementById('slider').addEventListener('mouseup', function(){
         // wait until new dataset is loaded before drawing map
         $.holdReady(true);
@@ -280,15 +264,15 @@ AirBnBNodeMap.prototype.getColorScheme = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var color = ['#007D8C'];
+        vis.color = ['#007D8C'];
     }
     else if (vis.val == "illegal") {
-        var color = ['#8da0cb', colors.red];
+        vis.color = ['#8da0cb', colors.red];
     }
     else {
-        var color = colorbrewer.Reds[9];
+        vis.color = colorbrewer.Reds[6];
     }
-    return color;
+    return vis.color;
 
 };
 
@@ -297,16 +281,17 @@ AirBnBNodeMap.prototype.getExtent = function() {
     var vis = this;
 
     if (vis.val == "None") {
-        var extent = [0, 0];
+        vis.extent = [0, 0];
     }
+    // Due to threshold scale, domain must be higher than values in data
     else if (vis.val == "illegal") {
-        var extent = [0, 1];
+        vis.extent = [0.1, 1.1];
     }
     else {
-        var extent = [0, 50, 100, 150, 200, 250, 300];
+        vis.extent = [50, 100, 150, 200, 300, 500];
     }
 
-    return extent;
+    return vis.extent;
 };
 
 AirBnBNodeMap.prototype.colorNodes = function () {
@@ -316,6 +301,9 @@ AirBnBNodeMap.prototype.colorNodes = function () {
     vis.colorScale
         .domain(vis.getExtent())
         .range(vis.getColorScheme());
+
+    console.log(vis.color);
+    console.log(vis.extent);
 
     // recolor nodes
     vis.circles.transition()
@@ -369,7 +357,12 @@ AirBnBNodeMap.prototype.colorNodes = function () {
                 var extent = vis.colorScale.invertExtent(d);
                 //extent will be a two-element array, format it however you want:
                 var format = d3.format("0.2f");
-                return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+                if (extent[0]) {
+                    return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+                }
+                else {
+                    return "$0 - $"+ format(Math.round(+extent[1]));
+                }
             }
         });
 
@@ -384,9 +377,6 @@ AirBnBNodeMap.prototype.colorNodes = function () {
 AirBnBNodeMap.prototype.updateVis = function(d) {
 
     var vis = this;
-
-    // print number of listings to listing-count
-    document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
 
     vis.svg.selectAll(".node").remove();
 
@@ -454,15 +444,18 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
                 return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
             });
 
-        // erase nodes not in selected borough
+        var num_listings = 0;
+
+        // erase nodes not in selected region
         d3.selectAll("circle")
             .filter(function(d) {
                 if (i < 39561) {
-                    // select all nodes not in selected borough
+                    // select all nodes not in selected region
                     if (d.neighborhood != vis.sel_neigh) {
                         return true;
                     }
                     else {
+                        num_listings += 1;
                         return false;
                     }
                 }
@@ -471,6 +464,14 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
             .transition()
             .duration(750)
             .attr("opacity", 0);
+
+        // print number of listings in zoomed region to listing-count
+        document.getElementById('listing-count').innerHTML = (num_listings).toString();
+    }
+    // map is not zoomed
+    else {
+        // print number of listings in zoomed region to listing-count
+        document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
     }
 
 };
@@ -484,9 +485,12 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var vis = this;
 
-    // var box = document.getElementById("borough_sel");
-    //
-    // vis.sel_bor = box.options[box.selectedIndex].value;
+    // check if selected option is a borough
+    var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+    if (borList.indexOf(selNeigh) >= 0) {
+        vis.zoomBor(selNeigh);
+        return;
+    }
 
     vis.sel_neigh = selNeigh;
 
@@ -500,7 +504,6 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         alert("Sorry! There are no listings in this data at this time. Please try another neighborhood/date!");
         return;
     }
-
 
     vis.sel_bor = f[0].properties.neighbourhood_group;
 
@@ -524,27 +527,12 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     var x, y, k;
 
-    if (e && vis.centered !== e) {
-        var centroid = vis.path.centroid(e);
-        x = centroid[0];
-        y = centroid[1];
-        k = 2;
-        vis.centered = e;
-        vis.zoom_stat = true;
-    } else {
-        x = vis.width / 2;
-        y = vis.height / 2;
-        k = 1;
-        vis.centered = null;
-        vis.zoom_stat = false;
-
-        // make nodes visible again when zooming out
-        console.log('zoom out');
-        d3.selectAll("circle")
-            .transition()
-            .duration(750)
-            .attr("opacity", 0.2);
-    }
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
 
     // zoom into neighborhoods
     vis.neigh.transition()
@@ -568,7 +556,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
             return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
         });
 
-    // erase nodes not in selected borough
+    // erase nodes not in selected neighborhood
     d3.selectAll("circle")
         .filter(function(d, i) {
             if (i < 39561) {
@@ -591,7 +579,9 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         .duration(750)
         .attr("opacity", 0);
 
-    // fill in nodes in selected borough
+    var num_listings = 0;
+
+    // fill in nodes in selected neighborhood
     d3.selectAll("circle")
         .filter(function(d) {
             if (i < 39561) {
@@ -602,6 +592,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
                         return false;
                     }
                     else {
+                        num_listings += 1;
                         return true;
                     }
                 }
@@ -613,4 +604,141 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         .transition()
         .duration(750)
         .attr("opacity", 0.2);
+
+    // print number of listings in zoomed region to listing-count
+    document.getElementById('listing-count').innerHTML = (num_listings).toString();
+};
+
+
+// function for zooming into borough
+AirBnBNodeMap.prototype.zoomBor = function(selBor) {
+    var vis = this;
+
+    vis.sel_bor = selBor;
+
+    var e = vis.boroughMap.features.filter(function (n, i) {
+        return n.properties.borough === vis.sel_bor;
+    });
+
+    // get index for largest (most complicated/coordinates) land mass - main land mass
+    var max_val = 0;
+    var max_ind = 0;
+    for (var i = 0; i < e.length; i++) {
+        if (e[i].geometry.coordinates[0].length > max_val) {
+            max_val = e[i].geometry.coordinates[0].length;
+            max_ind = i;
+        }
+    }
+
+    e = e[max_ind];
+
+    var x, y, k;
+
+    var centroid = vis.path.centroid(e);
+    x = centroid[0];
+    y = centroid[1];
+    k = 2;
+    vis.centered = e;
+    vis.zoom_stat = true;
+
+    // zoom into neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom into borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
+
+    // erase nodes not in selected borough
+    d3.selectAll("circle")
+        .filter(function(d) {
+            // if user is zoomed in
+            if (vis.zoom_stat == true) {
+                // select all nodes not in selected borough
+                if (d.borough != vis.sel_bor) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+            else {
+                return false;
+            }
+        })
+        .transition()
+        .duration(750)
+        .attr("opacity", 0);
+
+    // fill in nodes in selected borough
+    d3.selectAll("circle")
+        .filter(function(d) {
+            // if user is zoomed in
+            if (vis.zoom_stat == true) {
+                // select all nodes IN selected borough
+                if (d.borough != vis.sel_bor) {
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            else {
+                return false;
+            }
+        })
+        .transition()
+        .duration(750)
+        .attr("opacity", 0.2);
+};
+
+// function for zooming out
+AirBnBNodeMap.prototype.zoomOut = function() {
+    var vis = this;
+
+    var x, y, k;
+    x = vis.width / 2;
+    y = vis.height / 2;
+    k = 1;
+    vis.centered = null;
+    vis.zoom_stat = false;
+
+    // make nodes visible again when zooming out
+    console.log('zoom out');
+    d3.selectAll("circle")
+        .transition()
+        .duration(750)
+        .attr("opacity", 0.2);
+
+    // zoom out on neighborhoods
+    vis.neigh.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+    // zoom out on borough
+    vis.bor.transition()
+        .duration(750)
+        .attr("transform", "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 1.5 / k + "px");
+
+
+    // REDRAW NODES
+    vis.node.transition()
+        .duration(750)
+        .attr("transform", function(d) {
+            return "translate(" + vis.width / 2 + "," + vis.height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")";
+        });
 };

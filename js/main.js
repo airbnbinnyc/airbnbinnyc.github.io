@@ -85,6 +85,19 @@ function loadData() {
                         value: key});
             }
 
+            // create a list of boroughs
+            var borList = ["Manhattan", "Brooklyn", "Queens", "Bronx", "Staten Island"];
+
+            // add boroughs as zoom options
+            for (var key in borList) {
+                    neighborhoodList.push(
+                        {
+                            label: borList[key] + " (All)",
+                            value: borList[key]
+                        }
+                    )
+            }
+
             // make autocompleting input for neighborhood selection
             var input = document.getElementById("neighborhood-select");
             var selector = new Awesomplete(input, {
@@ -123,9 +136,23 @@ function loadData() {
 
             // Listen for the event and access the neighborhood value
             input.addEventListener("awesomplete-selectcomplete", function (e) {
+                console.log(borList.indexOf(e.text.value));
+                if (borList.indexOf(e.text.value) >= 0) {
+                    // a borough has been selected
+                    console.log("BOROUGH");
+                    console.log(e.text.value);
+                    mapLineGraph.wrangleData_borough();
+                    mapAreaChart.zoomBorough(e.text.value);
+                }
+                else {
+                    // a neighborhood has been selected
+                    console.log("NEIGHBORHOOD");
+                    mapLineGraph.wrangleData_neighborhood();
+                    mapAreaChart.zoomNeighborhood(e.text.value);
+                }
                 console.log(e.text.value);
-                mapLineGraph.wrangleData_neighborhood();
-                mapAreaChart.zoomNeighborhood(e.text.value);
+
+
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
 
@@ -136,10 +163,15 @@ function loadData() {
             e.keyCode = 27;
             $(".sweet-alert").trigger(e);
 
+            $("#zoom-out-button").click(function () {
+                mapLineGraph.wrangleData_all();
+                mapAreaChart.zoomTotal();
+                airbnbNodeMap.zoomOut();
+            });
+
         });
 
 }
-
 
 function createVis() {
 
@@ -176,7 +208,6 @@ function dataManipulation() {
 // update airbnb node map to zoom into borough
 function zoom() {
     airbnbNodeMap.zoom();
-    mapAreaChart.zoomBorough();
     mapLineGraph.wrangleData_borough();
 }
 
@@ -185,7 +216,6 @@ function zoom() {
 function zoomNeighborhood() {
     console.log('neigh zoom');
     airbnbNodeMap.zoom();
-    mapAreaChart.zoomNeighborhood();
     mapLineGraph.wrangleData_neighborhood();
 }
 

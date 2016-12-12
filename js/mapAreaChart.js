@@ -25,8 +25,6 @@ MapAreaChart.prototype.initVis = function() {
 
     vis.date = airbnbNodeMap.selDate;
 
-    console.log(vis.neighborhoodData);
-
     vis.parseTime = d3.time.format("%Y-%m-%d");
 
     vis.dataCategories = ["total"];
@@ -35,10 +33,10 @@ MapAreaChart.prototype.initVis = function() {
     vis.startDate = vis.parseTime.parse("2015-01-01");
     vis.endDate = vis.parseTime.parse("2016-10-01");
 
-    vis.margin = {top: 20, right: 20, bottom: 40, left: 60};
+    vis.margin = {top: 50, right: 20, bottom: 40, left: 60};
 
     vis.width = $("#" + vis.parentElement).width() - vis.margin.left - vis.margin.right,
-        vis.height = 250 - vis.margin.top - vis.margin.bottom;
+        vis.height = 280 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -62,13 +60,29 @@ MapAreaChart.prototype.initVis = function() {
 
     vis.zoomData = vis.totalData;
 
+    yaxlabel = vis.svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -vis.height )
+        .attr("y", -vis.margin.left+2)
+        .attr("dy", "0.71em")
+        .attr("fill", "#000")
+        .text("");
+
+    yaxlabel.text("Number of Listings");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2)
+        .attr("y", -5)
+        .attr("text-anchor", "middle")
+        .attr("class", "chart-title")
+        .attr("font-size", 15)
+        .text("Total Airbnb Listings Over Time");
+
     vis.wrangleData();
 };
 
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
-
-    console.log(vis.zoomData);
 
     vis.dataIntermediate = Object.keys(vis.zoomData).map(function (key) {
         return vis.zoomData[key];
@@ -229,24 +243,10 @@ function switchCategories(val) {
     }
 }
 
-MapAreaChart.prototype.zoomBorough = function() {
+MapAreaChart.prototype.zoomBorough = function(val) {
     var vis = this;
 
-    var box = document.getElementById("borough_sel");
-
-    vis.filter = box.options[box.selectedIndex].value;
-
-    console.log(vis.filter);
-
-    if (vis.filter == "all") {
-        vis.zoomData = vis.totalData;
-    }
-
-    else {
-        vis.zoomData = vis.boroughData[vis.filter];
-    }
-
-
+    vis.zoomData = vis.boroughData[val];
 
     vis.wrangleData();
 }
@@ -254,9 +254,15 @@ MapAreaChart.prototype.zoomBorough = function() {
 MapAreaChart.prototype.zoomNeighborhood = function(val) {
     var vis = this;
 
-    console.log(val);
-
     vis.zoomData = vis.neighborhoodData[val];
+
+    vis.wrangleData();
+}
+
+MapAreaChart.prototype.zoomTotal = function() {
+    var vis = this;
+
+    vis.zoomData = vis.totalData;
 
     vis.wrangleData();
 }

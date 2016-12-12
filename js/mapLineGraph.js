@@ -94,7 +94,7 @@ MapLineGraph.prototype.initVis = function() {
         .text("Inflation-Adjusted Median Housing Prices by NYC Region");
 
     vis.initialWrangle();
-    vis.wrangleData_borough();
+    vis.wrangleData_all();
 };
 
 MapLineGraph.prototype.initialWrangle = function() {
@@ -158,27 +158,34 @@ MapLineGraph.prototype.wrangleData_neighborhood = function() {
 MapLineGraph.prototype.wrangleData_borough = function() {
     var vis = this;
 
-    var  box = document.getElementById("borough_sel");
-    vis.selected_borough = box.options[box.selectedIndex].value;
-
+    vis.selected_borough = $("#neighborhood-select").val();
 
     vis.displayData = vis.boroughs;
 
-    if (vis.selected_borough == "all") {
-        for (i = 0; i < vis.displayData.length; i++) {
-            vis.displayData[i].emphasize = false
-        }
-    }
-    else {
-        for (i = 0; i < vis.displayData.length; i++) {
-            if (vis.displayData[i].id == vis.selected_borough) {vis.displayData[i].emphasize = true}
-            else {vis.displayData[i].emphasize = false}
-        }
+
+    for (i = 0; i < vis.displayData.length; i++) {
+        if (vis.displayData[i].id == vis.selected_borough) {vis.displayData[i].emphasize = true}
+        else {vis.displayData[i].emphasize = false}
     }
 
 
     vis.updateVis();
 };
+
+MapLineGraph.prototype.wrangleData_all = function() {
+    var vis = this;
+
+
+    vis.displayData = vis.boroughs;
+
+    for (i = 0; i < vis.displayData.length; i++) {
+        vis.displayData[i].emphasize = false;
+    }
+
+
+    vis.updateVis();
+};
+
 
 MapLineGraph.prototype.updateVis = function() {
     var vis = this;
