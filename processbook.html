@@ -13,19 +13,770 @@
     <link rel="stylesheet" href="css/awesomplete.css">
     <link rel="stylesheet" href="css/basic-style.css">
     <link rel="stylesheet" type="text/css" href="css/jquery.fullpage.min.css">
-    <link rel="stylesheet" href="css/style.css">
 
-</head>
 <body>
 
-<nav class="site-navigation horizontal-page-navigation">
-    <ul class="menu">
-        <li><a href="index.html">Visualization</a></li>
-        <li><a href="processbook.html">Process Book</a></li>
-        <li><a href="methodology.html">Methodology</a></li>
-        <li>Created for CS171</li>
-        <li>December 2016</li>
-    </ul>
-</nav>
+<!--<div class="container-fluid">-->
+<div id="fullpage">
+
+    <div id="nav-header" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
+            <span><a href="index.html">Visualization</a></span>
+            <span><a href="processbook.html">Process Book</a></span>
+            <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
+        </div>
+    </div>
+
+    <div id="section0" data-anchor="s0" class="section">
+        <h1>Process Book</h1>
+        <h2>Project Proposal - Oct. 31</h2>
+        <p>This summer, the NY state senate passed a bill to fine the hosts of certain Airbnb rentals in New York City. However, the governor of NY has yet to sign the bill. We’d like to present a website showing the context surrounding this controversial issue by showing both the prevalence of Airbnb rentals as well as the state of the housing rental market. We’ll show changes over time as well as trends by neighborhood or borough. We’ll also show the effects of illegal Airbnb rentals on lost hotel tax revenue and increased prices of standard rentals.</p>
+        <p>We’ll collect data from several online sources including insideairbnb.com and tomslee.net/airbnb-data. Both of these websites have scraped data from the Airbnb website directly at different time intervals. We’ll also download Zillow’s publicly available dataset of median rental prices in NYC. Finally, the Bureau of Labor Statistics provides a consumer price index, and we will incorporate their data from 2006 until now to adjust for inflation.</p>
+    </div>
+
+    <div id="section1" data-anchor="s1" class="section">
+        <h2>Project Plan - Nov. 7</h2>
+        <h3>Goals and Tasks</h3>
+        <ul>
+            <li>
+                <p>General goal: Explain the legal controversy and context surrounding a bill that has been passed in NYC to regulate Airbnb rentals.</p>
+            </li>
+            <li>
+                <p>Visualize Airbnb listings over time (allow users to explore several variables)</p>
+                <p>We want to give the users the tools to interact with our data on Airbnb postings. To this end, we’ll create a map with a slider that allows the user to show postings from a given map. They’ll also be able to select various attributes to color the posting dots (e.g., by price, neighborhood, etc). This will allow users to understand how Airbnb has grown in NYC in the last two years and also frame our discussion of its relationships with housing prices as well as lost tax revenue.</p>
+            </li>
+            <li>
+                <p>Show relationships between Airbnb density and housing prices in NYC</p>
+                <p>Over the last several years, Airbnb listings in NYC have dramatically increased. In some areas, the cost of housing has increased as well. We want to show the rise in housing prices in NYC neighborhoods over time as a function of Airbnb density. We will use a line chart with each line representing a NYC neighborhood. The x-axis would be time (monthly from 2014 until 2016), and the y-axis would represent the percent change in Zillow Rental Index (see their methodology <a href="http://www.zillow.com/research/zillow-rent-index-methodology-2393/">here</a>) from our starting date. The lines would each be colored by the density of Airbnb postings in the neighborhood (which we will determine based on the number of residential units, calculated from data provided by the PLUTO dataset from the NYC department of city planning). The user will see a general relationship between Airbnb densities and housing price increases across NYC. They’ll also be able to filter the neighborhoods and hover over lines to identify neighborhoods with high Airbnb densities and Zillow Rental Index increases. Finally, we’ll toggle between a view of general Airbnb density and illegal Airbnb density to show the user whether it is the illegal Airbnb listings in particular that are closely related to housing cost increases.</p>
+            </li>
+            <li>
+                <p>Estimate lost tax revenue</p>
+                <p>Hotels in NYC must pay 3 types of hotel tax: state sales tax, city sales tax, and a base fee per room per night. Originally, Airbnb claimed that it was only a platform and, as such, individual hosts were responsible for reporting and paying tax on their Airbnb rental revenue. However, most hosts don’t report or pay those taxes. Using the nightly price for Airbnb’s over time and an estimate for how often listings are actually reserved, we can estimate the amount of tax revenue that each host would have to pay. Then, we can show how the lost tax revenue has changed over time and produce a final amount of total amount of revenue lost over the past 2 years.</p>
+            </li>
+            <li>
+                <p>Show tax deals and other conflicts between Airbnb and other cities in the USA</p>
+                <p>This visualization will show context surrounding conflicts between cities and Airbnb regarding tax revenue. On a map of the United States, we’ll have markers of cities that have made deals with Airbnb as well as cities with ongoing lawsuits (e.g. San Francisco). The user will be able to hover over these cities to see details of resolutions or ongoing conflicts.</p>
+            </li>
+        </ul>
+
+        <h3>Description of Data</h3>
+        <p>We have collected data from several online sources including insideairbnb.com and tomslee.net/airbnb-data. Both of these websites have scraped data from the Airbnb website directly at different time intervals. For each listing, variables include latitude and longitude, price per night, description of the space, neighborhood, borough, host information, number of rooms, etc. We have also downloaded Zillow’s publicly available dataset of median housing rental prices in NYC, which breaks data down by neighborhood. We have collected data from the NYC Department of City Planning land use and geographic data on the number of housing units per neighborhood, from which we can calculate the density of Airbnb listings. Finally, the Bureau of Labor Statistics provides a consumer price index, and we will incorporate their data from 2006 until now to adjust for inflation.</p>
+        <p>We still need to collect data on tax deals Airbnb made with other cities, which we will be able to collect by researching news reports on such deals.</p>
+        <p>We also need to analyze the data in two ways:</p>
+        <ol>
+            <li>
+                Estimate which listings are illegal based on number of listings per host, host location, minimum nights to book, and type of property (and other variables if needed).
+            </li>
+            <li>
+                Estimate amount of lost tax revenue based on nightly prices and a model for how often Airbnb’s are booked (there are models for this online so we need to pick one that works).
+            </li>
+        </ol>
+
+        <h3>Project Timeline</h3>
+        <ul>
+            <li>
+                <p>11/7: Project Proposal Due</p>
+            </li>
+            <li>
+                <p>11/14: Project Prototype 1 Due</p>
+                <p>Deliverables:</p>
+                <ul>
+                    <li>
+                        Skeleton of website and one functioning visualization: Morgan and Michaela
+                    </li>
+                    <li>
+                        Complete necessary assumptions and calculations to produce analysis - Alena
+                    </li>
+                    <li>
+                        Cleaned data - Nicasia
+                    </li>
+                    <li>
+                        Draft 1 of copy - Morgan
+                    </li>
+                    <li>
+                        All team members make Github accounts and become familiar with using it
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>11/28: Project Prototype 2 Due</p>
+                <p>Deliverables:</p>
+                <ul>
+                    <li>
+                        All visualizations functioning and partially interactive
+                    </li>
+                    <li>
+                        Draft 2 of copy
+                    </li>
+                    <li>
+                        Final website layout
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <p>12/12: Final Project Due</p>
+                <p>Deliverables:</p>
+                <ul>
+                    <li>
+                        All visualizations functioning and fully interactive
+                    </li>
+                    <li>
+                        Copy finalized
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Feature List</h3>
+        <h4>Must-Have</h4>
+        <ul>
+            <li>
+                Map with Airbnb listings as nodes in NYC, showing change over time
+            </li>
+            <li>
+                Line chart of percent increase in housing prices in certain neighborhoods
+                <ul>
+                    <li>
+                        Highlight neighborhoods with some threshold density of Airbnb listings: #airbnbs / #residential units
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Change in illegal listings before and after publishing a report about Airbnb in New York City (Nov 2015)
+            </li>
+            <li>
+                Bar chart of tax dollars “lost” over time due to Airbnb
+                <ul>
+                    <li>City tax dollars "lost"</li>
+                    <li>State tax dollars "lost"</li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Good-to-Have</h4>
+        <ul>
+            <li>
+                Cities across the US where Airbnb has made tax deals (with tooltips with details of the tax deals)
+            </li>
+        </ul>
+
+        <h3>Team Roles</h3>
+        <p>Within each iteration of webpage design, each team member will be responsible for taking the lead and the following roles and making sure all related tasks are carried out:</p>
+        <ul>
+            <li>Target - Alena</li>
+            <li>Data Wrangling - Nicasia</li>
+            <li>Design - Morgan</li>
+            <li>Implement - Michaela</li>
+            <li>Evaluate - Alena</li>
+        </ul>
+    </div>
+
+    <div id="section2" data-anchor="s2" class="section">
+        <h2>Initial Visualization Sketches - Nov. 7</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p>Airbnb Listings Map</p>
+                <img src="img/sketches/Airbnb_Listings_Map.jpg" width="500"/>
+                <p>Airbnb Map Storyboard</p>
+                <img src="img/sketches/Airbnb_Map_Storyboard.jpg" width="500"/>
+                <p>Tax Dollars Lost Bar Chart</p>
+                <img src="img/sketches/NYC_Tax_Dollars_Lost_BarChart.jpg" width="500"/>
+            </div>
+            <div class="col-md-6">
+                <p>Housing Prices Line Chart</p>
+                <img src="img/sketches/NYC_Housing_Price_LineChart.jpg" width="500"/>
+                <p>Airbnb National Deals Map</p>
+                <img src="img/sketches/Airbnb_National_Deals_Map.jpg" width="500"/>
+                <p>Airbnb Listing Deletions</p>
+                <img src="img/sketches/Airbnb_Illegal_Listings_Map.jpg" width="500"/>
+            </div>
+        </div>
+    </div>
+
+    <div id="section3" data-anchor="s3" class="section">
+        <h2>Presentation in Studio - Nov. 8</h2>
+        <p>After presenting our project proposal in studio, we received the following feedback:</p>
+        <ul>
+            <li>
+                If we’re presenting this as the two sides of a debate, that should be reflected in the structure of the project, i.e. explicitly presenting the cases of both sides.
+            </li>
+            <li>
+                We need to make sure we stay focused with our scope, and everything connects together. In order to do that, we're going to cut the visualization showing Airbnb deletions in Nov 2015, and the map of other cities. That way, we can stay focused on the newest law in NYC specifically.
+            </li>
+        </ul>
+    </div>
+
+    <div id="section4" data-anchor="s4" class="section">
+        <h2>Creative Visualizations from Lecture - Nov. 10</h2>
+        <p>From earlier, we decided that our stacked bar chart showing lost tax dollars each month may be too dry and difficult for users to interpret. In order to help individuals better visualize and understand the amount of tax dollars lost.</p>
+        <img src="img/sketches/NYC_Tax_Dollars_Lost_BarChart.jpg" width="500"/>
+        <p>One way we might orient the user to the amount of money lost may be to show how the money translates to the cost of public services offered by NYC. For example:</p>
+        <img src="img/sketches/Taxes_Pictures.jpg" width="500"/>
+        <p>After designing this visualization, we decided that our drawing may be somewhat misleading because Airbnb taxes clearly would be divided and spent on various budgetary expenditures in both the city and state government. Therefore, it may make more sense instead to create a bar graph representing NYC’s budget broken up into different divisions (e.g., parks and rec) and then add a bar representing the lost tax revenue from Airbnb, so that users can compare this value to the various NYC budgets.</p>
+    </div>
+
+    <div id="section5" data-anchor="s5" class="section">
+        <h2>Project Meeting: Prototype V1 - Nov. 12</h2>
+        <h3>Meeting Notes</h3>
+        <ul>
+            <li>The skeleton of website looks good, but we should amend the navigation links to stick to the top of the page.</li>
+            <li>Morgan will take a stab at designing a header image.</li>
+            <li>
+                How to figure out legality and taxes:
+                <ul>
+                    <li>
+                        Alena figured out what the laws are and put together a plan to calculate it, and wrote code snippets to do so.
+                    </li>
+                    <li>
+                        We will write an Assumptions/Estimates document to include on the website.
+                    </li>
+                    <li>
+                        Assumption: Supply and demand of Airbnb listings will not change based on imposition of taxes.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Issue for prototype of visualization: There is so much data that the web page is crashing before it loads
+            </li>
+            <li>
+                Reconsidering visualizations:
+                <ul>
+                    <li>
+                        Swap out the second map for a sankey diagram showing breakdown of legal and illegal listings. Alena found a plugin that produces them. This will help readers understand what makes something illegal, and the quantity of illegal listings.
+                    </li>
+                    <li>
+                        Consider swapping bar chart of taxes over time with bar chart putting NYC tax revenue in context of other budget items.
+                    </li>
+                    <li>
+                        For the map visualization:
+                        <ul>
+                            <li>Cut the priceband slider</li>
+                            <li>Give context to issues coming up in the written introduction so the map makes sense. (Basically, you shouldn’t be running a hotel out of your house.)</li>
+                            <li>Implement neighborhood-level zoom, through a dropdown or by clicking on the neighborhood.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <div class="row">
+            <h3>Visualization Sketches</h3>
+            <div class="col-md-6">
+                <p>First map visualization (revised)</p>
+                <img src="img/sketches/Revised%20Main%20Map.jpg" width="500" />
+                <p>Contextualized Taxes Bar Chart</p>
+                <img src="img/sketches/Tax%20Bar%20Chart%20w%20Context.jpg" width="500"/>
+            </div>
+            <div class="col-md-6">
+                <p>Sankey Diagram</p>
+                <img src="img/sketches/Sankey%20Diagram.jpg" width="500"/>
+                <p>Sankey Storyboard</p>
+                <img src="img/sketches/Sankey%20Storyboard.jpg" width="500"/>
+            </div>
+        </div>
+
+        <h3>Tasks for Upcoming Week</h3>
+        <ul>
+            <li>
+                Morgan
+                <ul>
+                    <li>Header Image</li>
+                    <li>Comparison tax bar graph</li>
+                    <li>Template for line graph (everything except coloring by density)</li>
+                </ul>
+            </li>
+            <li>
+                Alena
+                <ul>
+                    <li>Implement Sankey diagram with dummy data</li>
+                </ul>
+            </li>
+            <li>
+                Nicasia
+                <ul>
+                    <li>Finish data cleaning for one data set - Monday</li>
+                    <li>Finish getting data by next meeting</li>
+                </ul>
+            </li>
+            <li>
+                Michaela
+                <ul>
+                    <li>Keep working on Vis 1 - Monday</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="section6" data-anchor="s6" class="section">
+        <h2>Legality and Tax Methodology</h2>
+        <p>While this was originally part of our process book, it has been moved to <a href="methodology.html">the methodology page.</a></p>
+    </div>
+
+    <div id="section7" data-anchor="s7" class="section">
+        <h2>Feedback in Studio - Nov. 15</h2>
+        <ul>
+            <li>
+                Incorporate coordinate views into Viz 1, like an area chart of the amount of Airbnb listings over time.
+            </li>
+            <li>
+                Use color scale for proportion of Airbnbs per neighborhood to unclutter Manhattan.
+            </li>
+        </ul>
+    </div>
+
+    <div id="section8" data-anchor="s8" class="section">
+        <h2>Prototype V2 Updates - Nov. 18</h2>
+        <h3>Status</h3>
+        <ul>
+            <li>
+                Sankey Diagram (Alena)
+                <ul>
+                    <li>
+                        The plug in is not helpful, so we decided to create the Sankey diagram from scratch. This means hard-coding more layout information than is ideal, but at least the layout will be easily interpretable by the user.
+                    </li>
+                    <li>
+                        The Sankey diagram is now properly laid out, but the colors aren’t ideal and the labels are a mess. We need to decide how best to label it so it’s informative but also readable.
+                    </li>
+                    <li>
+                        Also animating it to make the decision flow clear would be great; we need to add the animations.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Data Wrangling for our Airbnb data (to be displayed on a map) (Nicasia)
+                <ul>
+                    <li>
+                        Data wrangling is now complete.
+                    </li>
+                    <li>
+                        We have cleaned data for each scrape date. For data from InsideAirbnb, we have calculated projected lost tax revenue, and have also classified whether or not that posting is likely to be illegal (this process was explained in an earlier section).
+                    </li>
+                    <li>
+                        For data from Tomslee, we have extrapolated legality estimates based on whether the posting occurs in other scrapings; however, we will not be calculating taxes because this would require too much guessing about missing data.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Rental Prices in different Neighborhoods Line Chart (Nicasia)
+                <ul>
+                    <li>
+                        Alena previously gathered estimates for median rental prices of neighborhoods in NYC from Zillow, and then adjusted them for inflation based on the US Bureau of Labor Statistics.
+                    </li>
+                    <li>
+                        We’d like to give users the option to color each line (representing one neighborhood) by the following: density of Airbnbs, density of illegal Airbnbs, percentage of Airbnbs that we think are illegal. For the first two options, we need a standard by which to determine density. We have decided to use (#Airbnb postings on a given date)/(# of total residential units). To that end, we acquired the PLUTO dataset from NYC’s public website regarding geographical land use, mapped each building to neighborhoods, and calculated the total number of residential units across these buildings.
+                    </li>
+                    <li>
+                        We now have a rudimentary line graph that is colored by percent of posts that are illegal. We will later add an option to color the lines by the other variables explained above, but unfortunately some of the calculations have produced some odd results (e.g., more postings than there are residential units in some neighborhoods). We also have a select box where the user can choose to display data only from one borough at a time.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Map Visualization (Michaela)
+                <ul>
+                    <li>
+                        We want to make the map more interactive, so that the user can view both the large-picture display of airbnb listings in New York as well as specifics for each neighborhood. Now the user can click to zoom in or out of a given neighborhood, and we will add coordinate views to visualize the data for each individual neighborhood.
+                    </li>
+                    <li>
+                        The user can now also color the listings (nodes) on the map by legality and price (or none if they just want to see the number of listings in New York City).
+                    </li>
+                    <li>
+                        We still have to add the coordinate views, and edit the map’s legend to reflect changes in node coloration.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Tasks</h3>
+        <h4>Morgan</h4>
+        <ul>
+            <li>
+                Timeline
+                <ul>
+                    <li>
+                        Make timeline full width and centered.
+                    </li>
+                    <li>
+                        Putting the dates on the outsides of the circles.
+                    </li>
+                    <li>
+                        Add single tick for January 1st for every year on the axis to orient the viewer.
+                    </li>
+                    <li>
+                        Link each image to a news article giving more detail.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Layout
+                <ul>
+                    <li>
+                        Images cover the fixed menu bar when scrolling. Fix this by moving the html for the menu bar to the bottom of the index page.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Budget bar chart
+                <ul>
+                    <li>
+                        Move the select boxes to align right for a neater look.
+                    </li>
+                    <li>
+                        Convert data and implement a stack layout so that annual hotel revenue and projected Airbnb tax revenue are stacked bars.
+                    </li>
+                    <li>
+                        Add a legend.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Miscellaneous
+                <ul>
+                    <li>
+                        Get started on the coordinate views for the map.
+                    </li>
+                    <li>
+                        Redo header image so that it fills the whole screen.
+                    </li>
+                    <li>
+                        Implement fullpage.js so that scrolling shows a full section at a time.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Alena</h4>
+        <ul>
+            <li>
+                Sankey Diagram
+                <ul>
+                    <li>
+                        Bars should show the category and number in that category.
+                    </li>
+                    <li>
+                        Add legend
+                    </li>
+                    <li>
+                        Clean up code
+                    </li>
+                    <li>
+                        Animate the sankey diagram to make the process of determining legality easier to understand and follow. Perhaps try delay functions with onclick handler. Use <a href="https://github.com/nbremer/Chord-Diagram-Storytelling/blob/gh-pages/js/Draw4.js">this example</a> for inspiration.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Michaela</h4>
+        <ul>
+            <li>
+                Map
+                <ul>
+                    <li>
+                        Densely populated neighborhoods are not zoomable because we can’t click over dots. Add a drop-down selection for borough zoom to solve this problem.
+                    </li>
+                    <li>
+                        Make tooltips show relevant information based on the selected category.
+                    </li>
+                    <li>
+                        Make legends nice using .nice()
+                    </li>
+                    <li>
+                        When zoomed into one borough, make other boroughs gray.
+                    </li>
+                    <li>
+                        Edit code to load each dataset separately
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <h4>Nicasia</h4>
+        <ul>
+            <li>
+                Data Wrangling
+                <ul>
+                    <li>
+                        Check with Michaela about what data to keep in json files (lat/long, legality, price, etc). Edit all jsons.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Line Graph
+                <ul>
+                    <li>
+                        Fix axes
+                    </li>
+                    <li>
+                        Implement toggle option for absolute price & percent change (calculated separately).
+                    </li>
+                    <li>
+                        Drop neighborhoods with weird values for density.
+                    </li>
+                    <li>
+                        Fix lines: implement tooltips, make selected line thicker, and/or make other lines gray.
+                    </li>
+                    <li>
+                        Tooltip should appear next to the mouse.
+                    </li>
+                    <li>
+                        Once these two are fixed, get rid of dots altogether.
+                    </li>
+                    <li>
+                        Use colorbrewer to get better colors.
+                    </li>
+                    <li>
+                        Get help for the lines appearing in the wrong spot.
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="section9" data-anchor="s9" class="section">
+        <h2>Meeting with Mirhee - Nov. 30</h2>
+        <h3>Mirhee's Feedback</h3>
+        <ul>
+            <li>
+                Add white space and change scrolling so that each section has its own page, which can be done by implementing fullpage.js scrolling.
+            </li>
+            <li>
+                Change carousel to smaller, clickable thumbnails
+            </li>
+            <li>
+                Change the timeline’s beige background to white to look cleaner.
+            </li>
+            <li>
+                For coordinate views for the map, have one view that shows an area chart of whatever variable is selected (legality, price, etc) and one view that shows rent prices in the selected zoom level.
+            </li>
+        </ul>
+    </div>
+
+    <div id="section10" data-anchor="s10" class="section">
+        <h2>Final Submission Update - Dec. 5</h2>
+        <h3>Remaining Tasks</h3>
+        <h4>Layout</h4>
+        <ul>
+            <li>
+                Make sure each page can fit into an actual page. (Everyone)
+            </li>
+            <li>
+                For the title page, edit the header image so that scroll dots don’t overlap the title. (Morgan)
+            </li>
+            <li>
+                Fill in the story on the sankey diagram and conclusion. (Alena)
+            </li>
+            <li>
+                Fill in the explanation above rent linechart. (Alena)
+            </li>
+            <li>
+                Write methodology of data sources, tax calculations, and listing legality. (Alena)
+            </li>
+            <li>
+                Write methodology of posting density (and data sources thereof.) (Nicasia)
+            </li>
+        </ul>
+        <h4>Carousel</h4>
+        <ul>
+            <li>
+                Change the image carousel from showing one image at a time to showing three images at a time.
+            </li>
+            <li>
+                Delete captions under each image.
+            </li>
+        </ul>
+
+        <h4>Map</h4>
+        <ul>
+            <li>
+                Fill in missing data (Michaela/Alena)
+            </li>
+            <li>
+                Fix legend (Michaela/Alena): Prices should now be in the following groups: [0-50), [50,100), [100,150), [150-200), [200-300), [300, inf)
+            </li>
+            <li>
+                Update tooltip values based on selected color listing (Michaela) → The map always lists price and room type.
+            </li>
+            <li>
+                Implement neighborhood zoom
+            </li>
+            <li>
+                Display only nodes in selected region (borough or neighborhood)
+            </li>
+            <li>
+                The legend should be moved outside of the primary map svg so it doesn’t get covered. → Michaela added a box and white space for the legend.
+            </li>
+            <li>
+                Make the slider update onchange using mouseup/mousedown, rather than having to click “Update map”. (Nicasia)
+            </li>
+            <li>
+                Coordinate views:
+                <ul>
+                    <li>
+                        Implement rent line graph (Nicasia) (mapLineGraph.js)
+                    </li>
+                    <li>
+                        Wrangle data for area chart (Nicasia)
+                    </li>
+                    <li>
+                        Implement area chart colored by selected category (Morgan)
+                    </li>
+                    <li>
+                        Add lines to the coordinate views that correspond to the slider date
+                    </li>
+                </ul>
+            </li>
+            <li>
+                Change neighborhood select box so that it does not suggest neighborhoods with unavailable data.
+            </li>
+        </ul>
+        <p>Revised map sketch with coordinate views</p>
+        <img src="img/sketches/Final%20Map%20Sketch.jpg" width="500"/>
+
+        <h4>Bar Chart</h4>
+        <ul>
+            <li>
+                Switch from dropdown select to toggle, and only toggle city or state, not year. (Nicasia)
+            </li>
+            <li>
+                Differentiate colors between revenue, expenditure, and projections. (Morgan)
+            </li>
+            <li>
+                Provide tax projections for city and state, 2016. (Alena)
+            </li>
+            <li>
+                Fix enter/update/exit for stacked bar graph.
+            </li>
+        </ul>
+
+        <h4>Sankey</h4>
+        <ul>
+            <li>
+                The middle panel animation skips through a part too quickly. (Alena)
+            </li>
+            <li>
+                If you restart the animation after it ends the first time, the next button still says end. (Alena)
+            </li>
+            <li>
+                Speed up transitions (Alena)
+            </li>
+            <li>
+                Change data path to data/jsons_by_date/2016_10_whatever
+            </li>
+        </ul>
+
+        <h4>Line Chart</h4>
+        <ul>
+            <li>
+                Make checkboxes more attractive and properly aligned (Alena)
+            </li>
+            <li>
+                Fix percent scale legend
+            </li>
+            <li>
+                The legend title needs to update when a different axis measure is selected (Alena)
+            </li>
+            <li>
+                Format color variables need explanations (Nicasia)
+            </li>
+            <li>
+                Change densities to "listings per 10,000 residential units" (Alena - actually did per 10,000)
+            </li>
+            <li>
+                Fix x axis formatting (Nicasia)
+            </li>
+            <li>
+                Add info to tooltips (Nicasia) - round shown value; see about adding price stuff
+                <ul>
+                    <li>
+                        I also added the borough bc useful - Alena
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4>Conclusion</h4>
+        <ul>
+            <li>
+                Needs to be written! - Alena
+            </li>
+        </ul>
+    </div>
+
+    <div id="section11" data-anchor="s11" class="section">
+        <h2>Final Tasks - Dec. 12</h2>
+        <ul>
+            <li>Write conclusion</li>
+            <li>
+                HTML.CSS
+                <ul>
+                    <li>Fix button:hover color</li>
+                    <li>Style video page</li>
+                </ul>
+            </li>
+            <li>Make Video</li>
+            <li>Embed Video</li>
+            <li>Finalize process book & put in html/css</li>
+            <li>Clear out all commented code</li>
+            <li>
+                Map
+                <ul>
+                    <li>
+                        Make just 1 select box
+                        <ul>
+                            <li>
+                                Check zoom/highlight
+                            </li>
+                            <li>
+                                Check coordinate views
+                            </li>
+                        </ul>
+                    </li>
+                    <li>Fix legality coloring</li>
+                    <li>Fix price buckets</li>
+                    <li>Fix legend box</li>
+                    <li>Add ticks to slider? (optional)</li>
+                </ul>
+            </li>
+            <li>
+                Methodology
+                <ul>
+                    <li>Add background colors</li>
+                    <li>Write in method & source of listing densities</li>
+                </ul>
+            </li>
+            <li>
+                Timeline
+                <ul>
+                    <li>Make links open in new tab</li>
+                    <li>Add "click me" instructions</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="footer" data-anchor="f" class="nav section fp-auto-height">
+        <div class="left">
+            <span><a href="index.html">Visualization</a></span>
+            <span><a href="processbook.html">Process Book</a></span>
+            <span><a href="methodology.html">Methodology</a></span>
+            <span><a href="video.html">Video</a></span>
+        </div>
+        <div id="right">
+            Created for CS171<br/>
+            December 2016
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Load JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/scrolloverflow.min.js"></script>
+<script src="js/jquery.combinedScroll.js"></script>
+<script src="js/queue.min.js"></script>
+<script src="js/jquery.fullpage.min.js"></script>
+
+<!-- script for carousels and scrolling -->
+<script src="js/page-run.js"></script>
+
 </body>
 </html>
