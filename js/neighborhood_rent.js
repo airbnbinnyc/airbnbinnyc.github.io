@@ -139,11 +139,6 @@ NeighborhoodLine.prototype.initVis = function(){
         .attr("dy", ".71em")
         .style("text-anchor", "start");
 
-    vis.info_box = vis.key.append("circle")
-        .attr("cx", $("#neighborhood-line-legend").width() - vis.legend_margin.right)
-        .attr("cy", vis.legend_height)
-        .attr("r", 10)
-        .attr("fill", "#ff0000");
 
     // this makes the original continuous legend
 /*    vis.legend = vis.key.append("defs")
