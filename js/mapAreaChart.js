@@ -250,20 +250,6 @@ function switchCategories(val) {
 MapAreaChart.prototype.zoomBorough = function(val) {
     var vis = this;
 
-    // var box = document.getElementById("borough_sel");
-    //
-    // vis.filter = box.options[box.selectedIndex].value;
-    //
-    // console.log(vis.filter);
-    //
-    // if (vis.filter == "all") {
-    //     vis.zoomData = vis.totalData;
-    // }
-    //
-    // else {
-    //     vis.zoomData = vis.boroughData[vis.filter];
-    // }
-
     console.log(val);
 
     vis.zoomData = vis.boroughData[val];
@@ -277,6 +263,16 @@ MapAreaChart.prototype.zoomNeighborhood = function(val) {
     console.log(val);
 
     vis.zoomData = vis.neighborhoodData[val];
+
+    vis.wrangleData();
+}
+
+MapAreaChart.prototype.zoomTotal = function() {
+    var vis = this;
+
+    console.log("total");
+
+    vis.zoomData = vis.totalData;
 
     vis.wrangleData();
 }
