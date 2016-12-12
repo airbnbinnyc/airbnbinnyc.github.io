@@ -103,12 +103,14 @@ function loadData() {
                 // if the selected region is a borough:
                 if (borList.indexOf(e.text.value) >= 0) {
                     mapLineGraph.wrangleData_borough();
+                    mapAreaChart.zoomBorough(e.text.value);
                 }
                 // if the selected region is a neighborhood:
                 else {
                     mapLineGraph.wrangleData_neighborhood();
+                    mapAreaChart.zoomNeighborhood(e.text.value);
                 }
-                mapAreaChart.zoomNeighborhood(e.text.value);
+
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
 
