@@ -459,12 +459,14 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         // erase nodes not in selected borough
         d3.selectAll("circle")
             .filter(function(d) {
-                // select all nodes not in selected borough
-                if (d.neighborhood != vis.sel_neigh) {
-                    return true;
-                }
-                else {
-                    return false;
+                if (i < 39561) {
+                    // select all nodes not in selected borough
+                    if (d.neighborhood != vis.sel_neigh) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
 
             })
@@ -494,8 +496,15 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         return n.properties.neighbourhood === vis.sel_neigh;
     });
 
-    vis.sel_bor = f[0].properties.neighbourhood_group;
 
+    // if we don't have data for that neighborhood in that time
+    if (typeof f[0] === "undefined") {
+        alert("Sorry! We do not have data for that neighborhood at that time. Try another time and/or neighborhood!");
+        return;
+    }
+
+
+    vis.sel_bor = f[0].properties.neighbourhood_group;
 
     var e = vis.boroughMap.features.filter(function (n, i) {
         return n.properties.borough === vis.sel_bor;
@@ -563,19 +572,21 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
 
     // erase nodes not in selected borough
     d3.selectAll("circle")
-        .filter(function(d) {
-            // if user is zoomed in
-            if (vis.zoom_stat == true) {
-                // select all nodes not in selected borough
-                if (d.neighborhood != vis.sel_neigh) {
-                    return true;
+        .filter(function(d, i) {
+            if (i < 39561) {
+                // if user is zoomed in
+                if (vis.zoom_stat == true) {
+                    // select all nodes not in selected borough
+                    if (d.neighborhood != vis.sel_neigh) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
                 else {
                     return false;
                 }
-            }
-            else {
-                return false;
             }
         })
         .transition()
@@ -585,18 +596,20 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
     // fill in nodes in selected borough
     d3.selectAll("circle")
         .filter(function(d) {
-            // if user is zoomed in
-            if (vis.zoom_stat == true) {
-                // select all nodes IN selected borough
-                if (d.neighborhood != vis.sel_neigh) {
-                    return false;
+            if (i < 39561) {
+                // if user is zoomed in
+                if (vis.zoom_stat == true) {
+                    // select all nodes IN selected borough
+                    if (d.neighborhood != vis.sel_neigh) {
+                        return false;
+                    }
+                    else {
+                        return true;
+                    }
                 }
                 else {
-                    return true;
+                    return false;
                 }
-            }
-            else {
-                return false;
             }
         })
         .transition()
