@@ -86,10 +86,6 @@ MapAreaChart.prototype.initVis = function() {
 MapAreaChart.prototype.wrangleData = function() {
     var vis = this;
 
-    console.log(vis.zoomData);
-    console.log(vis.boroughData);
-
-
     // format data for stack layout
     vis.dataIntermediate = Object.keys(vis.zoomData).map(function (key) {
         return vis.zoomData[key];
