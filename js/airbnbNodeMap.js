@@ -187,43 +187,41 @@ AirBnBNodeMap.prototype.initVis = function() {
 
     // DRAW LEGEND
 
-    vis.key = vis.svg.append('rect')
+    vis.legendBox = vis.svg.append('rect')
         .attr('class', 'key')
         .attr('width', 135)
-        .attr('height', 190)
+        .attr('height', 130)
         .attr('fill', 'white')
         .attr('y', 190)
         .attr('stroke', 'black')
         .attr('stroke-width', 1.5);
 
-    vis.legend = d3.legend.color();
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
 
-    // // append legend
-    // vis.legend = vis.svg.selectAll('g.legendEntry')
-    //     .data(vis.colorScale.range())
-    //     .enter().append('g')
-    //     .attr('class', 'legendEntry');
-    //
-    // vis.legend
-    //     .append('rect')
-    //     .attr("x", 5)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 200;
-    //     })
-    //     .attr("width", 10)
-    //     .attr("height", 10)
-    //     .style("stroke", "black")
-    //     .style("stroke-width", 1)
-    //     .style("fill", function(d){return d;});
-    //
-    // //the data objects are the fill colors
-    // vis.legend
-    //     .append('text')
-    //     .attr("x", 20)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 210;
-    //     })
-    //     .text("Listing");
+    vis.legend
+        .append('rect')
+        .attr("x", 5)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text("Listing");
 
 
     // Tip text
@@ -331,49 +329,54 @@ AirBnBNodeMap.prototype.colorNodes = function () {
             }
         });
 
-    // // redraw legend
-    // vis.svg.selectAll(".legendEntry").remove();
-    //
-    // // append legend
-    // vis.legend = vis.svg.selectAll('g.legendEntry')
-    //     .data(vis.colorScale.range())
-    //     .enter().append('g')
-    //     .attr('class', 'legendEntry');
-    //
-    // vis.legend
-    //     .append('rect')
-    //     .attr("x", 5)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 200;
-    //     })
-    //     .attr("width", 10)
-    //     .attr("height", 10)
-    //     .style("stroke", "black")
-    //     .style("stroke-width", 1)
-    //     .style("fill", function(d){return d;});
-    //
-    // //the data objects are the fill colors
-    // vis.legend
-    //     .append('text')
-    //     .attr("x", 20)
-    //     .attr("y", function(d, i) {
-    //         return i * 20 + 210;
-    //     })
-    //     .text(function(d,i) {
-    //         if (vis.val == "None") {
-    //             return "Listing";
-    //         }
-    //         else if (vis.val == "illegal") {
-    //             var extent = ["Legal", "Illegal"];
-    //             return extent[i];
-    //         }
-    //         else {
-    //             var extent = vis.colorScale.invertExtent(d);
-    //             //extent will be a two-element array, format it however you want:
-    //             var format = d3.format("0.2f");
-    //             return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
-    //         }
-    //     });
+    // redraw legend
+    vis.svg.selectAll(".legendEntry").remove();
+
+    // append legend
+    vis.legend = vis.svg.selectAll('g.legendEntry')
+        .data(vis.colorScale.range())
+        .enter().append('g')
+        .attr('class', 'legendEntry');
+
+    vis.legend
+        .append('rect')
+        .attr("x", 5)
+        .attr("y", function(d, i) {
+            return i * 20 + 200;
+        })
+        .attr("width", 10)
+        .attr("height", 10)
+        .style("stroke", "black")
+        .style("stroke-width", 1)
+        .style("fill", function(d){return d;});
+
+    //the data objects are the fill colors
+    vis.legend
+        .append('text')
+        .attr("x", 20)
+        .attr("y", function(d, i) {
+            return i * 20 + 210;
+        })
+        .text(function(d,i) {
+            if (vis.val == "None") {
+                return "Listing";
+            }
+            else if (vis.val == "illegal") {
+                var extent = ["Legal", "Illegal"];
+                return extent[i];
+            }
+            else {
+                var extent = vis.colorScale.invertExtent(d);
+                //extent will be a two-element array, format it however you want:
+                var format = d3.format("0.2f");
+                if (extent[0]) {
+                    return "$" + format(Math.round(+extent[0])) + " - $" + format(Math.round(+extent[1]));
+                }
+                else {
+                    return "$0 - $"+ format(Math.round(+extent[1]));
+                }
+            }
+        });
 
 
     vis.updateVis();
@@ -482,16 +485,6 @@ AirBnBNodeMap.prototype.updateVis = function(d) {
         // print number of listings in zoomed region to listing-count
         document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
     }
-
-    vis.legend
-        // .labelFormat(d3.format(".0f"))
-        .scale(vis.colorScale);
-        // .shapeWidth(20)
-        // .shapeHeight(20)
-        // .shapePadding(5);
-
-    vis.key
-        .call(vis.legend);
 
 };
 
