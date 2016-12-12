@@ -15,12 +15,18 @@
         });
     });
 
+// the scrolling script should run automatically on all pages except our main vis page
+// there, we'll call is manually after all the vis are created
+// this will make the scroll account for our GIANT visualizations
+    if (document.title !== "Airbnb in NYC") {
+        scrollSetUp();
+    }
 
-    $(document).ready(function() {
+    function scrollSetUp() {
         $('#fullpage').fullpage({
             menu: false,
             lockAnchors: false,
-            anchors:['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7'],
+            anchors: ['s0', 's1', 's2', 's3', 's4', 's5', 's6', 's7'],
             navigation: true,
             navigationPosition: 'left',
             slidesNavigation: true,
@@ -73,12 +79,19 @@
             slideSelector: '.demo',
 
             //events
-            onLeave: function(index, nextIndex, direction){},
-            afterLoad: function(anchorLink, index){},
-            afterRender: function(){},
-            afterResize: function(){},
-            afterResponsive: function(isResponsive){},
-            afterSlideLoad: function(anchorLink, index, slideAnchor, slideIndex){},
-            onSlideLeave: function(anchorLink, index, slideIndex, direction, nextSlideIndex){}
+            onLeave: function (index, nextIndex, direction) {
+            },
+            afterLoad: function (anchorLink, index) {
+            },
+            afterRender: function () {
+            },
+            afterResize: function () {
+            },
+            afterResponsive: function (isResponsive) {
+            },
+            afterSlideLoad: function (anchorLink, index, slideAnchor, slideIndex) {
+            },
+            onSlideLeave: function (anchorLink, index, slideIndex, direction, nextSlideIndex) {
+            }
         });
-    });
+    }

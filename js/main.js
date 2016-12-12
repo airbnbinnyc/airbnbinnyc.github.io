@@ -157,6 +157,9 @@ function loadData() {
                 airbnbNodeMap.zoomNeigh(e.text.value);
             }, false);
 
+            // start magical scrolling
+            scrollSetUp();
+
 
             // mimics escape key to alert message
             var e = jQuery.Event("keydown");
