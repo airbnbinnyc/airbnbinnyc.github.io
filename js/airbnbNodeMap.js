@@ -41,12 +41,14 @@ AirBnBNodeMap = function(_parentElement, _boroughMap, _neighborhoodMap, _airbnbD
 
     });
 
+    vis.formatTime = d3.time.format("%b %d, %Y");
+
     vis.slider.noUiSlider.on('update', function(value) {
         // format date **TO DO**
 
 
         // print selected date
-        document.getElementById('sel-date').innerHTML = (vis.yyyymmdd(vis.dates[+value])).toString();
+        document.getElementById('sel-date').innerHTML = (vis.formatTime(vis.dates[+value]));
 
         // update what the selected date is
         vis.selDate = vis.yyyymmdd(vis.dates[+value]);
@@ -167,7 +169,6 @@ AirBnBNodeMap.prototype.initVis = function() {
         .attr("transform", function(d) {
             return "translate(" + vis.projection([d.longitude, d.latitude]) + ")";
         })
-        // make node larger and darker on mouseover
         .on("mouseover", function(d) {
             d3.select(this)
                 .attr("r", 5)
@@ -495,7 +496,7 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
     vis.sel_neigh = selNeigh;
 
     var f = vis.neighborhoodMap.features.filter(function (n, i) {
-        return n.properties.neighbourhood === vis.sel_neigh;
+        return n.properties.NAME === vis.sel_neigh;
     });
 
 
@@ -505,7 +506,9 @@ AirBnBNodeMap.prototype.zoomNeigh = function(selNeigh) {
         return;
     }
 
-    vis.sel_bor = f[0].properties.neighbourhood_group;
+    vis.sel_bor = f[0].properties.CITY.substring(14);
+
+    console.log(vis.sel_bor);
 
     var e = vis.boroughMap.features.filter(function (n, i) {
         return n.properties.borough === vis.sel_bor;
@@ -707,6 +710,8 @@ AirBnBNodeMap.prototype.zoomBor = function(selBor) {
 // function for zooming out
 AirBnBNodeMap.prototype.zoomOut = function() {
     var vis = this;
+
+    document.getElementById('listing-count').innerHTML = (vis.airbnbData.length).toString();
 
     var x, y, k;
     x = vis.width / 2;
