@@ -191,8 +191,7 @@
             <h2>These illegal listings may be driving up long-term housing prices.</h2>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas pellentesque nibh velit, id pretium lacus lobortis et. Curabitur augue dolor, dignissim quis metus a, vehicula ultricies nulla. Aenean ornare luctus lectus, vel gravida magna tincidunt sed. Morbi consequat leo a tempus molestie. Etiam aliquam lorem a enim semper bibendum. Duis elementum consectetur ex, nec mollis ipsum lacinia ut. Curabitur et leo a risus ullamcorper elementum. Cras pharetra nec sapien quis volutpat. Nullam bibendum porttitor lorem vitae accumsan. Integer ornare in risus dapibus iaculis. Praesent pellentesque ante nec malesuada sagittis. Donec consequat placerat turpis eu posuere. Duis in mauris cursus, pulvinar lorem non, dapibus ex. Quisque viverra metus sem, tincidunt congue arcu scelerisque eu.</p>
             <div id="vis4">
-                <div class="row">
-                <div class="col-sm-3">
+                <div class="col-sm-5">
                     <form id="neighborhood-line-data-type" onchange=neighborhoodrent.wrangleData()>
                         <label>Data to display (y-axis):<br></label>
                         <div class="btn-group" data-toggle="buttons">
@@ -205,32 +204,21 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-sm-9">
-                    <div class="col-sm-6">
-                    <form id="neighborhood-line-color-type" onchange=neighborhoodrent.updateVis()>
-                        <label>Color lines by:</label>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary active">
-                                <input type="radio" name="options" value="percent_illegal" autocomplete="off" checked> Percent Illegal
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" value="proportion_of_posts" autocomplete="off"> Listing Density
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="options" value="proportion_of_illegal_posts" id="option2" autocomplete="off"> Illegal Listing Density
-                            </label>
-                        </div>
-                    </form>
+                <div class="col-sm-5">
+                <form id="neighborhood-line-color-type" onchange=neighborhoodrent.updateVis()>
+                    <label>Color lines by:</label>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" value="percent_illegal" autocomplete="off" checked> Percent Illegal
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" value="proportion_of_posts" autocomplete="off"> Listing Density
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" value="proportion_of_illegal_posts" id="option2" autocomplete="off"> Illegal Listing Density
+                        </label>
                     </div>
-                    <div class="col-sm-3">
-                        <div class="hoverinfo"> <span id="listing-density-info" class="glyphicon glyphicon-question-sign"> </span>
-                            <p> "Listing density" refers to the <br>
-                                number of listings on the Airbnb <br>
-                                website at the most recent scrape <br>
-                                date, normalized by the total  <br>
-                                residential units in the region.</p>
-                        </div>
-                    </div>
+                </form>
                 </div>
 
                 </div>
