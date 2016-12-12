@@ -80,12 +80,12 @@ MapLineGraph.prototype.initVis = function() {
     yaxlabel.text("Median Monthly Rental Prices");
 
     vis.svg.append("text")
-        .attr("x", vis.margin.left/2)
+        .attr("x", vis.margin.left/3)
         .attr("y", -5)
         .attr("text-anchor", "left")
         .attr("class", "chart-title")
         .attr("font-size", 15)
-        .text("Inflation-Adjusted Median Housing Prices by NYC Region");
+        .text("Inflation-Adjusted Median Housing Prices by Region");
 
     vis.initialWrangle();
     vis.wrangleData_all();
